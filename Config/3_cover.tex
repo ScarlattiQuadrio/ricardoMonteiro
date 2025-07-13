@@ -10,8 +10,6 @@
 %%  THESIS/DISSERTATION COVER DATA
 %%==================================================================
 
-
-
 %-------------------------------------------------------------------
 % Thesis/Dissertation title (valid for all languages unless redefined as below)
 % SYNTAX: \nttitle(type,lang){title}
@@ -21,18 +19,16 @@
 %                                 (if omitted defaults to main title without line breaks)
 %-------------------------------------------------------------------
 %         You may use "\\" to force line breaks
-\nttitle(main,en){A Very Long and Impressive\\Thesis Title with a Forced Line Break}%
-\nttitle(main,pt){Um Título de Tese Longo\\e com uma Mudança de Linha Forçada}%
+\nttitle(main,en){Basketball Motions Recognition and Injury Prevention}%
+\nttitle(main,pt){Reconhecimento de Movimentos de Basquetebol e Prevenção de Lesões}%
 
 %         You may use "\\" to force line breaks
-\nttitle(sub,en){Some thoughts on the Life, the Universe,\\and Everything Else}%
-\nttitle(sub,pt){Algumas considerações sobre a Vida,\\o Universo e Tudo o Mais}%
+\nttitle(sub,en){Application of a Non Disruptive Smart Wearable in Basketball}%
+\nttitle(sub,pt){Uso de um Dispositivo Inteligente não Disruptivo Em Basquetebol}%
 
 %         You may NOT use "\\" to force line breaks
 % \nttitle(spine,en){A Very Long and Impressive Thesis Title}%
 % \nttitle(spine,pt){Um Título de Tese Longo e Impressionante}%
-
-
 
 %-------------------------------------------------------------------
 % DEPARTMENT NAME customization
@@ -47,8 +43,6 @@
 \ntdepartment*(pt){Departamento de\\Nome do Departamento}
 \ntdepartment*(en){Department of\\Name of the Department}
 
-
-
 %-------------------------------------------------------------------
 % DEGREE NAME customization
 % SYNTAX: \ntdegreename(language){degree_name}
@@ -62,8 +56,6 @@
 \ntdegreename*(pt){Nome do Programa de Estudos}
 \ntdegreename*(en){Study Program Name}
 
-
-
 %-------------------------------------------------------------------
 % DEGREE SPECIALIZATION customization
 %   If the degree includes a specialization, otherwise comment the
@@ -72,10 +64,8 @@
 %         You may use "\\" to force line breaks
 %         The stared (*) version will only define if undefined, otherwise ignored
 %-------------------------------------------------------------------
-\ntspecialization*(pt){Designação da Especialidade}
-\ntspecialization*(en){Specialization Name}
-
-
+% \ntspecialization*(pt){Designação da Especialidade}
+% \ntspecialization*(en){Speciality Name}
 
 %-------------------------------------------------------------------
 % SPONSORS customization
@@ -90,26 +80,20 @@
 % \ntsponsors(pt,2,logo){\includegraphics[height=1.5cm]{NOVAthesisFiles/Images/FCT_MEC_logo_positive}}
 % \ntsponsors(pt,1,text){Entidade Financiadora}
 
-
-
 %-------------------------------------------------------------------
 % AUTHOR customization
 %    Author gender, full name, abd abbreviated name
 % SYNTAX: \ntauthorname(gender){full name}{abbreviated name}
 %         Use [f] for female and [m] for male
 %-------------------------------------------------------------------
-\ntauthorname(m){John Very Longname Doe}{John Doe}
-
-
+\ntauthorname(m){Ricardo Camacho Quadrio da Cunha Monteiro}{Ricardo Monteiro}
 
 %-------------------------------------------------------------------
 % AUTHOR previous degree
 % SYNTAX: \ntauthordegree{degree}
 %-------------------------------------------------------------------
-\ntauthordegree(en){Master/BSc in Name of Previous Degree}
-\ntauthordegree(pt){Mestrado/Licenciatura em Nome do Grau Anterior}
-
-
+\ntauthordegree(en){Master in Electrotechnical and Computer Engineering}
+\ntauthordegree(pt){Mestrado em Engenharia Electrotécnica e de Computadores}
 
 %-------------------------------------------------------------------
 % SUBMISSION/EXAM DATE
@@ -118,10 +102,8 @@
 %                   name in the cover language.
 %-------------------------------------------------------------------
 %Replay with your submission and exam dates in format YYYY-MM-DD
-% \ntdate(submission){year-month-day}
-% \ntdate(exam){year-month-day}
-
-
+\ntdate(submission){year-month-day}
+\ntdate(exam){year-month-day}
 
 %-------------------------------------------------------------------
 % ADVISERS LIST
@@ -132,14 +114,10 @@
 %         For [gender] use: [f] for female
 %                           [m] for male
 %         You may use "\\" to force line breaks
-%-------------------------------------------------------------------
 % Advisers(s)
-\ntaddperson{adviser}(a,f){Mary Doe Adviser Name, Full Professor, NOVA University Lisbon}
+\ntaddperson{adviser}(a,f){Anikó, Full Professor, NOVA University Lisbon}
 % Co-advisers(s)
-\ntaddperson{adviser}(c,m){John Doe Co-Adviser Name, Associate Professor, NOVA University Lisbon}
-\ntaddperson{adviser}(c,f){John Doe other Co-Adviser Name, Full Professor, NOVA University Lisbon}
-
-
+\ntaddperson{adviser}(c,m){Rodolfo Oliveira, Full Professor, NOVA University Lisbon}
 
 %-------------------------------------------------------------------
 % COMMITTEE MEMBERS
@@ -153,7 +131,6 @@
 %         For [gender] use: [f] for female
 %                           [m] for male
 %         You may use "\\" to force line breaks
-%-------------------------------------------------------------------
 \ntaddperson{committee}(c,m){Name of the committee chairperson, Full Professor, FCT-NOVA}
 \ntaddperson{committee}(r,m){Name of a rapporteur, Associate Professor, Another University}
 % \ntaddperson{committee}(r,m){Name of another rapporteur, Assistant Professor, Another University}
