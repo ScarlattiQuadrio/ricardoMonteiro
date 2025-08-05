@@ -6,13 +6,35 @@
 
 \typeout{NT FILE chapter2.tex}%
 
-\chapter{State Of Art}
+\chapter{State Of The Art}
 \label{cha:Soa}
 
 \glsresetall
 
 
 \newpage
+
+\section{Movement Recognition Wearables}
+\label{sec:movement_recognition_wearables}
+
+As mentioned before in the introduction, there are many different wearables capable of collecting the same type of data but in different ways. %, devInsole
+For gait monitoring there are several different types of sensors used in wearables that can be separated in five different categories~\cite{smartSocks}:
+
+%mudar isto para IMU
+\begin{enumerate}
+  \item Capacitive Sensors - Consisting in two conductive plates separated by an insulating layer. When force is applied, they develop a voltage variation.
+  \item Resistive Sensors - These are the most common sensors. Their resistance varies with the applied pressure.
+  \item Optoelectronic Sensors - Composed by a transmitter and a receiver (a laser or a LED and a photodiode). When a force is applied, the light that reaches the photodiode varies proportionally.
+  \item Piezoresistive and Piezoelectric Sensors - These sensors use the  piezoelectric effect. They convert the changes in applied pressure to electrical current.
+\end{enumerate}
+
+\section{IMU - Inertial Measurement Unit}
+\label{sec:imu}
+
+An IMU is a device consisting of a combination of accelerometers and gyroscopes and sometimes magnetometers tracking motion.
+
+
+
 \section{Plantar Pressure Wearables}
 \label{sec:plantar_pressure_wearables}
 
@@ -27,14 +49,14 @@ As of today there are four different kinds of devices that can measure plantar p
 \begin{enumerate}
   \item Platform Systems - Known as the most reliable method for measuring plantar pressure, platform systems offer high accuracy and detailed spatial resolution. Their main limitation is a lack of portability, restricting their use to controlled environments like labs and hospitals.
   \item In-Shoe Systems: These systems provide greater mobility and flexibility, with optimized circuit design, power efficiency, and communication technology, and they're more affordable than platform systems. They record plantar pressure inside the shoe and allow for extensive data collection across multiple steps, enabling long-term gait analysis indoors and outdoors. However, they are less accurate than platform-based measurements.
-  \item Smart Wireless Insoles: Unlike platform and in-shoe systems, smart wireless insoles are cordless, eliminating the need for wires to connect sensors or data acquisition units. While in-shoe systems aren't ideal for extended outdoor use, smart insoles can be used both indoors and outdoors. They often include Bluetooth or WiFi for data transmission and a power source. However, the added elastic layer they create inside the shoe can be several millimeters thick, potentially distorting the accuracy of foot pressure data. They are also relatively expensive and not suited for daily wear.
+  \item Smart Wireless Insoles: Unlike platform and in-shoe systems, smart wireless insoles are cordless, eliminating the need for wires to connect sensors or data acquisition units. While in-shoe systems aren't ideal for extended outdoor use, smart insoles can be used both indoors and outdoors. They often include Bluetooth or WiFi for data transmission and a power source. However, the added elastic layer they create inside the shoe can be several millimetres thick, potentially distorting the accuracy of foot pressure data. They are also relatively expensive and not suited for daily wear.
   \item Smart Socks: These fabric-based systems integrate sensors directly into the textile, which avoids the challenges of the previous systems. However, they require handmade or complex manufacturing techniques, which is a drawback.
 \end{enumerate}
 
 In basketball, smart insoles and smart socks are particularly well-suited wearables due to their portability, flexibility, and adaptability to both indoor and outdoor environments. 
-Unlike larger, stationary measurement systems, these wearable devices can move with the athlete, providing continuous and real-time data regardless of the set0ting.
+Unlike larger, stationary measurement systems, these wearable devices are attached to the athlete, providing continuous and real-time data regardless of the setting.
 
-Smart insoles, which are embedded with pressure sensors, can track a player's foot pressure distribution, stability, and impact forces with each step, jump, or landing. This information 
+Smart insoles and socks, when embedded with pressure sensors, can track a player's foot pressure distribution, stability, and impact forces with each step, jump, or landing. This information 
 is crucial for basketball players, as it helps to analyze their movement patterns, improve balance, reduce injury risk, and enhance overall performance. The insole's thin profile and 
 ability to fit inside regular shoes also ensure they don't interfere with the player's comfort or mobility.
 Similarly, smart socks, which incorporate sensors directly into the fabric, offer flexibility and comfort while capturing dynamic foot pressure and movement data. Their lightweight 
@@ -42,23 +64,8 @@ design and close contact with the foot provide detailed insights into the nuance
 Both smart insoles and socks also benefit from wireless connectivity, allowing data to be transmitted to a smartphone or tablet, enabling real-time monitoring and analysis. This 
 flexibility and data accessibility are particularly valuable in basketball training and performance analysis, as players and coaches can assess and adjust techniques in real time, 
 whether in an indoor or outdoor court.
-
-
-\subsection{Movement Recognition Wearables}
-\label{ssec:movement_recognition_wearables}
-
-As mentioned before in the introduction, there are many different wearables capable of collecting the same type of data but in different ways. %, devInsole
-For gait monotoring there are several different types of sensors used in wearables that can be separated in five different categories~\cite{smartSocks}:
-
-
-\begin{enumerate}
-  \item Capacitive Sensors - Consisting in two conductive plates separated by an insulating layer. When force is applied, they develop a voltage variation.
-  \item Resistive Sensors - These are the most common sensors. Their resistance varies with the applied pressure.
-  \item Optoelectronic Sensors - Composed by a trasmitter and a receiver (a laser or a LED and a photodiode). When a force is applied, the light that reaches the photodiode varies proportionally.
-  \item Piezoresistive and Piezoelectric Sensors - These sensors use the  piezoelectric effect. They convert the changes in applied pressure to eletrical corrent.
-\end{enumerate}
-
 %Muscle Sensors
+
 \subsection{Restraints}
 \label{ssec:restraints}
 
@@ -74,7 +81,7 @@ Due to their lack of memory and processing power, the data collected from the de
 with low energy consumption are Bluetooth Low Energy (BLE) and WiFi for close data transmission. These methods can be impacted by limited range, interference, and connectivity issues, 
 especially in crowded or signal-dense environments, which can disrupt real-time data streaming.
 
-Since these devices are quite small, one of their main restraints is the battery life. With every action taken by the device, wheter it's collecting data with a sensor, processing that data or sending it 
+Since these devices are quite small, one of their main restraints is the battery life. With every action taken by the device, whether it's collecting data with a sensor, processing that data or sending it 
 somewhere else, energy is always spent. Depending on their purpose, wearables may have to last up until one year without being charged~\cite{challengesWearables}. To overcome this challenge 
 some devices rely on energy harvesting components to charge the device such as solar power, motion energy, etc~\cite{embedding}.
 
@@ -100,7 +107,7 @@ Bluetooth Low Energy (BLE) is a short-range communication technology known for i
 various wearable applications, from diabetes monitoring devices to smartwatches. The original insole design employed BLE for communication between the insole and the paired mobile application.
 BLE's primary design objectives are to enable low-power communication, particularly for peripheral devices. It is optimized for affordability and simplicity, aligning well with many 
 developer requirements and contributing to its swift adoption.
-The main difference between BLE and the classic Bluetooth is their transmition rates. BLE transmits at around 2000 Kbps while Bluetooth Classic transmits at around 2-3 Mbps making its energy comsuption 
+The main difference between BLE and the classic Bluetooth is their transmission rates. BLE transmits at around 2000 Kbps while Bluetooth Classic transmits at around 2-3 Mbps making its energy consumption 
 around two times bigger than BLE. This is the reason BLE is the usual choice for IOT devices. Besides this difference BLE works the same way as Bluetooth Classic~\cite{masterInsole, bachelorInsole}.
 
 \subsubsection{WiFI}
@@ -157,7 +164,7 @@ There are two different stages for this motion in slower gaits and an extra stag
 \label{ssec:other_movements}
 
 Basketball involves many other distinct movements besides gait. These motions are very complex making them difficult to accurately identify 
-but they are essencial for injury prevention and for the perfomance enhancement analysis. In this project data will be collected from three groups of movements with increasing complexity.
+but they are essential for injury prevention and for the performance enhancement analysis. In this project data will be collected from three groups of movements with increasing complexity.
 
 \begin{figure}[htbp]
   \centering
@@ -173,7 +180,7 @@ but they are essencial for injury prevention and for the perfomance enhancement 
   \item Layup - A layup is normally a two step shot and it requires a step-by-step increase in pressure, usually peaking in the final step before jumping.
   \item Crossover Dribble - In a crossover dribble, the player shifts their weight rapidly from one foot to the other, using pressure changes to decelerate in one direction and quickly accelerate in the opposite direction.
   \item Sprint(fast gait) - Basketball players frequently sprint down the court, which involves a pattern of quick, alternating footfalls with consistent gait cycles on each foot.
-  \item Defense Slide/Stance - The defensive slide requires the player to move laterally while maintaining a low stance.
+  \item Defence Slide/Stance - The defensive slide requires the player to move laterally while maintaining a low stance.
   \item Boxout - The act of securing a positing usually near the basket to deny the rebound for the opponent.
   \item Rebound Jump - Rebounding requires explosive jumping to reach the ball, sometimes with minimal preparatory movement, other times with a box out.
   \item Cutting - Cutting involves a sharp change in direction with a great speed shift. It is an offball movement.
@@ -185,7 +192,7 @@ but they are essencial for injury prevention and for the perfomance enhancement 
 
 \begin{itemize}
   \item Pivot - A pivot involves planting one foot firmly while the other foot moves to change direction.
-  \item Change of Direction in Defense - A player changes his direction while sliding.
+  \item Change of Direction in Defence - A player changes his direction while sliding.
   \item Screen - Similar to the boxout but it is done anywhere on the court to force a defensive player to change his path.
   \item Jumpshot - The act of shooting the ball. The jump shot is a fundamental shooting technique in basketball, characterized by a quick dip in pressure as the player lowers into a squat before takeoff, followed by a burst of force as they push off the ground to jump.
 \end{itemize}
@@ -196,7 +203,7 @@ but they are essencial for injury prevention and for the perfomance enhancement 
 \begin{itemize}
   \item Eurostep - This movement is a specific type of layup where the player takes the first step in a direction and the second step to another direction.
   \item Step Back - The step back is a Jump Shot whe the player takes a step back before shooting the ball.
-  \item Failed Landing (Incomplete layup) - Any type of fall characterized by the sudden fall of pressure and followingj.
+  \item Failed Landing (Incomplete layup) - Any type of fall characterized by the sudden fall of pressure and following.
 
 \end{itemize}
 
@@ -230,8 +237,8 @@ K-Nearest neighbours (KNN), Support vector machine (SVM) and Convolutional Neura
 
 Catarina Amaro et al.~\cite{coimbra} studied the differences in five different movements in basketball between two different moments in a season. The study presented no significant 
 changes in mean peak pressure between the two different times but it did specify that experienced players had lower plantar pressure values in their movements and lower symmetry index. This means that there 
-is room for improvement based on the values read for the less experienced players. It was also mentioned that wear of the shoes may have influeced the slight changes observed in the study. 
-Each player weared their own shoes and this was pointed as a variable for the plantar pressure measured.
+is room for improvement based on the values read for the less experienced players. It was also mentioned that wear of the shoes may have influenced the slight changes observed in the study. 
+Each player wore their own shoes and this was pointed as a variable for the plantar pressure measured.
 
 \newpage
 
@@ -274,7 +281,7 @@ one with many readings. To improve clarity, cells are excluded from analysis if 
 When assessing plantar pressure, the primary parameters of interest are peak pressure (the highest recorded plantar pressure), pressure time integral (typically defined as the 
 area beneath the peak pressure-time curve), and mean peak pressure (mPP). However, studies have shown that mPP and PTI are closely related, making it unnecessary to measure both.
 
-When there are diferences in these measurements between the feet, it can mean that there is an inadequate distribution of forces and it can lead to injury. So a symmetry index defined by 
+When there are differences in these measurements between the feet, it can mean that there is an inadequate distribution of forces and it can lead to injury. So a symmetry index defined by 
 the next equation that compares the plantar pressure on both feet will be calculated.
 
 \[ SI = \frac{2 \cdot \left\lvert R - L\right\rvert }{(R + L)} \times 100 \]
@@ -287,11 +294,11 @@ loss of bone mass density in the respective leg and joints~\cite{coimbra}.
 \section{Data Analysis}
 \label{sec:data_analysis}
 
-By leveraging advanced data analysis techniques, such as machine learning algorithms and statistical modeling, pressure insole data can reveal subtle patterns and correlations that 
+By leveraging advanced data analysis techniques, such as machine learning algorithms and statistical modelling, pressure insole data can reveal subtle patterns and correlations that 
 inform training adjustments, injury risk, and performance improvements. There are many different algorithms with different objectives. In this section some of them will be explained:
 
 
-\subsection{K-nearest-neighbours classfication}
+\subsection{K-nearest-neighbours classification}
 \label{ssec:k-nearest_neighbours}
 
 The K-nearest-neighbours is one of the simplest supervised machine learning algorithms. It's a classification algorithm which uses proximity to assigning each point to the class with 
@@ -321,7 +328,7 @@ Regression analysis' purpose is to find a continuous outcome variable, usually y
 linear regression model that relates a linear relationship between x and y. This equation can be expressed as~\cite{bachelorInsole}:
 \[ y = \beta + \alpha \cdot x + \epsilon \]
 
-In this equation y is the output variable, $\beta$ is the starting point (x=0), $\alpha$ is the regression coeficient associated with the predictor variable x and $\epsilon$ is the residual error.
+In this equation y is the output variable, $\beta$ is the starting point (x=0), $\alpha$ is the regression coefficient associated with the predictor variable x and $\epsilon$ is the residual error.
 An extended version of this equation with n predictor variables is:
 \[ y = \beta + \alpha_1 \cdot x_1 + \alpha_2 \cdot x_2 + \alpha_n \cdot x_n + \epsilon \]
 
