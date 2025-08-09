@@ -2,12 +2,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% chapter2.tex
 %% NOVA thesis document file
+%% State Of The Art
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \typeout{NT FILE chapter2.tex}%
 
 \chapter{State Of The Art}
-\label{cha:Soa}
+\label{cha:soa}
 
 \glsresetall
 
@@ -18,15 +19,8 @@
 \label{sec:movement_recognition_wearables}
 
 As mentioned before in the introduction, there are many different wearables capable of collecting the same type of data but in different ways. %, devInsole
-For gait monitoring there are several different types of sensors used in wearables that can be separated in five different categories~\cite{smartSocks}:
+For acquiring movement related data the usual methods are through an IMU, image capture
 
-%mudar isto para IMU
-\begin{enumerate}
-  \item Capacitive Sensors - Consisting in two conductive plates separated by an insulating layer. When force is applied, they develop a voltage variation.
-  \item Resistive Sensors - These are the most common sensors. Their resistance varies with the applied pressure.
-  \item Optoelectronic Sensors - Composed by a transmitter and a receiver (a laser or a LED and a photodiode). When a force is applied, the light that reaches the photodiode varies proportionally.
-  \item Piezoresistive and Piezoelectric Sensors - These sensors use the  piezoelectric effect. They convert the changes in applied pressure to electrical current.
-\end{enumerate}
 
 \section{IMU - Inertial Measurement Unit}
 \label{sec:imu}
@@ -43,6 +37,15 @@ socks, or even shoes, these wearables capture detailed data on foot loading patt
 offers valuable insights for applications in sports performance, injury prevention, rehabilitation, and the management of conditions such as diabetes, where pressure distribution can 
 indicate areas at risk for ulcers or other complications. They are also useful for better footwear designs or orthosis~\cite{coimbra, embedding, devInsole, deepLearn}.
 
+For gait monitoring through preassure there are several different types of sensors used in wearables that can be separated in five different categories~\cite{smartSocks}:
+
+%mudar isto para IMU
+\begin{enumerate}
+  \item Capacitive Sensors - Consisting in two conductive plates separated by an insulating layer. When force is applied, they develop a voltage variation.
+  \item Resistive Sensors - These are the most common sensors. Their resistance varies with the applied pressure.
+  \item Optoelectronic Sensors - Composed by a transmitter and a receiver (a laser or a LED and a photodiode). When a force is applied, the light that reaches the photodiode varies proportionally.
+  \item Piezoresistive and Piezoelectric Sensors - These sensors use the  piezoelectric effect. They convert the changes in applied pressure to electrical current.
+\end{enumerate}
 
 As of today there are four different kinds of devices that can measure plantar pressure~\cite{smartSocks}:
 
