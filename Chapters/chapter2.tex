@@ -19,13 +19,13 @@
 \label{sec:movement_recognition_wearables}
 
 As mentioned before in the introduction, there are many different wearables capable of collecting the same type of data but in different ways. %, devInsole
-For acquiring movement related data the usual methods are through an IMU, image capture
+For acquiring movement related data the usual methods are through an \gls{IMU}, image capture
 
 
-\section{IMU - Inertial Measurement Unit}
+\section{\gls{IMU} - Inertial Measurement Unit}
 \label{sec:imu}
 
-An IMU is a device consisting of a combination of accelerometers and gyroscopes and sometimes magnetometers tracking motion.
+An \gls{IMU} is a device consisting of a combination of accelerometers and gyroscopes and sometimes magnetometers tracking motion.
 
 
 
@@ -37,7 +37,7 @@ socks, or even shoes, these wearables capture detailed data on foot loading patt
 offers valuable insights for applications in sports performance, injury prevention, rehabilitation, and the management of conditions such as diabetes, where pressure distribution can 
 indicate areas at risk for ulcers or other complications. They are also useful for better footwear designs or orthosis~\cite{coimbra, embedding, devInsole, deepLearn}.
 
-For gait monitoring through preassure there are several different types of sensors used in wearables that can be separated in five different categories~\cite{smartSocks}:
+For gait monitoring through pressure there are several different types of sensors used in wearables that can be separated in five different categories~\cite{smartSocks}:
 
 %mudar isto para IMU
 \begin{enumerate}
@@ -81,7 +81,7 @@ Wearables are often exposed to a wide range of environmental conditions, includi
 under such conditions is a challenge, as components like sensors and circuits need to be robust enough to withstand daily use and environmental exposure.
 
 Due to their lack of memory and processing power, the data collected from the devices has to be sent to another device for storage or further processing. The main communication protocols 
-with low energy consumption are Bluetooth Low Energy (BLE) and WiFi for close data transmission. These methods can be impacted by limited range, interference, and connectivity issues, 
+with low energy consumption are \gls{BLE} and WiFi for close data transmission. These methods can be impacted by limited range, interference, and connectivity issues, 
 especially in crowded or signal-dense environments, which can disrupt real-time data streaming.
 
 Since these devices are quite small, one of their main restraints is the battery life. With every action taken by the device, whether it's collecting data with a sensor, processing that data or sending it 
@@ -103,10 +103,10 @@ play a critical role in balancing performance with power efficiency.
 For this project two kinds of protocols will be discussed: Bluetooth Low Energy and WiFi.
 
 
-\subsubsection{Bluetooth Low Energy (BLE)}
+\subsubsection{Bluetooth Low Energy - \gls{BLE}}
 \label{sssec:ble}
 
-Bluetooth Low Energy (BLE) is a short-range communication technology known for its low power consumption. Classified as a Wireless Personal Area Network (WPAN), BLE is widely used in 
+BLE is a short-range communication technology known for its low power consumption. Classified as a Wireless Personal Area Network (WPAN), BLE is widely used in 
 various wearable applications, from diabetes monitoring devices to smartwatches. The original insole design employed BLE for communication between the insole and the paired mobile application.
 BLE's primary design objectives are to enable low-power communication, particularly for peripheral devices. It is optimized for affordability and simplicity, aligning well with many 
 developer requirements and contributing to its swift adoption.
