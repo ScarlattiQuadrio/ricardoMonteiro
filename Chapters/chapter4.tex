@@ -17,41 +17,74 @@ This section is split into different sections explaining how to the project's ha
 \section{Prototype Hardware}
 \label{sec:prototype}
 
-Two prototypes were developed and they are composed by an Arduino 33 nano \gls{BLE}, an \gls{EMG} and a small power bank to provide power.
+Two prototypes were developed and they are composed by an Arduino 33 nano \gls{BLE}  Rev 2, an \gls{EMG} and a small power bank to provide power.
+
+%Foto do sistema completo
 
 \subsection{Arduino}
 \label{ssec:arduino}
 
+As mentioned in the introduction of this chapter, the Arduinos used are two Arduino 33 nano \gls{BLE} Rev 2 which is a 3.3V board of only 45x18mm of area. It features a powerful processor, the nRF52840 from Nordic Semiconductors, a 32-bit 
+ARM® Cortex®-M4 CPU running at 64 MHz. In terms of sensors, the Arduino has a 9 axis \gls{IMU} meaning it includes an accelerometer, a gyroscope, and a magnetometer with 3-axis resolution each. As its name mentions it also has \gls{BLE} 
+communication which is vital for this project~\cite{arduinoDoc}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{arduino-pinout.jpg}
+  \caption{Arduino Nano \gls{BLE} Rev 2 - Pinout\cite{arduinoDoc}}
+  \label{fig:arduinoPinout}
+\end{figure}
+
 \section{Arduino Code}
 \label{sec:arduinoCode}
+
+The Arduino programming language is a modified C/C++ language that simplifies the board coding that is run on the Arduino's IDE.
+There are two files of code for the Arduinos, one for the sensors calibration (specifically the magnetometer) and the other one is run for reading and sending the data.
 
 
 \subsection{Calibration}
 \label{ssec:calibration}
 
+Since the magnetometer's values depend on the device's location, a calibration program need to be ran before the use o the device. This code reads the values from the magnetometer for 10 seconds and registers the maximum and minimum 
+values for each axis. 
+The offset for each axis is then determined by the following equation:
+
+\[ offset = minVal + (maxVal - minVal) / 2\]
+
+Here the offset is the value that will be used in the program for the device, the minVal is the minimum value measured and the maxVal is the maximum value measured.
+
 
 \subsection{Bluetooth Low Energy}
 \label{ssec:arduino_ble}
 
+For the Bluetooth connection we first have to assign a name to the device and a unique address for its service and characteristics. There is one characteristic for each axis of data (x, y and z) and one for the \gls{EMG} data. 
+Then, as explained in section X, we advertise the service to the nearby devices and when there is a connection the data collection is started and the respective characteristics updated.%falta número da secção
 
-\subsection{Sensors' Data}
-\label{ssec:arduino_sensors_data}
+
+\subsection{Sensors' Data Readings}
+\label{ssec:arduino_sensors_data_read}
+
+
 
 
 \section{Android Application}
 \label{sec:android_app}
 
 
+
 \subsection{User Interface}
 \label{ssec:android_interface}
 
 
+kjb
 \subsection{Arduino Communication}
 \label{ssec:android_com_arduino}
 
 
+
 \subsection{Communication with Data Base}
 \label{ssec:android_com_data_base}
+
 
 
 \section{Machine Learning Code}
