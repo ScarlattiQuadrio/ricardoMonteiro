@@ -34,30 +34,63 @@ at the end of games (fourth quarter), specially at the last minutes.
 \section{Project Description}
 \label{sec:project_description}
 
-For this project, for each foot, an Arduino Nano 33 \gls{BLE} Rev 2 will be used. These devices have an integrated \gls{IMU} each that captures acceleration and orientation and they work with \gls{BLE} %reference BLE.
-Besides the \gls{IMU}, an \gls{EMG} sensor will collect data from the muscles to provide more data for the movement recognition and a better insight for injuries.
+For this project, for each foot, an Arduino and an \gls{EMG} sensor will be used. The Arduinos have an integrated \gls{IMU} each that captures acceleration and orientation and they work with \gls{BLE}.
+Besides the \gls{IMU}, the \gls{EMG} sensor will collect data from the muscles to provide more data for the movement recognition and a better insight for injuries.
 
 \subsection{Prototype}
 \label{sec:prototype}
 
-%Escrever sobre a tensão no sensor EMG e onde etá ligado no arduino
+The Arduino chosen was the Nano 33 \gls{BLE} Rev 2 for it's size, 9 axis \gls{IMU}, \gls{BLE} connection and versatility. The choice for the \gls{EMG} sensor was the BITalino Electromyography designed for surface \gls{EMG}. This 
+sensors were soldered to the Arduinos for their power and communication.
+
+
+\subsubsection{Arduino Specifications}
+\label{ssec:arduinoSpecs}
+
+As already mentioned above, the Arduino chosen was the Arduino Nano 33 \gls{BLE} Rev 2. It runs at 3.3V and the \gls{IMU} sensors are the BMI270 (3-axis accelerometer + 3-axis gyroscope) and the BMM150 (3-axis Magnetometer). It has a 
+width of 18mm and length of 45mm weighting only 5g~\cite{arduinoDoc}. The Arduino IDE will be used for the Arduinos' programming.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\linewidth]{deviceTop.jpg}
   \caption{Topside of the Prototype - Arduino}
-  \label{fig:topProto}
+  \label{fig:arduinoProto}
 \end{figure}
+
+
+\subsubsection{BITalino Electromyography}
+\label{ssec:bitalinoEMG}
+
+The sensor has a gain of 1009 and an input of 2.0-3.5V making the output of 3.3V of the Arduino ideal for it. As seen in the figure bellow \ref{fig:emgProto}, The emg has an input channel for the electrode cables on the left side 
+and 4 connection points on the right side:
+
+\begin{itemize}
+  \item \gls{VOUT} - Connected through the white wire to the respective input pin of the Arduino
+  \item \gls{VCC} - The red wire is connecting this point to the 3.3V pin.
+  \item \gls{VCC}/2 - From the same pin that the \gls{VCC} point is connected to, we have a small voltage divider with an Ampop for stabilization to halve the tension (blue wire).
+  \item \gls{GND} - The black wire connect the Arduino's ground to this point.
+\end{itemize}
+
+The analog sensor data are converted into digital values ranged between 0 and $2^10 - 1$ and for practical reasons we need to convert it back to voltage as show in the following expression:
+
+\[ \gls{EMG}(V) = \frac{(\frac{ADC}{2^10}-\frac{1}{2}*VCC)}{G} \] 
+
+\[ \gls{EMG}(mV) = \gls{EMG}(V) * 1000 \] 
+
+Where ADC is the digital value from the sensor, VCC is the 3.3V provided by the arduino, G is the sensor gain which is 1009 and EMG(V) and EMG(mV) is the signal in Volt and millivolt respectively.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\linewidth]{deviceBottom.jpg}
   \caption{Bottom of the Prototype - Emg}
-  \label{fig:botProto}
+  \label{fig:emgProto}
 \end{figure}
+
 
 \subsection{Data Acquisition}
 \label{sec:data_acquisition}
+
+
 
 \subsection{Data Processing}
 \label{sec:data_processing}

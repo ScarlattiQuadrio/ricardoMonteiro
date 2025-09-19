@@ -15,7 +15,7 @@
 This section is split into different sections explaining how to the project's hardware and software were developed.
 
 \section{Prototype Hardware}
-\label{sec:prototype}
+\label{sec:prototypeHardware}
 
 Two prototypes were developed and they are composed by an Arduino 33 nano \gls{BLE}  Rev 2, an \gls{EMG} and a small power bank to provide power.
 
@@ -70,13 +70,32 @@ Then, as explained in section X, we advertise the service to the nearby devices 
 \section{Android Application}
 \label{sec:android_app}
 
-
+The Android application serves as bridge between the devices, the user and the database. At first, when the app is launched, it checks for its permissions specifically the Bluetooth permissions (\texttt{BLUETOOTH\_SCAN and BLUETOOTH\_CONNECT}), 
+the location permissions (\texttt{ACCESS\_FINE\_LOCATION and ACCESS\_COARSE\_LOCATION}) and the internet access permission. Even tho the app doesn't use the user's location, its permission is needed for \gls{BLE} for Android 12 and higher 
+(the permissions are only called if that's the case).
 
 \subsection{User Interface}
 \label{ssec:android_interface}
 
+The application consists in 3 different windows. The starting menu, the profile menu and the data menu. 
 
-kjb
+\subsubsection{Start Menu}
+\label{sssec:start_menu}
+
+
+
+\subsubsection{Profile Menu}
+\label{sssec:profile_menu}
+
+This is where a user can create a new profile and delete existing ones. When creating a profile the app generates a unique id and the user is asked for a name and height.
+
+\subsubsection{Data Menu}
+\label{sssec:data_menu}
+
+In this section the user can collect data sending it to the data base for training future models. On the left the user can choose who is wearing the devices and the movement he is currently doing. On the right the applied model is 
+predicting what movement is being done. At the center we can see the data that's being received trough \gls{BLE}.
+
+
 \subsection{Arduino Communication}
 \label{ssec:android_com_arduino}
 
