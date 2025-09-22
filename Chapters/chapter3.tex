@@ -43,13 +43,6 @@ Besides the \gls{IMU}, the \gls{EMG} sensor will collect data from the muscles t
 The Arduino chosen was the Nano 33 \gls{BLE} Rev 2 for it's size, 9 axis \gls{IMU}, \gls{BLE} connection and versatility. The choice for the \gls{EMG} sensor was the BITalino Electromyography designed for surface \gls{EMG}. This 
 sensors were soldered to the Arduinos for their power and communication.
 
-
-\subsubsection{Arduino Specifications}
-\label{ssec:arduinoSpecs}
-
-As already mentioned above, the Arduino chosen was the Arduino Nano 33 \gls{BLE} Rev 2. It runs at 3.3V and the \gls{IMU} sensors are the BMI270 (3-axis accelerometer + 3-axis gyroscope) and the BMM150 (3-axis Magnetometer). It has a 
-width of 18mm and length of 45mm weighting only 5g~\cite{arduinoDoc}. The Arduino IDE will be used for the Arduinos' programming.
-
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\linewidth]{deviceTop.jpg}
@@ -57,6 +50,19 @@ width of 18mm and length of 45mm weighting only 5g~\cite{arduinoDoc}. The Arduin
   \label{fig:arduinoProto}
 \end{figure}
 
+\subsubsection{Arduino Specifications}
+\label{ssec:arduinoSpecs}
+
+As already mentioned above, the Arduino chosen was the Arduino Nano 33 \gls{BLE} Rev 2. It runs at 3.3V and the \gls{IMU} sensors are the BMI270 (3-axis accelerometer + 3-axis gyroscope) and the BMM150 (3-axis Magnetometer). It has a 
+width of 18mm and length of 45mm weighting only 5g~\cite{arduinoDoc}. The Arduino IDE will be used for the Arduinos' programming.
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{arduino-pinout.jpg}
+  \caption{Arduino Nano \gls{BLE} Rev 2 - Pinout\cite{arduinoDoc}}
+  \label{fig:arduinoPinout}
+\end{figure}
 
 \subsubsection{BITalino Electromyography}
 \label{ssec:bitalinoEMG}
@@ -90,8 +96,16 @@ Where ADC is the digital value from the sensor, VCC is the 3.3V provided by the 
 \subsection{Data Acquisition}
 \label{sec:data_acquisition}
 
+A fundamental step in this project is the acquisition of reliable and representative data, as the performance of subsequent analysis methods directly depend on the data quality. The \gls{EMG} sensors will be attached to the 
+Gastrocnemius Lateralis (see \ref{sssec:emg_positioning}) to capture the muscle activation patterns in basketball movements.
+This process will be carried out under a controlled environment ensuring that the movements being made are correctly categorized. This labeling of activities is essential for the machine learning algorithm.
+For a richer dataset the players will be asked to do the movements with different directions, intensities, speed and other variations that can be applied depending on the motion.
+Special attention will be given to minimizing signal noise and motion artifacts during acquisition, using appropriate electrode placement and filtering techniques. This ensures that the raw signals preserve as much physiological 
+information as possible, thereby improving the robustness of later processing and analysis stages.
+%Falta imagem do dispositivo colocado
 
 
 \subsection{Data Processing}
 \label{sec:data_processing}
 
+First the arduino does the digital value of the \gls{EMG} to mV before sending the data to the app. Then the app forwards the data to the database and then the ML algorithm takes does data and transforms it to fit a model.
