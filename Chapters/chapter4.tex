@@ -68,11 +68,14 @@ Then, as explained in section X, we advertise the service to the nearby devices 
 As mentioned in the Work Proposal\ref{cha:workProposal}, a dedicated Android application as developed to serve as a bridge between the prototypes and the user/database. This application was developed in Kotlin, which is a programming 
 language developed to interoperate fully with Java developed by JetBrains. Since 2019 it is the preferred language by Google for Android app development.
 The application handles the \gls{BLE} connection with the devices and provides a user interface for researchers, athlete and coaches to visualize the data and the model's prediction in real time.
+
 The following section provides a detailed description of the software architecture of the application. Each file is explained according to its function within the system, with emphasis on how data flows from the BLE layer to the 
 machine learning classifier and finally to the user interface. This breakdown clarifies the responsibilities of each component, highlights the interaction between modules, and demonstrates how the application was structured to 
 ensure modularity, maintainability, and extensibility.
+
 This application follows a modular architecture separating responsibilities between the user interface, data handling, and Bluetooth communication. At its core, the program follow the MVVM (Model-View-ViewModel) design pattern, improving 
 testability, maintainability and division of tasks.
+
 The MainActivity.kt is the entry point of the application, initializing the navigation host and providing the top-level container for the user interface. From this activity, the navigation system manages the transitions between the 
  windows (implemented as Jetpack Compose composables), each of which corresponds to a specific functionality of the program.
 The Android application serves as bridge between the devices, the user and the database. 
@@ -84,6 +87,7 @@ The Android application serves as bridge between the devices, the user and the d
 
 The application consists in 3 different screens that define the layout and interactive elements that the user sees. Each of of these windows as a corresponding ViewModel that acts as an connection point between the user interface 
 and the application logic. These ViewModels handle any calls made by the screens and any changes to relevant operations such as the bluetooth connection.
+
 At first, when the app is launched, it checks for some necessary permissions specifically the Bluetooth (\texttt{BLUETOOTH\_SCAN and BLUETOOTH\_CONNECT}), 
 the location (\texttt{ACCESS\_FINE\_LOCATION and ACCESS\_COARSE\_LOCATION}) and the internet access permission. Even tho the app doesn't use the user's location, its permission is needed for \gls{BLE} for Android 12 and higher 
 (the permissions are only called if that's the case). 
@@ -98,6 +102,7 @@ the location (\texttt{ACCESS\_FINE\_LOCATION and ACCESS\_COARSE\_LOCATION}) and 
 \subsubsection{Start Menu}
 \label{sssec:start_menu}
 
+%falar de cada viewmodel
 This is the first menu shown to the user and it has the simple task of guiding the user trough the application's functions. It has one button that takes us to the profile menu (\ref{sssec:profile_menu}) and another that takes us to 
 data menu(\ref{sssec:data_menu}).
 
@@ -128,12 +133,16 @@ In this section the user can collect data sending it to the data base for traini
 predicting what movement is being done and a switch that controls if the app is sending the data to the database or not (it should only be turned on if the respective user is selected and only while the movement chosen is recorded). 
 At the center we can see the data that's being received trough \gls{BLE} from both devices.
 
+%falar do VariabResult
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\linewidth]{dataScreenNoCon.jpg}
   \caption{Data Menu without connected devices}
   \label{fig:dataScreenNoC}
 \end{figure}
+
+
 
 \subsection{Arduino BLE Communication}
 \label{ssec:android_com_arduino}
@@ -151,28 +160,49 @@ In Android \gls{BLE}  data is handle asynchronously which means that the app rec
 Since the are two devices, each with its own uuid (see \ref{ssec:arduino_ble}), each device has its own manager that handle its callbacks (VariabBLEReceiveManager.kt) and these two managers are handled by the DualBLEReceiveManager 
 that coordinates them. 
 
-\subsubsection{Single Receive Manager}
-\label{sssec:single_manager}
 
-Each manager is responsible for managing the lifecycle of the corresponding \gls{BLE} connection and handling every callback. Depending on the uuid of the connected device, the manager knows with which device it is working with 
+\subsubsection{Receive Managers}
+\label{sssec:manager}
+
+Each receive manager is responsible for managing the lifecycle of the corresponding \gls{BLE} connection and handling every callback. Depending on the uuid of the connected device, the manager knows with which device it is working with 
 (if left or right). 
+
 First, using the BluetoothAdapter (see \ref{ssec:android_com_arduino}), the manager searches for the respective device using its name and uuid and once discovered a \gls{GATT} connection is tried. After establishing the connection, 
 the manager finds the device's services. If a device disconnects the application cleans up its resources and starts trying to reconnect.
+
 Since the arduino is constantly changing its sensor values and updating the corresponding characteristic, with an approach where the notifications were turned the managers would be getting flooded with callbacks and only one characteristic's 
 callbacks were being handled and the rest ignored (Android currently doesn't have any way to handle this). With this in mind a cycle was implemented where the application reads every characteristic in order in loop making sure 
-everything gets updated and handled. At the end of the loop, if the sending data button is turned on, the data received is sent to the database together with the userId, the movement chosen and a timestamp.
+everything gets updated and handled. At the end of the loop, if the sending data button is turned on, the data received is sent to the database together with the userId, the movement chosen and a timestamp. 
 
-\subsection{Communication with Data Base}
+\subsection{Communication with InfluxDB}
 \label{ssec:android_com_data_base}
 
+As mentioned before the application uses InfluxDB as its database. The interface between the application and the database is implemented in two files, one containing the function that sends data and the other one has the sensitive 
+client/database info (token, database url and organization and bucket name). This is a coroutine-based execution meaning that it will never stop or delay the main user interface thread and that it can be run multiple times in parallel 
+without affecting the application performance.
 
+Since InfluxDB organizes data using measurements, tags, fields and timestamps, first the "to be sent data" has to be transformed to the corresponding structure:
 
-\subsection{Users}
+\begin{itemize}
+    \item Measurement - movement\_data
+    \item Tags - sensor(left or right) and userId
+    \item Fields (data values) - accelerometer, gyroscope, magnetometer and \gls{EMG} data
+    \item Timestamp - Instant.now() (registers that precise moment)
+\end{itemize}
+
+Afterwards the only thing left to do is to write the data onto the database and catch any possible errors.
+
+\subsection{User Database}
 \label{ssec:android_users}
 
+The purpose of the User Database is to store and manage information related to the users of the devices. Unlike InfluxDB which is specialized for high-frequency data, this database is designed as a static/low-frequency database. 
+It is implemented locally on the Android device saving the users database throughout sessions. 
+
+Each user is represented by the user class and have a name, height and a unique Id that is automatically generated. These profiles are stored in a list that can be accessed by the User and the Variable Viewmodels.
 
 
 
 
 \section{Machine Learning Code}
 \label{sec:ml_code}
+
