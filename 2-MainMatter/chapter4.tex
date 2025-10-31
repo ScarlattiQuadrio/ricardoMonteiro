@@ -3,52 +3,237 @@
 %% chapter4.tex
 %% NOVA thesis document file
 %%
-%% Chapter with lots of dummy text
+%% Chapter with Implementation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \typeout{NT FILE chapter4.tex}%
 
-\chapter{Adding Support to a New School (work in progress)}
-\label{cha:porting_novathesis}
+\chapter{Implementation}
+\label{cha:implementation}
 
-My advice to customize the \novathesis\ template to another School/University/Department/Degree is to browse the existing supported degrees to find one that is \emph{close enough}, and depart from there!
+This section is split into different sections explaining how to the project's hardware and software were developed.
 
-The multitude of layouts supported by the \novathesis\ template is based in a three-tier naming scheme, separated by slashes: University / School / Department-or-Degree.  This three-tier naming scheme is also reflected in a three-tier directory (folder) structure in: \verb!<project_root>a/NOVAthesiFiles/Schools/…!.  For example:
+%\section{Prototype Hardware}
+%\label{sec:prototypeHardware}
 
-\begin{verbatim}
-…
-| 
-+—— nova
-|   +—— Images
-|   +—— fct
-|   |   \—— Images
-|   +—— ims
-|   |   \—— Images
-|   …
-|   
-\—— uminho
-    +—— Images
-    +—— ea
-    |   \—— Images
-    +—— ec
-    |   \—— Images
-    …
-\end{verbatim}
+%Two prototypes were developed and they are composed by an Arduino 33 nano \gls{BLE}  Rev 2, an \gls{EMG} and a small power bank to provide power (see \ref{sec:prototype}).
 
-The directory \verb!uminho! contains the customization for all Schools of Universidade do Minho.  This university is an example of the case where the regulations are defined at University level and all the schools apply the same thesis layout and organization.  So, the all the customization is done in the file \verb!uminho/uminho-defaults.ldf!, except the definition of the name and logo of each individual school.
+%Foto do sistema completo
 
-As another example, the directory \verb!nova! contains the customization for all Schools from NOVA University Lisbon. This university grants a lot of freedom in the definition of the thesis layouts.  In some cases, they are defined at the School level (e.g., NOVA FCT), while is some other cases they are defined separately for each degree (e.g., NOVA IMS).
+%\subsection{Arduino}
+%\label{ssec:arduino}
+
+%As mentioned in the introduction of this chapter, the Arduinos used are two Arduino 33 nano \gls{BLE} Rev 2 which is a 3.3V board of only 45x18mm of area. It features a powerful processor, the nRF52840 from Nordic Semiconductors, a 32-bit 
+%ARM® Cortex®-M4 CPU running at 64 MHz. In terms of sensors, the Arduino has a 9 axis \gls{IMU} meaning it includes an accelerometer, a gyroscope, and a magnetometer with 3-axis resolution each. As its name mentions it also has \gls{BLE} 
+%communication which is vital for this project~\cite{arduinoDoc}.
 
 
 
+\section{Arduino Code}
+\label{sec:arduinoCode}
 
-\begin{enumerate}
-  \item Try all the already supported schools and check which one is closer to your needs;
-  \begin{enumerate}
-    \item Edit \verb!Config/1_novathesis.tex! and near line 28 uncomment the line with key \verb!\ntsetup{school=<SOMETHING>}!;
-    \item For each school supported (see the comment), replace \verb!<SOMETHING>! with the school name, e.g., make it \verb!\ntsetup{school=ulisboa/fmv}!
-    \item Recompile and check the document.  Particularly, check the cover layout, the front-page (second cover) layout, the front-matter contents, the bibliography style;
-    \item Repeat for the next school, until you find one close enough.
-  \end{enumerate}
-  \item 
-\end{enumerate}
+The Arduino programming language is a modified C/C++ language that simplifies the board coding that is run on the Arduino's IDE.
+There are two files of code for the Arduinos, one for the sensors calibration (specifically the magnetometer) and the other one is run for reading and sending the data.
+
+
+
+\subsubsection{Calibration}
+\label{sssec:calibration}
+
+To ensure accurate and reliable measurements, the magnetometer and the gyroscope undergo a calibration process. Since the magnetometer's values depend heavily on the surrounding environment, a calibration routine must be executed 
+before using the device. During this process, the program records the magnetometer's values for 10 seconds while the device is moved following a continuous motion resembling an infinity symbol ($\infty$) and rotated around its axis. For 
+each axis, the minimum and maximum values are stored. 
+
+
+The offset for each axis is then determined by the following equation:
+
+\begin{equation}
+  offset = minValue + (maxValue - minValue) / 2
+  \label{eq:offsetEQ}
+\end{equation}
+
+And the scale is calculated through the next equation:
+
+\begin{equation}
+  scale = (maxValue - minValue) / 2
+  \label{eq:scaleEQ}
+\end{equation}
+
+In these expressions the minValue and the maxValue correspond to the lowest and highest recorded values for each axis. The corrected measurements for each axis can then be expressed as:
+
+\begin{equation}
+  value = (rawValue - offset) / scale
+  \label{eq:magnetometerValueEQ}
+\end{equation}
+
+The gyroscope also requires calibration to eliminate zero-rate bias (drift) that occurs even when the sensor is stationary. This process consists on leaving the device completely still for a 5 seconds while the raw angular velocity 
+is measured and stored. At the end, the average of these readings for each axis is the offset used in the main program:
+
+\begin{equation}
+  value = rawValue - offset
+  \label{eq:gyroscopeValueEQ}
+\end{equation}
+
+
+\subsection{Sensors' Data Readings And Feature Calculations}
+\label{ssec:arduino_sensors_data_read}
+
+
+
+
+
+
+\subsection{Bluetooth Low Energy}
+\label{ssec:arduino_ble}
+
+For the Bluetooth connection we first have to assign a name to the device and a unique address for its service and characteristics. There is one characteristic for each axis of data (x, y and z) and one for the \gls{EMG} data. 
+Then, as explained in section X, we advertise the service to the nearby devices and when there is a connection the data collection is started and the respective characteristics updated.%falta número da secção
+
+
+
+
+\section{Android Application}
+\label{sec:android_app}
+
+%diagrama de blocos
+
+As mentioned in the Work Proposal\autoref{cha:workProposal}, a dedicated Android application as developed to serve as a bridge between the prototypes and the user/database. This application was developed in Kotlin, which is a programming 
+language developed to interoperate fully with Java developed by JetBrains. Since 2019 it is the preferred language by Google for Android app development.
+The application handles the \gls{BLE} connection with the devices and provides a user interface for researchers, athlete and coaches to visualize the data and the model's prediction in real time.
+
+The following section provides a detailed description of the software architecture of the application. Each file is explained according to its function within the system, with emphasis on how data flows from the BLE layer to the 
+machine learning classifier and finally to the user interface. This breakdown clarifies the responsibilities of each component, highlights the interaction between modules, and demonstrates how the application was structured to 
+ensure modularity, maintainability, and extensibility.
+
+This application follows a modular architecture separating responsibilities between the user interface, data handling, and Bluetooth communication. At its core, the program follow the MVVM (Model-View-ViewModel) design pattern, improving 
+testability, maintainability and division of tasks.
+
+The MainActivity.kt is the entry point of the application, initializing the navigation host and providing the top-level container for the user interface. From this activity, the navigation system manages the transitions between the 
+ windows (implemented as Jetpack Compose composables), each of which corresponds to a specific functionality of the program.
+The Android application serves as bridge between the devices, the user and the database. 
+
+
+
+\subsection{User Interface}
+\label{ssec:android_interface}
+
+The application consists in 3 different screens that define the layout and interactive elements that the user sees. Each of of these windows as a corresponding ViewModel that acts as an connection point between the user interface 
+and the application logic. These ViewModels handle any calls made by the screens and any changes to relevant operations such as the bluetooth connection.
+
+At first, when the app is launched, it checks for some necessary permissions specifically the Bluetooth (\texttt{BLUETOOTH\_SCAN and BLUETOOTH\_CONNECT}), 
+the location (\texttt{ACCESS\_FINE\_LOCATION and ACCESS\_COARSE\_LOCATION}) and the internet access permission. Even though the app doesn't use the user's location, its permission is needed for \gls{BLE} for Android 12 and higher 
+(the permissions are only called if that's the case). 
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{bleTurnOn.jpg}
+  \caption{Request message to turn on Bluetooth}
+  \label{fig:turnOnBluetooth}
+\end{figure}
+
+\subsubsection{Start Menu}
+\label{sssec:start_menu}
+
+%falar de cada viewmodel
+This is the first menu shown to the user and it has the simple task of guiding the user through the application's functions. It has one button that takes us to the profile menu (\ref{sssec:profile_menu}) and another that takes us to 
+data menu(\autoref{sssec:data_menu}).
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{startScreen.jpg}
+  \caption{Start Menu}
+  \label{fig:startScreen}
+\end{figure}
+
+\subsubsection{Profile Menu}
+\label{sssec:profile_menu}
+
+In this menu every saved user profile is listed and the user can create new profiles and delete existing ones. When creating a profile the app generates a unique id and the user is asked for a name and height. 
+The list of users is stored locally and remains in every session.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{usersScreen.jpg}
+  \caption{Profiles' Menu}
+  \label{fig:usersScreen}
+\end{figure}
+
+\subsubsection{Data Menu}
+\label{sssec:data_menu}
+
+In this section the user can collect data sending it to the data base for training future models. On the left the user can choose a user profile and which movement is being currently done. On the right the applied model is 
+predicting what movement is being done and a switch that controls if the app is sending the data to the database or not (it should only be turned on if the respective user is selected and only while the movement chosen is recorded). 
+At the center we can see the data that's being received through \gls{BLE} from both devices.
+
+%falar do VariabResult
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{dataScreenNoCon.jpg}
+  \caption{Data Menu without connected devices}
+  \label{fig:dataScreenNoC}
+\end{figure}
+
+
+
+\subsection{Arduino BLE Communication}
+\label{ssec:android_com_arduino}
+
+In Android \gls{BLE}  data is handle asynchronously which means that the app receives callbacks which have to be handled. For the \gls{BLE} communication Android provides a package with a layered architecture:
+
+\begin{itemize}
+  \item BluetoothAdapter - Where every bluetooth connection starts. It allows scanning for nearby available devices and initiating connections.
+  \item BluetoothDevice - Represents another \gls{BLE}  device with one or more services.
+  \item Bluetooth\gls{GATT} - It's the protocol for \gls{BLE}  services and characteristics. It manages the connection lifecycle and provides callbacks for asynchronous communication.
+  \item Bluetooth\gls{GATT} Service - Each service has a group of associated characteristics and a specific function (e.g., location service)
+  \item Bluetooth\gls{GATT} Characteristic - It's the smallest unit of data in \gls{BLE} BLE and it can be read, written or subscribed to (to ge notified whenever it changes) depending on its attributes.
+\end{itemize}
+
+Since the are two devices, each with its own uuid (see \autoref{ssec:arduino_ble}), each device has its own manager that handle its callbacks (VariabBLEReceiveManager.kt) and these two managers are handled by the DualBLEReceiveManager 
+that coordinates them. 
+
+
+\subsubsection{Receive Managers}
+\label{sssec:manager}
+
+Each receive manager is responsible for managing the lifecycle of the corresponding \gls{BLE} connection and handling every callback. Depending on the uuid of the connected device, the manager knows with which device it is working with 
+(if left or right). 
+
+First, using the BluetoothAdapter (see \autoref{ssec:android_com_arduino}), the manager searches for the respective device using its name and uuid and once discovered a \gls{GATT} connection is tried. After establishing the connection, 
+the manager finds the device's services. If a device disconnects the application cleans up its resources and starts trying to reconnect.
+
+Since the arduino is constantly changing its sensor values and updating the corresponding characteristic, with an approach where the notifications were turned the managers would be getting flooded with callbacks and only one characteristic's 
+callbacks were being handled and the rest ignored (Android currently doesn't have any way to handle this). With this in mind a cycle was implemented where the application reads every characteristic in order in loop making sure 
+everything gets updated and handled. At the end of the loop, if the sending data button is turned on, the data received is sent to the database together with the userId, the movement chosen and a timestamp. 
+
+\subsection{Communication with InfluxDB}
+\label{ssec:android_com_data_base}
+
+As mentioned before the application uses InfluxDB as its database. The interface between the application and the database is implemented in two files, one containing the function that sends data and the other one has the sensitive 
+client/database info (token, database url and organization and bucket name). This is a coroutine-based execution meaning that it will never stop or delay the main user interface thread and that it can be run multiple times in parallel 
+without affecting the application performance.
+
+Since InfluxDB organizes data using measurements, tags, fields and timestamps, first the "to be sent data" has to be transformed to the corresponding structure:
+
+\begin{itemize}
+    \item Measurement - movement\_data
+    \item Tags - sensor(left or right) and userId
+    \item Fields (data values) - accelerometer, gyroscope, magnetometer and \gls{EMG} data
+    \item Timestamp - Instant.now() (registers that precise moment)
+\end{itemize}
+
+Afterwards the only thing left to do is to write the data onto the database and catch any possible errors.
+
+\subsection{User Database}
+\label{ssec:android_users}
+
+The purpose of the User Database is to store and manage information related to the users of the devices. Unlike InfluxDB which is specialized for high-frequency data, this database is designed as a static/low-frequency database. 
+It is implemented locally on the Android device saving the users database throughout sessions. 
+
+Each user is represented by the user class and have a name, height and a unique Id that is automatically generated. These profiles are stored in a list that can be accessed by the User and the Variable Viewmodels.
+
+
+\section{Machine Learning Code}
+\label{sec:ml_code}
+
