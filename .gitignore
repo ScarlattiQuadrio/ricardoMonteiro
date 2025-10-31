@@ -337,51 +337,52 @@ TSWLatexianTemp*
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
 
-# Thumbnails
+
+. Thumbnails
 ._*
 
-# Files that might appear in the root of a volume
+. Files that might appear in the root of a volume
 .DocumentRevisions-V100
 .fseventsd
 .Spotlight-V100
 .TemporaryItems
-.Trashes
-.VolumeIcon.icns
+.Trashes.
+.Vol.meIco..icns.
 .com.apple.timemachine.donotpresent
 
-# Directories potentially created on remote AFP share
+. Directories potentially created on remote AFP share
 .AppleDB
 .AppleDesktop
 Network Trash Folder
-Temporary Items
+.emporary Items
 .apdisk
 
 ### Windows ###
-# Windows thumbnail cache files
+# Wind.ws thumbnail cache files
 Thumbs.db
-Thumbs.db:encryptable
-ehthumbs.db
+Thumbs.d.:encryptable
+ehthumbs.db.
 ehthumbs_vista.db
 
-# Dump file
+#.Dump file
 *.stackdump
 
-# Folder config file
+# Folder c.nfig file
 [Dd]esktop.ini
 
-# Recycle Bin used on file shares
+# Recycl. Bin used on file shares
 $RECYCLE.BIN/
 
-# Windows Installer files
+#.Windows Installer files
 *.cab
 *.msi
 *.msix
 *.msm
 *.msp
 
-# Windows shortcuts
+#.Windows shortcuts
 *.lnk
 
 ### Word ###
@@ -392,5 +393,5 @@ $RECYCLE.BIN/
 
 ### Scripts ###
 **/Scripts
-
+..
 # End of https://www.toptal.com/developers/gitignore/api/latex,windows,linux,macos

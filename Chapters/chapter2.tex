@@ -18,16 +18,18 @@
 \section{Movement Recognition Wearables}
 \label{sec:movement_recognition_wearablesT}
 
-As mentioned before in the introduction, there are many different wearables capable of collecting the same type of data but in many different ways. %, devInsole
-For acquiring movement related data the usual methods are through an \gls{IMU}, image capture or some type of pressure sensors.
+As mentioned in the introduction, there are many different wearables capable of capturing similar data through different mechanisms. % devInsole
+For acquiring movement related data the usual methods are through an \gls{IMU}, image capture or some sort of pressure sensors.
+
+Another way to collect information about player movements is through the muscles, for example, with an \gls{EMG} sensor.
 
 
 \subsection{IMU - Inertial Measurement Units}
 \label{ssec:imu_STA}
 
-An \gls{IMU} is a sensor system design to capture motion and orientation usually consisting of an accelerometer, a gyroscope and sometimes a magnetometer. With these sensors it is able of tracking acceleration, angular rate and the 
-magnetic field respectively. When combining this data we're able to get a good estimation in position, orientation and movement patterns. However these approximations suffer from drift over time, meaning that small errors accumulate 
-and lead towards bigger and bigger inaccuracies. Due to its low cost, compact size, high sample rate and versatility,  \gls{IMU}s are especially valuable for wearable devices in activity/movement recognition practices.
+An \gls{IMU} is a sensor system design to capture motion and orientation usually consisting of an accelerometer, a gyroscope and sometimes a magnetometer. These components allow the measurement of acceleration, angular rate and 
+magnetic field respectively. When combined, they provide a good estimation of position, orientation and movement patterns. However these approximations suffer from drift over time, meaning that small errors accumulate 
+and lead towards increasingly inaccurate readings. Due to its low cost, compact size, high sample rate and versatility, \gls{IMU}s are especially valuable for wearable devices for activity/movement recognition practices.
 
 \subsection{EMG - Electromyography}
 \label{ssec:emg_STA}
@@ -36,10 +38,11 @@ and lead towards bigger and bigger inaccuracies. Due to its low cost, compact si
 coordination and identify abnormal patterns that may indicate fatigue, compensation or injury risk.
 There are two main types if \gls{EMG}: Needle \gls{EMG} and Surface \gls{EMG}.
 
-\begin{enumerate}
-  \item Needle EMG - A technique commonly used in neurology that where fine-wire electrodes are inserted into the muscle tissue leading to very precise recordings (at cost of being invasive)
-  \item Surface EMG - A non-invasive technique where the electrodes are placed over the skin. 
-\end{enumerate}
+%\begin{itemize}
+%  \item Needle EMG - A technique commonly used in neurology that where fine-wire electrodes are inserted into the muscle tissue leading to very precise recordings but is very invasive.
+%  \item Surface EMG - A non-invasive technique where the electrodes are placed over the skin. 
+%\end{itemize}
+
 
 \section{Plantar Pressure Wearables}
 \label{ssec:plantar_pressure_wearables_STA}
@@ -51,7 +54,6 @@ indicate areas at risk for ulcers or other complications. They are also useful f
 
 For gait monitoring through pressure there are several different types of sensors used in wearables that can be separated in five different categories~\cite{smartSocks}:
 
-%mudar isto para IMU
 \begin{enumerate}
   \item Capacitive Sensors - Consisting in two conductive plates separated by an insulating layer. When force is applied, they develop a voltage variation.
   \item Resistive Sensors - These are the most common sensors. Their resistance varies with the applied pressure.
@@ -299,7 +301,11 @@ area beneath the peak pressure-time curve), and mean peak pressure (mPP). Howeve
 When there are differences in these measurements between the feet, it can mean that there is an inadequate distribution of forces and it can lead to injury. So a symmetry index defined by 
 the next equation that compares the plantar pressure on both feet will be calculated.
 
-\[ SI = \frac{2 \cdot \left\lvert R - L\right\rvert }{(R + L)} \times 100 \]
+\begin{equation}
+  SI = \frac{2 \cdot \left\lvert R - L\right\rvert }{(R + L)} \times 100
+  \label{eq:SIEQ}
+\end{equation}
+
 
 If SI is zero then the feet are doing equal work, if it's under 10\% it is acceptable, otherwise it means the movement is causing more distress in one leg than the other leading to a 
 loss of bone mass density in the respective leg and joints~\cite{coimbra}.
@@ -309,63 +315,205 @@ loss of bone mass density in the respective leg and joints~\cite{coimbra}.
 \section{Data Analysis}
 \label{sec:data_analysis}
 
+%Modificar para os algoritmos usados
+%Justificar a escolha
+
 By leveraging advanced data analysis techniques, such as machine learning algorithms and statistical modelling, pressure insole data can reveal subtle patterns and correlations that 
 inform training adjustments, injury risk, and performance improvements. There are many different algorithms with different objectives. In this section some of them will be explained:
 
-\subsection{K-nearest-neighbours classification}
-\label{ssec:k-nearest_neighbours}
+\subsection{Algorithms}
+\label{ssec:data_algorithm}
+
+\subsubsection{K-nearest-neighbours classification}
+\label{sssec:k-nearest_neighbours}
 
 The K-nearest-neighbours is one of the simplest supervised machine learning algorithms. It's a classification algorithm which uses proximity to assigning each point to the class with 
 the most similar elements within the K-nearest-neighbours~\cite{bachelorInsole, porto}. 
 
-As an example observe figure\ref{fig:k-near}. If someone would have to assign a class (green diamonds, blue squares or red circles) to the cross in the figure, they would probably say it belongs to the green diamonds since 
+As an example observe figure\ref{fig:k-near}. If someone would have to assign a class (green triangles, blue squares or red circles) to the cross in the figure, they would probably say it belongs to the green triangles since 
 they are the closest objects. But if instead someone had to assign a class for the star, it would be a much harder task with a naked eye. 
 In this case two factors make that decision: Which are the closest objects (depending on the weight k) and how many of each class are there in that group~\cite{bachelorInsole}. In other words 
 imagine a small circle with its center on the object that we want to classify and if it isn't touching other know objects imagine it growing until it does.
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=.5\linewidth]{k-near.jpg}
-  \caption{K-nearest-neighbours example~\cite{bachelorInsole}}
-  \label{fig:k-near}
-\end{figure}
+%\begin{figure}[htbp]
+%  \centering
+%  \includegraphics[width=\linewidth]{k-near.jpg}
+%  \caption{K-nearest-neighbours example - adapted from~\cite{bachelorInsole}}
+%  \label{fig:k-near}
+%\end{figure}
 
-\subsection{Dynamic Time Warping}
-\label{ssec:dynamic_time_warping}
+ 
+\subsubsection{Dynamic Time Warping}
+\label{sssec:dynamic_time_warping}
 
 The dynamic Time Warping (DTW) algorithm transforms unsynchronized time series or time series with different lengths allowing a dynamic comparison between them. This algorithm calculates 
 the best possible alignment between two different series dependent on time providing a measurement of how well aligned (or not) they are~\cite{bachelorInsole}.
 
-\subsection{Regression analysis}
+\subsubsection{Regression analysis}
+\label{sssec:regression_analysis}
 
 Regression analysis' purpose is to find a continuous outcome variable, usually y, through one or more predictor variables, normally x (if only one). The simplest of these models is the 
 linear regression model that relates a linear relationship between x and y. This equation can be expressed as~\cite{bachelorInsole}:
-\[ y = \beta + \alpha \cdot x + \epsilon \]
+
+\begin{equation}
+  y = \beta + \alpha \cdot x + \epsilon
+  \label{eq:regAnalEQ}
+\end{equation}
 
 In this equation y is the output variable, $\beta$ is the starting point (x=0), $\alpha$ is the regression coefficient associated with the predictor variable x and $\epsilon$ is the residual error.
 An extended version of this equation with n predictor variables is:
-\[ y = \beta + \alpha_1 \cdot x_1 + \alpha_2 \cdot x_2 + \alpha_n \cdot x_n + \epsilon \]
 
-\subsection{Recursive Feature Elimination}
-\label{ssec:recursive_feature_elimination}
+\begin{equation}
+  y = \beta + \alpha_1 \cdot x_1 + \alpha_2 \cdot x_2 + \alpha_n \cdot x_n + \epsilon
+  \label{eq:regAnalEQGeneral}
+\end{equation}
+
+
+\subsubsection{Recursive Feature Elimination}
+\label{sssec:recursive_feature_elimination}
 
 Recursive Feature Elimination (RFE) selects features by progressively narrowing down the set of available features. Each feature is assigned a weight, and those with the lowest absolute 
 weights are removed from the set. In each iteration, a single feature is removed, and this process continues on the reduced set until the target number of features is reached~\cite{porto}.
 
 
-\subsection{Principal Component Analysis}
-\label{ssec:principal_component_analysis}
+\subsubsection{Principal Component Analysis}
+\label{sssec:principal_component_analysis}
 
 Principal Component Analysis (PCA) reduces the dimensionality of data by applying a linear transformation based on singular value decomposition. This transformation projects the data 
 into a lower-dimensional space, creating a new set of variables that are ordered by their importance~\cite{porto}.
 
 
-\subsection{Linear Discriminant Analysis}
-\label{ssec:linear_discriminant_analysis}
+\subsubsection{Linear Discriminant Analysis}
+\label{sssec:linear_discriminant_analysis}
 
 The Linear Discriminant Analysis (LDA) model fits a Gaussian distribution to each class, assuming a shared covariance matrix across all classes. This model reduces input dimensionality 
 by projecting data onto the directions that best separate the classes. Its goal is to enhance separation between classes by maximizing the scatter between them while minimizing scatter 
-within each class~\cite{porto}.
+within each class~\cite{porto, ComprehensiveStudyOnEMG}.
 
+
+\subsubsection{Neural Network - NN}
+\label{sssec:neural_network}
+
+A NN is a \gls{ML} model that imitates the structure and functions of biological neural networks. A NN utilizes many connected nodes called "artificial neurons" organized by layers where each node connects to others from the 
+previous or the next layer (Figure \autoref{fig:NNFigure}). Each of these connections have corresponding weights determined trough the training algorithm. For this process the data has to be labelled.
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{neuralNetwork.jpg}
+  \caption{Neural Network Example}
+  \label{fig:NNFigure}
+\end{figure}
+
+There are three types of layers: input, hidden and output. A NN must have one layer of each, though it may contain multiple hidden layers. When a network has two or more hidden layers it is considered a Deep Neural Network (DNN). 
+This \gls{ML} technique is highly effective for analysing large datasets with non-linear relationships. However, toa achieve accurate and precise results it requires a substantial amount of complete data, as missing entries can 
+significantly affect performance. 
+Despite its effectiveness, one major limitation of neural networks is their lack of interpretability, making it difficult to clearly understand the underlying classification boundaries~\cite{ComprehensiveStudyOnEMG}.
+
+
+\subsubsection{Fuzzy Logic - FL} 
+\label{sssec:fuzzy_logic}
+
+Fuzzy Logic is a form of multi-valued logic in which its values are real and range between 0 and 1. Providing a mathematical framework capable of incorporating and balancing both precision and significance in 
+decision-making processes.
+
+A FL system operates through two main processes: fuzzification and defuzzification.
+Fuzzification converts crisp input values into fuzzy values by assigning them degrees of membership within a fuzzy set, typically represented by an arbitrary curve that defines the relationship between the input values and their 
+corresponding membership levels. A fuzzy set \[A\] can be expressed as:
+
+\begin{equation}
+  A = {(x, \mu A(x)) | x \varepsilon U} 
+  \label{eq:fuzzyLogicEQ}
+\end{equation}
+
+where \[A\] is the fuzzy set, \[U\] is the universe of discourse containing the elements \[x\], and \[\mu A(x)\] is the membership function.
+
+After fuzzification, the fuzzy sets are evaluated through a series of if-then rules using logical operators to produce an output. This output is then converted back into crisp values through defuzzification, which can be performed 
+using various methods such as the centroid or bisector approaches.
+The main advantage of FL lies in its flexibility and its ability to be easily modified or combined with other classification techniques. However, FL also presents limitations — its numerous localized parameters and training 
+requirements can make system construction and tuning a time-consuming process~\cite{ComprehensiveStudyOnEMG}.
+
+\subsubsection{Neuro-Fuzzy Hybridization - NF} 
+\label{sssec:neuro_fuzzy_hybridization}
+
+NF combines the principles of FL and NN creating an intelligent hybrid model that merges human-like reasoning with adaptive learning. Typically, a NF system is built upon a fuzzy logic framework and trained using data-driven methods 
+from NN theory. During training, it adjusts local parameters based on local data and represents knowledge as fuzzy rules, allowing initialization with or without prior information. This hybrid approach leverages the strengths of both 
+processes, interpretability from FL and learning ability from NN, while reducing their main drawbacks such as dependence on prior knowledge and high computational demands~\cite{ComprehensiveStudyOnEMG}.
+
+
+%\subsubsection{Support Vector Machine - SVM} % ComprehensiveStudyOnEMG
+%\label{sssec:support_vector_machine}
+
+
+
+\subsection{EMG Features}
+\label{ssec:emg_features}
+The raw \gls{EMG} signal is very noisy and very high frequency so it generates large volumes of data making it very demanding for direct analysis making it inadequate for real-time processing or \gls{ML} applications. Therefore, 
+relevant features of the signal must be extracted to capture the essential characteristics of the muscle activity to reduce computational load, improve robustness against noise and features also improve the performance of classification 
+algorithms. 
+
+\subsubsection{Mean Absolute Value - MAV} 
+\label{sssec:mean_absolute_value}
+
+The Mean Absolute Value is one of the most common and simpler features extracted from \gls{EMG} signals. It corresponds to the average of the absolute values of the signal over a specific period of time, providing a measurement of the 
+muscle's electrical activity level. 
+Mathematically, MAV is calculated as:
+
+\begin{equation}
+  MAV = \frac{1}{N} \sum_{i=1}^{N} \left\lvert x_i \right\rvert 
+  \label{eq:mavEQ}
+\end{equation}
+
+where $N$ is the number os samples in the time frame and $x_i$ is the \gls{EMG} signal at sample $i$~\cite{HandGestureRecognition, ComprehensiveStudyOnEMG, BiomedicalSignalProcessingAndControl, Review_IRBM_EMG, ReviewOfEMGSignalClassification, Hybrid}.
+
+%\subsubsection{Mean Absolute Value Slope - MAVS} % ComprehensiveStudyOnEMG
+%\label{sssec:mean_absolute_value_slope}
+
+
+\subsubsection{Root Mean Square - RMS} 
+\label{sssec:root_mean_square}
+
+The Root Mean Square is another common feature in EMG analysis. As the name implies, it is the square root of the mean of the signal amplitude emphasizing larger signal amplitudes than the MAV. It's defined as:
+
+\begin{equation}
+  RMS = \sqrt{\frac{1}{N} \sum_{i=1}^{N} x_i^2}
+  \label{eq:rmsEQ}
+\end{equation}
+
+where $N$ is the number os samples in the time frame and $x_i$ represents the \gls{EMG} signal at each sample~\cite{HandGestureRecognition, BiomedicalSignalProcessingAndControl, MeasuringSurfaceElectromyographyWithTextileElectrodes, Review_IRBM_EMG, ReviewOfEMGSignalClassification, Hybrid}.
+
+\subsubsection{Variance - VAR} % HandGestureRecognition, ComprehensiveStudyOnEMG, Review_IRBM_EMG
+\label{sssec:variance}
+
+\subsubsection{Waveform Length - WL} % HandGestureRecognition, ComprehensiveStudyOnEMG, BiomedicalSignalProcessingAndControl, Review_IRBM_EMG, ReviewOfEMGSignalClassification
+\label{sssec:waveform_length}
+
+\subsubsection{Peak Frequency - PKF} % HandGestureRecognition, Review_IRBM_EMG
+\label{sssec:peak_frequency}
+
+\subsubsection{Mean Frequency - MNF} % HandGestureRecognition, ComprehensiveStudyOnEMG, Review_IRBM_EMG, ReviewOfEMGSignalClassification, Hybrid
+\label{sssec:mean_frequency}
+
+
+
+\subsubsection{Median Frequency - MDF} % HandGestureRecognition, Review_IRBM_EMG, ReviewOfEMGSignalClassification
+\label{sssec:median_frequency}
+
+
+
+\subsubsection{Wavelet Packet Energy - WPE} % HandGestureRecognition
+\label{sssec:wavelet_packet_energy}
+
+\subsubsection{Integrated EMG - IEMG} % ComprehensiveStudyOnEMG, BiomedicalSignalProcessingAndControl, Review_IRBM_EMG
+\label{sssec:integrated_emg}
+
+\subsubsection{Simple Square Integral - SSI} % ComprehensiveStudyOnEMG, BiomedicalSignalProcessingAndControl
+\label{sssec:simple_square_integral}
+
+\subsubsection{Zero Crossing - ZC} % Review_IRBM_EMG
+\label{sssec:zero_crossing}
+
+\subsubsection{Slope Sign Changes - SSC} % Review_IRBM_EMG, MyoelectricPatternRecognition
+\label{sssec:slope_sign_changes}
 
 % \printbibliography[heading=subbibliography, segment=\therefsegment, title={\bibname\ for chapter~\thechapter}]

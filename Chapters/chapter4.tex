@@ -37,16 +37,51 @@ The Arduino programming language is a modified C/C++ language that simplifies th
 There are two files of code for the Arduinos, one for the sensors calibration (specifically the magnetometer) and the other one is run for reading and sending the data.
 
 
-\subsection{Calibration}
-\label{ssec:calibration}
 
-Since the magnetometer's values depend on the device's location, a calibration program need to be ran before the use o the device. This code reads the values from the magnetometer for 10 seconds and registers the maximum and minimum 
-values for each axis. 
+\subsubsection{Calibration}
+\label{sssec:calibration}
+
+To ensure accurate and reliable measurements, the magnetometer and the gyroscope undergo a calibration process. Since the magnetometer's values depend heavily on the surrounding environment, a calibration routine must be executed 
+before using the device. During this process, the program records the magnetometer's values for 10 seconds while the device is moved following a continuous motion resembling an infinity symbol ($\infty$) and rotated around its axis. For 
+each axis, the minimum and maximum values are stored. 
+
+
 The offset for each axis is then determined by the following equation:
 
-\[ offset = minVal + (maxVal - minVal) / 2\]
+\begin{equation}
+  offset = minValue + (maxValue - minValue) / 2
+  \label{eq:offsetEQ}
+\end{equation}
 
-Here the offset is the value that will be used in the program for the device, the minVal is the minimum value measured and the maxVal is the maximum value measured.
+And the scale is calculated through the next equation:
+
+\begin{equation}
+  scale = (maxValue - minValue) / 2
+  \label{eq:scaleEQ}
+\end{equation}
+
+In these expressions the minValue and the maxValue correspond to the lowest and highest recorded values for each axis. The corrected measurements for each axis can then be expressed as:
+
+\begin{equation}
+  value = (rawValue - offset) / scale
+  \label{eq:magnetometerValueEQ}
+\end{equation}
+
+The gyroscope also requires calibration to eliminate zero-rate bias (drift) that occurs even when the sensor is stationary. This process consists on leaving the device completely still for a 5 seconds while the raw angular velocity 
+is measured and stored. At the end, the average of these readings for each axis is the offset used in the main program:
+
+\begin{equation}
+  value = rawValue - offset
+  \label{eq:gyroscopeValueEQ}
+\end{equation}
+
+
+\subsection{Sensors' Data Readings And Feature Calculations}
+\label{ssec:arduino_sensors_data_read}
+
+
+
+
 
 
 \subsection{Bluetooth Low Energy}
@@ -56,16 +91,14 @@ For the Bluetooth connection we first have to assign a name to the device and a 
 Then, as explained in section X, we advertise the service to the nearby devices and when there is a connection the data collection is started and the respective characteristics updated.%falta número da secção
 
 
-\subsection{Sensors' Data Readings}
-\label{ssec:arduino_sensors_data_read}
-
-
 
 
 \section{Android Application}
 \label{sec:android_app}
 
-As mentioned in the Work Proposal\ref{cha:workProposal}, a dedicated Android application as developed to serve as a bridge between the prototypes and the user/database. This application was developed in Kotlin, which is a programming 
+%diagrama de blocos
+
+As mentioned in the Work Proposal\autoref{cha:workProposal}, a dedicated Android application as developed to serve as a bridge between the prototypes and the user/database. This application was developed in Kotlin, which is a programming 
 language developed to interoperate fully with Java developed by JetBrains. Since 2019 it is the preferred language by Google for Android app development.
 The application handles the \gls{BLE} connection with the devices and provides a user interface for researchers, athlete and coaches to visualize the data and the model's prediction in real time.
 
@@ -89,7 +122,7 @@ The application consists in 3 different screens that define the layout and inter
 and the application logic. These ViewModels handle any calls made by the screens and any changes to relevant operations such as the bluetooth connection.
 
 At first, when the app is launched, it checks for some necessary permissions specifically the Bluetooth (\texttt{BLUETOOTH\_SCAN and BLUETOOTH\_CONNECT}), 
-the location (\texttt{ACCESS\_FINE\_LOCATION and ACCESS\_COARSE\_LOCATION}) and the internet access permission. Even tho the app doesn't use the user's location, its permission is needed for \gls{BLE} for Android 12 and higher 
+the location (\texttt{ACCESS\_FINE\_LOCATION and ACCESS\_COARSE\_LOCATION}) and the internet access permission. Even though the app doesn't use the user's location, its permission is needed for \gls{BLE} for Android 12 and higher 
 (the permissions are only called if that's the case). 
 
 \begin{figure}[htbp]
@@ -103,8 +136,8 @@ the location (\texttt{ACCESS\_FINE\_LOCATION and ACCESS\_COARSE\_LOCATION}) and 
 \label{sssec:start_menu}
 
 %falar de cada viewmodel
-This is the first menu shown to the user and it has the simple task of guiding the user trough the application's functions. It has one button that takes us to the profile menu (\ref{sssec:profile_menu}) and another that takes us to 
-data menu(\ref{sssec:data_menu}).
+This is the first menu shown to the user and it has the simple task of guiding the user through the application's functions. It has one button that takes us to the profile menu (\ref{sssec:profile_menu}) and another that takes us to 
+data menu(\autoref{sssec:data_menu}).
 
 \begin{figure}[htbp]
   \centering
@@ -131,7 +164,7 @@ The list of users is stored locally and remains in every session.
 
 In this section the user can collect data sending it to the data base for training future models. On the left the user can choose a user profile and which movement is being currently done. On the right the applied model is 
 predicting what movement is being done and a switch that controls if the app is sending the data to the database or not (it should only be turned on if the respective user is selected and only while the movement chosen is recorded). 
-At the center we can see the data that's being received trough \gls{BLE} from both devices.
+At the center we can see the data that's being received through \gls{BLE} from both devices.
 
 %falar do VariabResult
 
@@ -157,7 +190,7 @@ In Android \gls{BLE}  data is handle asynchronously which means that the app rec
   \item Bluetooth\gls{GATT} Characteristic - It's the smallest unit of data in \gls{BLE} BLE and it can be read, written or subscribed to (to ge notified whenever it changes) depending on its attributes.
 \end{itemize}
 
-Since the are two devices, each with its own uuid (see \ref{ssec:arduino_ble}), each device has its own manager that handle its callbacks (VariabBLEReceiveManager.kt) and these two managers are handled by the DualBLEReceiveManager 
+Since the are two devices, each with its own uuid (see \autoref{ssec:arduino_ble}), each device has its own manager that handle its callbacks (VariabBLEReceiveManager.kt) and these two managers are handled by the DualBLEReceiveManager 
 that coordinates them. 
 
 
@@ -167,7 +200,7 @@ that coordinates them.
 Each receive manager is responsible for managing the lifecycle of the corresponding \gls{BLE} connection and handling every callback. Depending on the uuid of the connected device, the manager knows with which device it is working with 
 (if left or right). 
 
-First, using the BluetoothAdapter (see \ref{ssec:android_com_arduino}), the manager searches for the respective device using its name and uuid and once discovered a \gls{GATT} connection is tried. After establishing the connection, 
+First, using the BluetoothAdapter (see \autoref{ssec:android_com_arduino}), the manager searches for the respective device using its name and uuid and once discovered a \gls{GATT} connection is tried. After establishing the connection, 
 the manager finds the device's services. If a device disconnects the application cleans up its resources and starts trying to reconnect.
 
 Since the arduino is constantly changing its sensor values and updating the corresponding characteristic, with an approach where the notifications were turned the managers would be getting flooded with callbacks and only one characteristic's 
@@ -199,8 +232,6 @@ The purpose of the User Database is to store and manage information related to t
 It is implemented locally on the Android device saving the users database throughout sessions. 
 
 Each user is represented by the user class and have a name, height and a unique Id that is automatically generated. These profiles are stored in a list that can be accessed by the User and the Variable Viewmodels.
-
-
 
 
 \section{Machine Learning Code}

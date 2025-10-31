@@ -37,6 +37,8 @@ at the end of games (fourth quarter), specially at the last minutes.
 For this project, for each foot, an Arduino and an \gls{EMG} sensor will be used. The Arduinos have an integrated \gls{IMU} each that captures acceleration and orientation and they work with \gls{BLE}.
 Besides the \gls{IMU}, the \gls{EMG} sensor will collect data from the muscles to provide more data for the movement recognition and a better insight for injuries.
 
+%diagrama do sistema
+
 \subsection{Prototype}
 \label{sec:prototype}
 
@@ -67,6 +69,8 @@ width of 18mm and length of 45mm weighting only 5g~\cite{arduinoDoc}. The Arduin
 \subsubsection{BITalino Electromyography}
 \label{ssec:bitalinoEMG}
 
+%esquema do circuito
+
 The sensor has a gain of 1009 and an input of 2.0-3.5V making the output of 3.3V of the Arduino ideal for it. As seen in the figure bellow \ref{fig:emgProto}, The emg has an input channel for the electrode cables on the left side 
 and 4 connection points on the right side:
 
@@ -79,9 +83,15 @@ and 4 connection points on the right side:
 
 The analog sensor data are converted into digital values ranged between 0 and $2^10 - 1$ and for practical reasons we need to convert it back to voltage as show in the following expression:
 
-\[ \gls{EMG}(V) = \frac{(\frac{ADC}{2^10}-\frac{1}{2}*VCC)}{G} \] 
+\begin{equation}
+  \gls{EMG}(V) = \frac{(\frac{ADC}{2^10}-\frac{1}{2}*VCC)}{G}
+  \label{eq:EMGconvertionEQ}
+\end{equation}
 
-\[ \gls{EMG}(mV) = \gls{EMG}(V) * 1000 \] 
+\begin{equation}
+  \gls{EMG}(mV) = \gls{EMG}(V) * 1000
+  \label{eq:EMGconvertionEQmV}
+\end{equation}
 
 Where ADC is the digital value from the sensor, VCC is the 3.3V provided by the arduino, G is the sensor gain which is 1009 and EMG(V) and EMG(mV) is the signal in Volt and millivolt respectively.
 
@@ -104,10 +114,23 @@ For a richer dataset the players will be asked to do the movements with differen
 
 Special attention will be given to minimizing signal noise and motion artifacts during acquisition, using appropriate electrode placement and filtering techniques. This ensures that the raw signals preserve as much physiological 
 information as possible, thereby improving the robustness of later processing and analysis stages.
+
 %Falta imagem do dispositivo colocado
 
 
 \subsection{Data Processing}
 \label{sec:data_processing}
 
-First the arduino does the digital value of the \gls{EMG} to mV before sending the data to the app. Then the app forwards the data to the database and then the ML algorithm takes does data and transforms it to fit a model.
+First the arduino converts the digital value of the \gls{EMG} to mV and afterwards it calculates six different features before sending them to the app: 
+
+\begin{itemize}
+  \item Root Mean Square - \gls{RMS}
+  \item Waveform Length - \gls{WL}
+  \item Zero Crossing - \gls{ZC}
+  \item Mean Absolute Value - \gls{MAV}
+  \item Slope Sign Changes - \gls{SSC}
+  \item Variance - \gls{VAR}
+\end{itemize}
+
+
+Following the calculations, the app forwards the data to the database and then the ML algorithm uses the data to determine what movement is being done by the user.
