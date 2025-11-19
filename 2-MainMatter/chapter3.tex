@@ -30,6 +30,7 @@ continuously and with the right design, be unnoticeable for the user and other p
 For basketball in particular, the movements consist in a lot of short sprints, quick changes of pace and direction, lateral movement and high jumps (vertical and horizontal) and its high tense moments are more common 
 at the end of games (fourth quarter), specially at the last minutes.
 
+\newpage
 
 \section{Project Description}
 \label{sec:project_description}
@@ -37,7 +38,12 @@ at the end of games (fourth quarter), specially at the last minutes.
 For this project, for each foot, an Arduino and an \gls{EMG} sensor will be used. The Arduinos have an integrated \gls{IMU} each that captures acceleration and orientation and they work with \gls{BLE}.
 Besides the \gls{IMU}, the \gls{EMG} sensor will collect data from the muscles to provide more data for the movement recognition and a better insight for injuries.
 
-%diagrama do sistema
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{System_Overview.jpg}
+  \caption{System Overview~\cite{}}  %adicionar de onde fui buscar
+  \label{fig:systemOverview}
+\end{figure}
 
 \subsection{Prototype}
 \label{sec:prototype}
@@ -69,7 +75,6 @@ width of 18mm and length of 45mm weighting only 5g~\cite{arduinoDoc}. The Arduin
 \subsubsection{BITalino Electromyography}
 \label{ssec:bitalinoEMG}
 
-%esquema do circuito
 
 The sensor has a gain of 1009 and an input of 2.0-3.5V making the output of 3.3V of the Arduino ideal for it. As seen in the figure bellow \ref{fig:emgProto}, The emg has an input channel for the electrode cables on the left side 
 and 4 connection points on the right side:
@@ -80,6 +85,16 @@ and 4 connection points on the right side:
   \item \gls{VCC}/2 - From the same pin that the \gls{VCC} point is connected to, we have a small voltage divider with an Ampop for stabilization to halve the tension (blue wire).
   \item \gls{GND} - The black wire connect the Arduino's ground to this point.
 \end{itemize}
+
+ A circuit was designed to obtain a stable reference for the \gls{EMG} sensor, implemented using a resistive divider followed by an operational amplifier. As shown in figure~\autoref{divisorTensao}, two identical resistors are 
+ connnected between the 3.3V supply from the arduino and ground resulting on the node in the middle settling at half the voltage. The op-amp's purpose is to stabilize the circuit by lowering the impedance at the output.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{divisorTensao.jpg}
+  \caption{Halving the \gls{VCC}.}
+  \label{fig:divisorTensao}
+\end{figure}
 
 The analog sensor data are converted into digital values ranged between 0 and $2^10 - 1$ and for practical reasons we need to convert it back to voltage as show in the following expression:
 
