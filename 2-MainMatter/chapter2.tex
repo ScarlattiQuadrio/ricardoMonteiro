@@ -470,7 +470,7 @@ specific period of time, providing a measurement of the muscle's electrical acti
 Mathematically, MAV is calculated as:
 
 \begin{equation}
-  MAV = \frac{1}{N} \sum_{i=1}^{N} \left\lvert x_i \right\rvert 
+  MAV = \frac{1}{N} \sum_{i = 1}^{N} \left\lvert x_i \right\rvert 
   \label{eq:mavEQ}
 \end{equation}
 
@@ -488,7 +488,7 @@ The Root Mean Square is another common feature in EMG analysis. As the name impl
 than the MAV. It's defined as:
 
 \begin{equation}
-  RMS = \sqrt{\frac{1}{N} \sum_{i=1}^{N} x_i^2}
+  RMS = \sqrt{\frac{1}{N} \sum_{i = 1}^{N} x_i^2}
   \label{eq:rmsEQ}
 \end{equation}
 
@@ -503,7 +503,7 @@ The Variance of a signal measures how much it fluctuates around its mean, reflec
 Mathematically it is expressed as:
 
 \begin{equation}
-  VAR = \frac{1}{N - 1} \sum_{i=1}^{N} (x_i - \mu)^2
+  VAR = \frac{1}{N - 1} \sum_{i = 1}^{N} (x_i - \mu)^2
   \label{eq:varEQ}
 \end{equation}
 
@@ -521,7 +521,7 @@ information about the frequency and intensity of the muscle activity.
 The WL feature is calculated according to:
 
 \begin{equation}
-  WL = \sum_{i=1}^{N-1} \lvert x_{i+1} - x_i \rvert
+  WL = \sum_{i = 1}^{N - 1} \lvert x_{i + 1} - x_i \rvert
   \label{eq:wlEQ}
 \end{equation}
 
@@ -552,7 +552,7 @@ muscle performance and fatigue levels~\cite{HandGestureRecognition, Review_IRBM_
 The Median Frequency corresponds to the frequency where the power spectrum is equally divided in two. This can be translated to the following equation:
 
 \begin{equation}
-  MDF = \frac{1}{2}\sum_{i=1}^{N} P_i
+  MDF = \frac{1}{2}\sum_{i = 1}^{N} P_i
   \label{eq:mdfEQ}
 \end{equation}
 
@@ -566,7 +566,7 @@ ReviewOfEMGSignalClassification, ComprehensiveStudyOnEMG}.
 Mean Frequency represents the average frequency of the power spectrum at each frequency component, weighted by the power spectral density.
 
 \begin{equation}
-  MNF = \frac{\sum_{i=1}^{N} f_i P(f_i)}{\sum_{i=1}^{N} P(f_i)}
+  MNF = \frac{\sum_{i = 1}^{N} f_i P(f_i)}{\sum_{i = 1}^{N} P(f_i)}
   \label{eq:mnfEQ}
 \end{equation}
 
@@ -589,7 +589,7 @@ and muscle intensity during a movement.
 Mathematically, the integrated EMG is defined by:
 
 \begin{equation}
-  IEMG = \sum_{i=1}^{N} \left\lvert x_i \right\rvert 
+  IEMG = \sum_{i = 1}^{N} \left\lvert x_i \right\rvert 
   \label{eq:iemgEQ}
 \end{equation}
 
@@ -604,7 +604,7 @@ The Simple Square Integral is a feature that expresses the energy of the \gls{EM
 The equation below expresses the computation of SSI:
 
 \begin{equation}
-  SSI = \sum_{i=1}^{N} \left\lvert x_i^2 \right\rvert 
+  SSI = \sum_{i = 1}^{N} \left\lvert x_i^2 \right\rvert 
   \label{eq:ssiEQ}
 \end{equation}
 
@@ -647,7 +647,7 @@ As with the ZC~(\autoref{sssec:zero_crossing}) feature, a small threshold is oft
 Mathematically, the SSC can be expressed as:
 
 \begin{equation}
-  SSC = \sum_{i=2}^{N-1} f[(x_i - x_{i-1}) \cdot (x_i - x_{i+1})]
+  SSC = \sum_{i = 2}^{N - 1} f[(x_i - x_{i-1}) \cdot (x_i - x_{i+1})]
   \label{eq:sscEQ}
 \end{equation}
 
@@ -663,6 +663,30 @@ Where
 
 Where, $x_i$ represents the EMG signal amplitude at sample $i$, and the $\epsilon$ is a small positive value used to reduce sensitivity to minor fluctuations or 
 electrical noise~\cite{Review_IRBM_EMG}.
+
+\subsubsection{Willison Amplitude - WAMP}
+\label{sssec:wamp}
+
+Willison Amplitude is a time-somain feature that assumes the number of times the absolute difference between two consecutive signal samples exceeds a predefined 
+threshold. It is particularly useful for capturing changes in muscle activation intensity while remaining computationally efficient\cite{Review_IRBM_EMG}.
+
+Mathematically, it is defined by:
+
+\begin{equation}
+  WAMP = \sum_{n = 1}^{N - 1} f(\left\lvert x_i - x_{i+1}\right\rvert )
+  \label{eq:wampEQ}
+\end{equation}
+
+Where
+
+\begin{equation}
+  f(x) = \begin{cases}
+    1 & \text{if } x \geq \epsilon \\
+    0 & \text{otherwise}
+  \end{cases}
+  \label{eq:wampEQ2}
+\end{equation}
+
 
 
 % \printbibliography[heading=subbibliography, segment=\therefsegment, title={\bibname\ for chapter~\thechapter}]
