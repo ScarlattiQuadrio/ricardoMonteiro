@@ -9,14 +9,7 @@
 % \ntlangsetup{pt/contentsname=O MEU ÍNDICE}
 % \ntlangsetup{en/contentsname=MY LITTLE TOC}
 
-%%============================================================
-%%  FOR DEMO PURPOSES ONLY --- YOU SHOULD REMOVE THESE PACKAGES
-%%============================================================
-\usepackage{float}        % FOR DEMO PURPOSES ONLY --- PLEASE REMOVE
-\usepackage{wrapfig}      % FOR DEMO PURPOSES ONLY --- PLEASE REMOVE
-\restylefloat{figure}     % FOR DEMO PURPOSES ONLY --- PLEASE REMOVE
-\usepackage{metalogo}     % FOR DEMO PURPOSES ONLY --- PLEASE REMOVE
-\usepackage{lipsum}       % FOR DEMO PURPOSES ONLY --- PLEASE REMOVE
+
 \IfFileExists{byo-twemojiss.sty}{
   \usepackage{byo-twemojis}     % to typeset emojis
   \newcommand{\emojiSmile}{\raisebox{-3pt}{\scalebox{1.3}{\byoTwemoji{head; eyes normal opened; mouth laughing}}}}
@@ -55,6 +48,8 @@
 
 % \usepackage{listings}    % Fontification of source code listingsConfig/5_packages.tex
 %                          % In alternative, use the package “minted” (highly recomended)
+
+\usepackage{multirow}
 
 % \lstset{
 %     captionpos=t,

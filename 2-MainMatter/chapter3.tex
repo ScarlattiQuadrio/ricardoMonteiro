@@ -19,8 +19,8 @@
 \chapter{Work Proposal}
 \label{cha:workProposal}
 
-This project begins with the prototype design and the development of an interface app. Afterwards, data from different movements is collected and the \gls{ML} model is developed. The last goal is to implement the best model into the app 
-giving the use real-time feedback and analysis of their movements.
+This project begins with the prototype design and the development of the arduino's code and of an interface app. Afterwards, data from different movements is collected and the \gls{ML} 
+models are developed. The last goal is to implement a \gls{ML} model into a server connected via WiFi and a Tiny \gls{ML} model into the app giving real-time feedback and analysis of their movements.
 
 Basketball is one of the most popular sports worldwide and it is constantly becoming more complex and more competitive and so does the related technology alongside it. Gathering data from the players is crucial 
 to improve the efficiency of their practices and their game. As of today, coaches rely in video analysis to help their players with tactical movements and technical skills but this method has its 
@@ -35,8 +35,8 @@ at the end of games (fourth quarter), specially at the last minutes.
 \section{Project Description}
 \label{sec:project_description}
 
-For this project, for each foot, an Arduino and an \gls{EMG} sensor will be used. The Arduinos have an integrated \gls{IMU} each that captures acceleration and orientation and they work with \gls{BLE}.
-Besides the \gls{IMU}, the \gls{EMG} sensor will collect data from the muscles to provide more data for the movement recognition and a better insight for injuries.
+In this project, for each foot, an Arduino and an \gls{EMG} sensor will be used. The Arduinos have an integrated \gls{IMU} each that capture acceleration and orientation and they can communicate through \gls{BLE}.
+Besides the \gls{IMU}, the \gls{EMG} sensors will collect data from the muscles to provide further insight for the movement recognition and injury report.
 
 \begin{figure}[htbp]
   \centering
@@ -48,8 +48,8 @@ Besides the \gls{IMU}, the \gls{EMG} sensor will collect data from the muscles t
 \subsection{Prototype}
 \label{sec:prototype}
 
-The Arduino chosen was the Nano 33 \gls{BLE} Rev 2 for it's size, 9 axis \gls{IMU}, \gls{BLE} connection and versatility. The choice for the \gls{EMG} sensor was the BITalino Electromyography designed for surface \gls{EMG}. This 
-sensors were soldered to the Arduinos for their power and communication.
+The Arduino chosen was the Nano 33 \gls{BLE} Rev 2 for its size, 9 axis \gls{IMU}, \gls{BLE} connection and versatility. The choice for the \gls{EMG} sensor was the BITalino Electromyography designed for surface \gls{EMG}. This 
+sensors were soldered to the Arduinos for power and communication.
 
 \begin{figure}[htbp]
   \centering
@@ -61,7 +61,7 @@ sensors were soldered to the Arduinos for their power and communication.
 \subsubsection{Arduino Specifications}
 \label{ssec:arduinoSpecs}
 
-As already mentioned above, the Arduino chosen was the Arduino Nano 33 \gls{BLE} Rev 2. It runs at 3.3V and the \gls{IMU} sensors are the BMI270 (3-axis accelerometer + 3-axis gyroscope) and the BMM150 (3-axis Magnetometer). It has a 
+This Arduino runs at 3.3V and the \gls{IMU} sensors are the BMI270 (3-axis accelerometer + 3-axis gyroscope) and the BMM150 (3-axis Magnetometer) sensors. It has a 
 width of 18mm and length of 45mm weighting only 5g~\cite{arduinoDoc}. The Arduino IDE will be used for the Arduinos' programming.
 
 
@@ -141,11 +141,13 @@ First the arduino converts the digital value of the \gls{EMG} to mV and afterwar
 \begin{itemize}
   \item Root Mean Square - \gls{RMS}
   \item Mean Absolute Value - \gls{MAV}
-  \item Integrated \gls{EMG} - \gls{IEMG}
+  \item Waveform Length - \gls{WL}
   \item Zero Crossing - \gls{ZC}
-  \item Willison Amplitude - \gls{WAMP}
+  \item Slope Sign Changes - \gls{SSC}
   \item Variance - \gls{VAR}
 \end{itemize}
 
 
-Following the calculations, the app forwards the data to the database and then the ML algorithm uses the data to determine what movement is being done by the user.
+Following the feature calculations, the arduinos send the data to the android device that forwards it to the database where it gets stored and to the server that predicts which movement 
+the user is doing. %Tiny ML?
+

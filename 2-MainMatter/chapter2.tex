@@ -475,7 +475,7 @@ Mathematically, MAV is calculated as:
 \end{equation}
 
 where $N$ is the number os samples in the time frame and $x_i$ is the \gls{EMG} signal at sample $i$~\cite{HandGestureRecognition, ComprehensiveStudyOnEMG, 
-BiomedicalSignalProcessingAndControl, Review_IRBM_EMG, ReviewOfEMGSignalClassification, Hybrid}.
+BiomedicalSignalProcessingAndControl, Review_IRBM_EMG, ReviewOfEMGSignalClassification, Hybrid, ComparativeStudyOfSEMGFeatureEvaluationMethods, EvaluationOfFeatureExtractionAndClassification}.
 
 %\subsubsection{Mean Absolute Value Slope - MAVS} % ComprehensiveStudyOnEMG
 %\label{sssec:mean_absolute_value_slope}
@@ -493,7 +493,8 @@ than the MAV. It's defined as:
 \end{equation}
 
 Where $N$ is the number os samples in the time frame and $x_i$ represents the \gls{EMG} signal at each sample~\cite{HandGestureRecognition, BiomedicalSignalProcessingAndControl, 
-MeasuringSurfaceElectromyographyWithTextileElectrodes, Review_IRBM_EMG, ReviewOfEMGSignalClassification, Hybrid}.
+MeasuringSurfaceElectromyographyWithTextileElectrodes, Review_IRBM_EMG, ReviewOfEMGSignalClassification, Hybrid, EvaluationOfFeatureExtractionAndClassification, ComparativeStudyOfSEMGFeatureEvaluationMethods, 
+ResearchOnLowerLimbMotionRecognition}.
 
 \subsubsection{Variance - VAR} 
 \label{sssec:variance}
@@ -510,7 +511,8 @@ Mathematically it is expressed as:
 Where $N$ is the number of samples, $x_i$ represents each signal value, and $\mu$ is the mean of the signal.
 
 It is a useful feature for pattern recognition and classification since it captures the power and intensity fluctuations of the signal helping differentiating the many types of 
-muscle activity~\cite{HandGestureRecognition, ComprehensiveStudyOnEMG, Review_IRBM_EMG}.
+muscle activity~\cite{HandGestureRecognition, ComprehensiveStudyOnEMG, Review_IRBM_EMG, ComparativeStudyOfSEMGFeatureEvaluationMethods, EvaluationOfFeatureExtractionAndRecognition, 
+EvaluationOfFeatureExtractionAndClassification}.
 
 \subsubsection{Waveform Length - WL}
 \label{sssec:waveform_length}
@@ -574,7 +576,7 @@ Where $f_i$ represents the $i^{th}$ frequency component, $P(f_i)$ is the power s
 
 MNF provides a good insight into the distribution of power across the frequency spectrum and is often used to assess muscle fatigue, since it tends to decrease as fatigue increases. 
 Unlike MDF~(\autoref{sssec:mean_frequency}), which divides the spectrum into two equal halves, MNF reflects the overall spectral balance of the signal~\cite{HandGestureRecognition, 
-ComprehensiveStudyOnEMG, Review_IRBM_EMG, ReviewOfEMGSignalClassification, Hybrid}.
+ComprehensiveStudyOnEMG, Review_IRBM_EMG, ReviewOfEMGSignalClassification, Hybrid, EvaluationOfFeatureExtractionAndRecognition}.
 
 
 %\subsubsection{Wavelet Packet Energy - WPE} % HandGestureRecognition
@@ -668,7 +670,8 @@ electrical noise~\cite{Review_IRBM_EMG}.
 \label{sssec:wamp}
 
 Willison Amplitude is a time-somain feature that assumes the number of times the absolute difference between two consecutive signal samples exceeds a predefined 
-threshold. It is particularly useful for capturing changes in muscle activation intensity while remaining computationally efficient\cite{Review_IRBM_EMG}.
+threshold. It is particularly useful for capturing changes in muscle activation intensity while remaining computationally efficient\cite{Review_IRBM_EMG, 
+EvaluationOfFeatureExtractionAndClassification, EvaluationOfFeatureExtractionAndRecognition, ComparativeStudyOfSEMGFeatureEvaluationMethods, ResearchOnLowerLimbMotionRecognition}.
 
 Mathematically, it is defined by:
 

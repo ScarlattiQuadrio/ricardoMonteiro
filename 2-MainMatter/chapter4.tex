@@ -12,7 +12,7 @@
 \chapter{Implementation}
 \label{cha:implementation}
 
-This section is split into different sections explaining how to the project's hardware and software were developed.
+This section is split into different sections explaining the project's developed software.
 
 %\section{Prototype Hardware}
 %\label{sec:prototypeHardware}
@@ -34,17 +34,16 @@ This section is split into different sections explaining how to the project's ha
 \label{sec:arduinoCode}
 
 The Arduino programming language is a modified C/C++ language that simplifies the board coding that is run on the Arduino's IDE.
-There are two files of code for the Arduinos, one for the sensors calibration (specifically the magnetometer) and the other one is run for reading and sending the data.
-
+Initially there were two code files for the Arduinos, one for the sensors calibration (specifically the magnetometer) and the other one is run for reading and sending the data. The calibration 
+was eventually integrated in the main program and only a single program is needed.
 
 
 \subsubsection{Calibration}
 \label{sssec:calibration}
 
 To ensure accurate and reliable measurements, the magnetometer and the gyroscope undergo a calibration process. Since the magnetometer's values depend heavily on the surrounding environment, a calibration routine must be executed 
-before using the device. During this process, the program records the magnetometer's values for 10 seconds while the device is moved following a continuous motion resembling an infinity symbol ($\infty$) and rotated around its axis. For 
-each axis, the minimum and maximum values are stored. 
-
+before using the device. During this process, the program records the magnetometer's minimum and maximum values while the device is moved following a continuous motion resembling an infinity 
+symbol ($\infty$) and rotated around its axis until the user decides it's enough.
 
 The offset for each axis is then determined by the following equation:
 
@@ -67,7 +66,7 @@ In these expressions the minValue and the maxValue correspond to the lowest and 
   \label{eq:magnetometerValueEQ}
 \end{equation}
 
-The gyroscope also requires calibration to eliminate zero-rate bias (drift) that occurs even when the sensor is stationary. This process consists on leaving the device completely still for a 5 seconds while the raw angular velocity 
+The gyroscope also requires calibration to eliminate zero-rate bias (drift) that occurs even when the sensor is stationary. This process consists on leaving the device completely still for 5 seconds while the raw angular velocity 
 is measured and stored. At the end, the average of these readings for each axis is the offset used in the main program:
 
 \begin{equation}
@@ -75,22 +74,115 @@ is measured and stored. At the end, the average of these readings for each axis 
   \label{eq:gyroscopeValueEQ}
 \end{equation}
 
+After connecting both devices, in the Data Menu \autoref{sssec:data_menu}, there is a button that takes us to the Calibration Screen \autoref{calib_menu} where the user can proceed with that process. This should 
+always be done before collecting data in a new location or time. In case of a disconnection, when the device reconnects, the app automatically loads the last saves calibration values.
+When the arduino receives the calibration command (either gyroscope or magnetometer), it starts the respective operation until, in the magnetometer's case, the user ends it or, in the gyroscope case, it finishes automatically. Afterwards 
+the values are set as offsets and they're sent to the app where they are saved for later upload.
+
 
 \subsection{Sensors' Data Readings And Feature Calculations}
 \label{ssec:arduino_sensors_data_read}
 
+To achieve consistent gait analysis and movement recognition, the system requires a high frequency of \gls{EMG} and \gls{IMU} data collection. However \gls{BLE} has strict restrictions on the packet output frequency specially since we're 
+dealing with two devices at high frequencies (they may collide with each other).
+
+\subsubsection{Sampling and Windowing}
+\label{sssec:sampling_windowing}
+
+Raw \gls{EMG} signals contain significant noise and offset so, before feature extraction, a High-Pass Filter is applied with a cut-off frequency of approximately 20 Hz ($\alpha$ =0.888). The \gls{IMU} data is fed to the \gls{ML} trainings raw.
+The microcontrollers operate in a non-blocking loop architecture designed to handle both the \gls{EMG} and \gls{IMU} acquisitions and different rates:
+
+\begin{itemize}
+  \item High-Frequency \gls{EMG} Readings (1000 Hz) - To obtain relevant features from the sensor it is read every 1 ms.
+  \item Kinematic (\gls{IMU}) \& Transmission (50 Hz) - Every 20 ms the \gls{IMU} data is measured right before the ble communication since no calculations are done to that data.
+\end{itemize}
+
+The coordination of both timings is managed through a windowing approach. A sliding window of 20 \gls{EMG} samples is filled and once full (after 20 ms), the system triggers an event:
+
+\begin{enumerate}
+  \item The \gls{IMU} sensors are read.
+  \item The time-domain features are calculated from the last 200 \gls{EMG} samples (see \autoref{sssec:emg_features_calculation})
+  \item All the data is bundled in a packet and waits to be sent (see \autoref{}) %mencionar próxima secção
+\end{enumerate}
 
 
+\subsubsection{\gls{EMG} Features Calculation}
+\label{sssec:emg_features_calculation}
 
+As mentioned before, \gls{EMG} signals are non-stationary and contain significant noise making them unsuitable for direct raw transmission via \gls{BLE} due to bandwidth constraints. Furthermore, many studies indicate that raw \gls{EMG} 
+underperforms on a \gls{ML} classifier environment when compared against \gls{EMG} features.
+The microcontroller extracts time-domain features since they are computationally more efficient than the frequency-domain-features that have the heavy processing load of the Fast Fourier Transforms (FFT).
+Each calculation processes a window of 200 samples (200 ms) resulting in six measurements:
 
+\begin{enumerate}
+  \item gls{RMS} \autoref{sssec:root_mean_square}
+  \item gls{MAV} \autoref{sssec:mean_absolute_value}
+  \item gls{VAR} \autoref{sssec:variance}
+  \item gls{ZC} \autoref{sssec:zero_crossing}
+  \item gls{SSC} \autoref{sssec:slope_sign_changes}
+  \item gls{WL} \autoref{sssec:waveform_length}
+\end{enumerate}
+
+%Talvez um examplo de um sinal emg e o significado de cada feature
 
 \subsection{Bluetooth Low Energy}
 \label{ssec:arduino_ble}
 
-For the Bluetooth connection we first have to assign a name to the device and a unique address for its service and characteristics. There is one characteristic for each axis of data (x, y and z) and one for the \gls{EMG} data. 
-Then, as explained in section X, we advertise the service to the nearby devices and when there is a connection the data collection is started and the respective characteristics updated.%falta número da secção
+For the Bluetooth connection we first have to assign a name to the device and a unique address for its service and characteristics. In this project three characteristic are used.
+Then, as explained in section X, we advertise the service to the nearby devices and when there is a connection the last saved calibration values are uploaded and then the data collection is started and 
+the characteristic updated.%falta número da secção
 
+\subsubsection{GATT Service}
+\label{sssec:arduino_gatt}
 
+The system defines a unique service identified by a 128-bit UUID. Within this service, three specific Characteristics are utilized to handle data streaming and bi-directional control command flow.
+
+\begin{table}[ht]
+  \centering
+  \caption{Bluetooth Characteristic Configuration}
+  \label{tab:gatt_config}
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}{|m{3.2cm}||m{2.8cm}|m{2.2cm}|m{5cm}|}
+    \hline
+    \multicolumn{4}{|c|}{\textbf{Characteristic Configuration}} \\
+    \hline
+    Characteristic Names&Properties&UUID Prefix&Function\\
+    \hline
+    Data Stream& READ \& \newline NOTIFY&1b4867e2&The android app listens to this characteristic and is notified whenever the devices upload data\\
+    Calibration \newline Command& WRITE&1b4867e3&When the user starts calibrating the android app sends commands via this characteristic\\
+    Calibration Data& READ \& \newline NOTIFY&1b4867e4&Here the devices upload the progress of the calibrations and the final results\\
+    \hline
+  \end{tabular}
+\end{table}
+
+\subsubsection{Payload Optimization}
+\label{sssec:arduino_payload}
+
+ A standard 32-bit floating-point representation would require 60 bytes per sample, which is inefficient for BLE bandwidth so in order to reach the objective of 50 Hz transmission rate for the nine IMU axis and six EMG features the 
+ payload has to be highly optimized. With this in mind, all the float sensor values were converted to 16 bit signed integers reducing the packets significantly while maintaining enough precision for analysis.
+
+ Each sensor frame consists of:
+
+\begin{enumerate}
+  \item Accelerometer Data (6 bytes): X, Y, Z ($\times100$ scaling)
+  \item Gyroscope Data (6 bytes): X, Y, Z ($\times100$ scaling)
+  \item Magnetometer Data (6 bytes): X, Y, Z ($\times100$ scaling)
+  \item \gls{EMG} Features (12 bytes): gls{RMS}, gls{WL}, gls{ZC}, gls{MAV}, gls{SSC}, gls{VAR} (Mixed scaling: $\times10000, \times10000 or \times10$)
+\end{enumerate}
+
+\begin{equation}
+  Total Size = 18 (\gls{IMU}) + 12 (\gls{EMG}) = 30 Bytes
+  \label{eq:packetSize}
+\end{equation}
+
+Although the packet size has been reduced, transmitting an individual packet every 20 ms from two separate device still introduces a \gls{BLE} protocol overload. To get around this problem, the packets are bundled in groups of 5 ($30 bytes\times5 packets=150 bytes$).
+This strategy effectively utilizes the large MTU (Maximum Transmission Unit) negotiated with the Android device, reducing the communication frequency to exactly once every 100 ms (for each device) reducing cpu usage and radio congestion. 
+To make the system even more robust, a FIFO (First In First Out) buffer with a capacity of 150 packets was implemented. Whenever the communication with the Android device fails, that data is then saved in the buffer and the device 
+tries to send it again later.
+One other challenge introduced by the \gls{BLE} transmission and buffering implemented is the blocking nature of the communication operations. Pushing a 150 Byte bundle to the Bluetooth stack will momentarily block the main processing loop. 
+While the microprocessor waits for the radio to finish, it will miss some of the 1 ms window defined for the \gls{EMG} sampling leading to gaps in the timeline. To circumvent this, the system tracks the elapsed time strictly via a 
+microsecond hardware timer. Immediately before constructing and transmitting the next \gls{BLE} bundle, the firmware compares the current time against the scheduled \gls{EMG} sampling interval. If the previous transmission caused a delay, 
+the system enters a rapid catch-up loop, executing the analog read and filtering functions multiple times sequentially until the "time debt" is cleared.
 
 
 \section{Android Application}
