@@ -38,8 +38,8 @@ Initially there were two code files for the Arduinos, one for the sensors calibr
 was eventually integrated in the main program and only a single program is needed.
 
 
-\subsubsection{Calibration}
-\label{sssec:calibration}
+\subsection{Calibration}
+\label{ssec:calibration}
 
 To ensure accurate and reliable measurements, the magnetometer and the gyroscope undergo a calibration process. Since the magnetometer's values depend heavily on the surrounding environment, a calibration routine must be executed 
 before using the device. During this process, the program records the magnetometer's minimum and maximum values while the device is moved following a continuous motion resembling an infinity 
@@ -74,7 +74,7 @@ is measured and stored. At the end, the average of these readings for each axis 
   \label{eq:gyroscopeValueEQ}
 \end{equation}
 
-After connecting both devices, in the Data Menu \autoref{sssec:data_menu}, there is a button that takes us to the Calibration Screen \autoref{calib_menu} where the user can proceed with that process. This should 
+After connecting both devices, in the Data Menu (\autoref{sssec:data_menu}), there is a button that takes us to the Calibration Screen (\autoref{sssec:calib_menu}) where the user can proceed with that process. This should 
 always be done before collecting data in a new location or time. In case of a disconnection, when the device reconnects, the app automatically loads the last saves calibration values.
 When the arduino receives the calibration command (either gyroscope or magnetometer), it starts the respective operation until, in the magnetometer's case, the user ends it or, in the gyroscope case, it finishes automatically. Afterwards 
 the values are set as offsets and they're sent to the app where they are saved for later upload.
@@ -102,7 +102,7 @@ The coordination of both timings is managed through a windowing approach. A slid
 \begin{enumerate}
   \item The \gls{IMU} sensors are read.
   \item The time-domain features are calculated from the last 200 \gls{EMG} samples (see \autoref{sssec:emg_features_calculation})
-  \item All the data is bundled in a packet and waits to be sent (see \autoref{}) %mencionar próxima secção
+  \item All the data is bundled in a packet and waits to be sent (see \autoref{sssec:arduino_payload}) %mencionar próxima secção
 \end{enumerate}
 
 
@@ -115,12 +115,12 @@ The microcontroller extracts time-domain features since they are computationally
 Each calculation processes a window of 200 samples (200 ms) resulting in six measurements:
 
 \begin{enumerate}
-  \item gls{RMS} \autoref{sssec:root_mean_square}
-  \item gls{MAV} \autoref{sssec:mean_absolute_value}
-  \item gls{VAR} \autoref{sssec:variance}
-  \item gls{ZC} \autoref{sssec:zero_crossing}
-  \item gls{SSC} \autoref{sssec:slope_sign_changes}
-  \item gls{WL} \autoref{sssec:waveform_length}
+  \item \gls{RMS} \autoref{sssec:root_mean_square}
+  \item \gls{MAV} \autoref{sssec:mean_absolute_value}
+  \item \gls{VAR} \autoref{sssec:variance}
+  \item \gls{ZC} \autoref{sssec:zero_crossing}
+  \item \gls{SSC} \autoref{sssec:slope_sign_changes}
+  \item \gls{WL} \autoref{sssec:waveform_length}
 \end{enumerate}
 
 %Talvez um examplo de um sinal emg e o significado de cada feature
@@ -130,7 +130,7 @@ Each calculation processes a window of 200 samples (200 ms) resulting in six mea
 
 For the Bluetooth connection we first have to assign a name to the device and a unique address for its service and characteristics. In this project three characteristic are used.
 Then, as explained in section X, we advertise the service to the nearby devices and when there is a connection the last saved calibration values are uploaded and then the data collection is started and 
-the characteristic updated.%falta número da secção
+the characteristic is updated.%falta número da secção
 
 \subsubsection{GATT Service}
 \label{sssec:arduino_gatt}
@@ -182,7 +182,8 @@ tries to send it again later.
 One other challenge introduced by the \gls{BLE} transmission and buffering implemented is the blocking nature of the communication operations. Pushing a 150 Byte bundle to the Bluetooth stack will momentarily block the main processing loop. 
 While the microprocessor waits for the radio to finish, it will miss some of the 1 ms window defined for the \gls{EMG} sampling leading to gaps in the timeline. To circumvent this, the system tracks the elapsed time strictly via a 
 microsecond hardware timer. Immediately before constructing and transmitting the next \gls{BLE} bundle, the firmware compares the current time against the scheduled \gls{EMG} sampling interval. If the previous transmission caused a delay, 
-the system enters a rapid catch-up loop, executing the analog read and filtering functions multiple times sequentially until the "time debt" is cleared.
+the system enters a rapid catch-up loop, executing the analog read and filtering functions multiple times sequentially until the "time debt" is cleared ensuring that while the transmission may introduce some jitter in the packet arrival time 
+at the Android device, the sampling period remains consistent within the microcontroller's memory, preserving the temporal integrity required for accurate frequency-domain features.
 
 
 \section{Android Application}
@@ -190,9 +191,9 @@ the system enters a rapid catch-up loop, executing the analog read and filtering
 
 %diagrama de blocos
 
-As mentioned in the Work Proposal\autoref{cha:workProposal}, a dedicated Android application as developed to serve as a bridge between the prototypes and the user/database. This application was developed in Kotlin, which is a programming 
-language developed to interoperate fully with Java developed by JetBrains. Since 2019 it is the preferred language by Google for Android app development.
-The application handles the \gls{BLE} connection with the devices and provides a user interface for researchers, athlete and coaches to visualize the data and the model's prediction in real time.
+As mentioned in the Work Proposal (\autoref{cha:workProposal}), a dedicated Android application was developed in Kotlin, to serve as a bridge between the prototypes and the user/database. This programming 
+language is used to interoperate fully with Java developed by JetBrains and since 2019 it has been the preferred language by Google for Android app development.
+The application handles the \gls{BLE} connection with the devices and provides a user interface for researchers, athletes and coaches to visualize the collected data and the model's predictions in real time.
 
 The following section provides a detailed description of the software architecture of the application. Each file is explained according to its function within the system, with emphasis on how data flows from the BLE layer to the 
 machine learning classifier and finally to the user interface. This breakdown clarifies the responsibilities of each component, highlights the interaction between modules, and demonstrates how the application was structured to 
@@ -202,7 +203,7 @@ This application follows a modular architecture separating responsibilities betw
 testability, maintainability and division of tasks.
 
 The MainActivity.kt is the entry point of the application, initializing the navigation host and providing the top-level container for the user interface. From this activity, the navigation system manages the transitions between the 
- windows (implemented as Jetpack Compose composables), each of which corresponds to a specific functionality of the program.
+windows (implemented as Jetpack Compose composables), each of which corresponds to a specific functionality of the program.
 The Android application serves as bridge between the devices, the user and the database. 
 
 
@@ -210,12 +211,11 @@ The Android application serves as bridge between the devices, the user and the d
 \subsection{User Interface}
 \label{ssec:android_interface}
 
-The application consists in 3 different screens that define the layout and interactive elements that the user sees. Each of of these windows as a corresponding ViewModel that acts as an connection point between the user interface 
+The application consists in 4 different screens that define the layout and interactive elements that the user sees. Each one of these windows has a corresponding ViewModel that acts as a connection point between the user interface 
 and the application logic. These ViewModels handle any calls made by the screens and any changes to relevant operations such as the bluetooth connection.
 
-At first, when the app is launched, it checks for some necessary permissions specifically the Bluetooth (\texttt{BLUETOOTH\_SCAN and BLUETOOTH\_CONNECT}), 
-the location (\texttt{ACCESS\_FINE\_LOCATION and ACCESS\_COARSE\_LOCATION}) and the internet access permission. Even though the app doesn't use the user's location, its permission is needed for \gls{BLE} for Android 12 and higher 
-(the permissions are only called if that's the case). 
+At first, when the app is launched, some necessary permissions are checked, specifically the Bluetooth (\texttt{BLUETOOTH\_SCAN and BLUETOOTH\_CONNECT}), 
+the location (\texttt{ACCESS\_FINE\_LOCATION and ACCESS\_COARSE\_LOCATION}) and the internet access permissions. Even though the app doesn't use the user's location, its permission is required for \gls{BLE} in Android 12 and higher. 
 
 \begin{figure}[htbp]
   \centering
@@ -241,32 +241,99 @@ data menu(\autoref{sssec:data_menu}).
 \subsubsection{Profile Menu}
 \label{sssec:profile_menu}
 
-In this menu every saved user profile is listed and the user can create new profiles and delete existing ones. When creating a profile the app generates a unique id and the user is asked for a name and height. 
-The list of users is stored locally and remains in every session.
+In this menu every saved user profile is listed and the user is able to create new profiles and delete existing ones. When creating a profile the app generates a unique id and the user is asked for a name and height. 
+The list of users is stored locally and is available in every session.
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.8\linewidth]{usersScreen.jpg}
-  \caption{Profiles' Menu}
-  \label{fig:usersScreen}
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{usersScreen.jpg}
+        \caption{Profiles' Menu}
+        \label{fig:usersScreen}
+    \end{subfigure}
+    \hfill 
+    \begin{subfigure}[b]{0.35\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{newUserWindowOnly.jpg}
+        \caption{New User Window}
+        \label{fig:newUserWindow}
+    \end{subfigure}
+    
+    \caption{Profile's Menu and User Creation}
+    \label{fig:dataScreens}
 \end{figure}
+
 
 \subsubsection{Data Menu}
 \label{sssec:data_menu}
 
-In this section the user can collect data sending it to the data base for training future models. On the left the user can choose a user profile and which movement is being currently done. On the right the applied model is 
-predicting what movement is being done and a switch that controls if the app is sending the data to the database or not (it should only be turned on if the respective user is selected and only while the movement chosen is recorded). 
-At the center we can see the data that's being received through \gls{BLE} from both devices.
+When this menu is opened, the app tries to connect to both devices and when able, starts exchanging data. The data is then shown to the user. On the left the user can select an active user profile and a label for the current movement. On the right, 
+from top to bottom, the \gls{ML} models' predictions are shown (\autoref{}). Beneath the models' projections, there are 2 switches - one to start/stop the \gls{ML} server connection and another one to start/stop sending the collected data to the 
+InfluxDB database. At last there is a button that takes the application to the Calibration Menu (\autoref{sssec:calib_menu}).
 
 %falar do VariabResult
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.8\linewidth]{dataScreenNoCon.jpg}
-  \caption{Data Menu without connected devices}
-  \label{fig:dataScreenNoC}
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{dataScreenNoCon.jpg}
+        \caption{Without devices' connections}
+        \label{fig:dataScreenNoC}
+    \end{subfigure}
+    \hfill 
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{dataScreenWithCon.jpg}
+        \caption{When both devices are connected}
+        \label{fig:dataScreenWithCon}
+    \end{subfigure}
+    
+    \caption{Data Menu}
+    \label{fig:dataScreen}
 \end{figure}
 
+
+\subsubsection{Calibration Menu}
+\label{sssec:calib_menu}
+
+This window provides a dedicated interface for managing the sensor calibration routines which are critical for ensuring the accuracy of the \gls{IMU}. As mentioned in the Arduino section (\autoref{ssec:calibration}), due to the inherent hardware 
+drift and environmental magnetic interference, the gyroscope and magnetometer have to be recalibrated periodically for better and more accurate results.
+In this page the user can trigger the calibration methods that send specific commands to the devices with the instructions needed. For the gyroscope, the firmware executes a static calibration by averaging 1000 samples to compute and nullify 
+the offset. For the magnetometer, the system performs a dynamic hard-iron calibration, recording the maximum and minimum magnetic field intensities during a multi-axis rotation to calculate precise spatial offsets and scaling factors.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{calibScreen.jpg}
+  \caption{Calibration Menu}
+  \label{fig:calibMenu}
+\end{figure}
+
+The gyroscope calibration for both devices is done at the same time while the magnetometers' are executed one at a time. For each operation the app has a respective button and while ongoing calibration, the app display some real-time progress 
+to the user via a dedicated \gls{BLE} characteristic.
+
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{calibScreenIMU.jpg}
+        \caption{Gyroscope Calibration in Progress}
+        \label{fig:calibMenuIMU}
+    \end{subfigure}
+    \hfill 
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{calibScreenFinished.jpg}
+        \caption{Calibration Finished}
+        \label{fig:calibMenuFinished}
+    \end{subfigure}
+    
+    \caption{Calibration Menu}
+    \label{fig:calibMenu2}
+\end{figure}
+
+When all the calibration operations are finished, the following screen (\autoref{fig:calibMenuFinished}) is presented and the values are saved to be uploaded when the devices reconnect
 
 
 \subsection{Arduino BLE Communication}
@@ -295,9 +362,14 @@ Each receive manager is responsible for managing the lifecycle of the correspond
 First, using the BluetoothAdapter (see \autoref{ssec:android_com_arduino}), the manager searches for the respective device using its name and uuid and once discovered a \gls{GATT} connection is tried. After establishing the connection, 
 the manager finds the device's services. If a device disconnects the application cleans up its resources and starts trying to reconnect.
 
-Since the arduino is constantly changing its sensor values and updating the corresponding characteristic, with an approach where the notifications were turned the managers would be getting flooded with callbacks and only one characteristic's 
-callbacks were being handled and the rest ignored (Android currently doesn't have any way to handle this). With this in mind a cycle was implemented where the application reads every characteristic in order in loop making sure 
-everything gets updated and handled. At the end of the loop, if the sending data button is turned on, the data received is sent to the database together with the userId, the movement chosen and a timestamp. 
+In the first approach the system was designed with separate \gls{GATT} characteristics for different sensor axes and \gls{EMG} data. However, relying on multiple simultaneous asynchronous notifications caused the Android \gls{BLE} stack to 
+frequently drop packets and ignore callbacks. To resolve this without resorting to an inefficient sequential polling queue, the system was optimized by bundling all sensor data into a single 150 byte payload transmitted via a single 
+characteristic.
+
+The managers subscribe to the data characteristic of the respective device and rely on the onCharacteristicChanged callback. This allows the microcontrollers to asynchronously push data bundles at 10 Hz. Upon receiving the payload, the 
+managers decode the byte arrays into their respective float and integer values. If the data upload switch is active, this payload is appended with the active userId, the selected movement label, and a timestamp, and is immediately sent 
+to the database.
+
 
 \subsection{Communication with InfluxDB}
 \label{ssec:android_com_data_base}
@@ -306,7 +378,8 @@ As mentioned before the application uses InfluxDB as its database. The interface
 client/database info (token, database url and organization and bucket name). This is a coroutine-based execution meaning that it will never stop or delay the main user interface thread and that it can be run multiple times in parallel 
 without affecting the application performance.
 
-Since InfluxDB organizes data using measurements, tags, fields and timestamps, first the "to be sent data" has to be transformed to the corresponding structure:
+Since InfluxDB organizes data using measurements, tags, fields, and timestamps, the application must first parse the incoming \gls{BLE} payloads into the InfluxDB Line Protocol. This is a text-based format that optimizes ingestion 
+speed by representing the data points in a single string structure:
 
 \begin{itemize}
     \item Measurement - movement\_data
@@ -315,17 +388,49 @@ Since InfluxDB organizes data using measurements, tags, fields and timestamps, f
     \item Timestamp - Instant.now() (registers that precise moment)
 \end{itemize}
 
-Afterwards the only thing left to do is to write the data onto the database and catch any possible errors.
+Once formatted, the data is transmitted to the cloud via an asynchronous HTTP POST request to the InfluxDB API, ensuring any network timeouts or errors are caught and handled without freezing the application's user interface.
 
 \subsection{User Database}
 \label{ssec:android_users}
 
-The purpose of the User Database is to store and manage information related to the users of the devices. Unlike InfluxDB which is specialized for high-frequency data, this database is designed as a static/low-frequency database. 
-It is implemented locally on the Android device saving the users database throughout sessions. 
+To track the origin of the physiological signals, the Android application has a robust local profiling system. Before data collection begins, the user should identify the active subject (otherwise the app send a null for the id to the database). 
+This is managed locally on the Android device using the Android Room Persistence Library, which provides an abstraction layer over an SQLite database to allow fluent database access while harnessing the full power of native \gls{SQL}.
 
-Each user is represented by the user class and have a name, height and a unique Id that is automatically generated. These profiles are stored in a list that can be accessed by the User and the Variable Viewmodels.
+\subsubsection{User Data Model and Data Access Object}
+\label{sssec:android_users_model}
+
+The database system is defined by a data entity (user.kt) that represents a subject. Each subject is assigned an auto-generated primary key (id), a name, and height in centimetres. 
+Interactions with the database are strictly mediated through a Data Access Object (DAO). The UserDao defines the \gls{SQL} operations required to insert, delete, and retrieve subject profiles. To maintain a fluid user interface and prevent 
+blocking the application's main thread during disk I/O operations, all database queries are executed asynchronously using Kotlin Coroutines (suspend functions).
+
+\subsubsection{Repository Pattern and Reactive State}
+\label{sssec:android_users_repository}
+
+To separate the data persistence logic from the User Interface, the architecture employs the Repository Pattern (UserRepository.kt). The repository acts as the single source for user data across the entire application.
+It abstracts the DAO layer, providing clean functions for the application's ViewModels to fetch lists of available users or create new ones while maintaining recollection of the active user.
+
+The active user's ID is exposed to the rest of the application as a reactive StateFlow and is sent along side the sensors' data to the database. This modern reactive programming paradigm ensures that whenever the active user changes in the 
+User Menu, any observing component in the application (such as the \gls{BLE} transmission service) is instantly and automatically updated with the new context.
+
+\subsection{Communication with the Machine Learning server}
+\label{ssec:com_ml_server}
+
+
+
+
 
 
 \section{Machine Learning Code}
 \label{sec:ml_code}
 
+
+
+\subsection{Models' Training}
+\label{ssec:ml_training}
+
+
+\subsection{Random Forest}
+\label{ssec:ml_rf}
+
+\subsection{Tiny \gls{ML}}
+\label{ssec:ml_tml}
