@@ -14,20 +14,22 @@
 
 This section is split into different sections explaining the project's developed software.
 
-%\section{Prototype Hardware}
-%\label{sec:prototypeHardware}
+\section{Prototype Hardware}
+\label{sec:prototypeHardware}
 
-%Two prototypes were developed and they are composed by an Arduino 33 nano \gls{BLE}  Rev 2, an \gls{EMG} and a small power bank to provide power (see \ref{sec:prototype}).
+Two prototypes were developed composed by an Arduino 33 nano \gls{BLE} Rev 2, an \gls{EMG} sensor and a small power bank to provide power (see \ref{sec:prototype}).
 
 %Foto do sistema completo
 
-%\subsection{Arduino}
-%\label{ssec:arduino}
+Standard power banks have a modern system to idle if not enough power is drawn. Since the Arduinos don't break that threshold, to keep the power banks active, a keep-alive circuit was utilized to periodically pulse 
+the current draw.
 
-%As mentioned in the introduction of this chapter, the Arduinos used are two Arduino 33 nano \gls{BLE} Rev 2 which is a 3.3V board of only 45x18mm of area. It features a powerful processor, the nRF52840 from Nordic Semiconductors, a 32-bit 
-%ARM® Cortex®-M4 CPU running at 64 MHz. In terms of sensors, the Arduino has a 9 axis \gls{IMU} meaning it includes an accelerometer, a gyroscope, and a magnetometer with 3-axis resolution each. As its name mentions it also has \gls{BLE} 
-%communication which is vital for this project~\cite{arduinoDoc}.
+\subsection{Arduino}
+\label{ssec:arduino}
 
+As mentioned in the introduction of this chapter, the Arduinos used are two Arduino 33 nano \gls{BLE} Rev 2 which is a 3.3V board of only 45x18mm of area. It features a powerful processor, the nRF52840 from Nordic Semiconductors, a 32-bit 
+ARM® Cortex®-M4 CPU running at 64 MHz. In terms of sensors, the Arduino has a 9 axis \gls{IMU} meaning it includes an accelerometer, a gyroscope, and a magnetometer with 3-axis resolution each. As its name mentions it also has \gls{BLE} 
+communication which is vital for this project~\cite{arduinoDoc}.
 
 
 \section{Arduino Code}
@@ -102,7 +104,7 @@ The coordination of both timings is managed through a windowing approach. A slid
 \begin{enumerate}
   \item The \gls{IMU} sensors are read.
   \item The time-domain features are calculated from the last 200 \gls{EMG} samples (see \autoref{sssec:emg_features_calculation})
-  \item All the data is bundled in a packet and waits to be sent (see \autoref{sssec:arduino_payload}) %mencionar próxima secção
+  \item All the data is bundled in a packet and waits to be sent (see \autoref{sssec:arduino_payload})
 \end{enumerate}
 
 
@@ -129,8 +131,7 @@ Each calculation processes a window of 200 samples (200 ms) resulting in six mea
 \label{ssec:arduino_ble}
 
 For the Bluetooth connection we first have to assign a name to the device and a unique address for its service and characteristics. In this project three characteristic are used.
-Then, as explained in section X, we advertise the service to the nearby devices and when there is a connection the last saved calibration values are uploaded and then the data collection is started and 
-the characteristic is updated.%falta número da secção
+Then the service is advertised to nearby devices and, when there's a connection, the last saved calibration values are uploaded, the sensors' data collection is started and the characteristic is updated.%falta número da secção
 
 \subsubsection{GATT Service}
 \label{sssec:arduino_gatt}
@@ -189,7 +190,6 @@ at the Android device, the sampling period remains consistent within the microco
 \section{Android Application}
 \label{sec:android_app}
 
-%diagrama de blocos
 
 As mentioned in the Work Proposal (\autoref{cha:workProposal}), a dedicated Android application was developed in Kotlin, to serve as a bridge between the prototypes and the user/database. This programming 
 language is used to interoperate fully with Java developed by JetBrains and since 2019 it has been the preferred language by Google for Android app development.
@@ -201,6 +201,13 @@ ensure modularity, maintainability, and extensibility.
 
 This application follows a modular architecture separating responsibilities between the user interface, data handling, and Bluetooth communication. At its core, the program follow the MVVM (Model-View-ViewModel) design pattern, improving 
 testability, maintainability and division of tasks.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=1\linewidth]{appOverview.jpg}
+  \caption{Android Application Overview}
+  \label{fig:appOverview}
+\end{figure}
 
 The MainActivity.kt is the entry point of the application, initializing the navigation host and providing the top-level container for the user interface. From this activity, the navigation system manages the transitions between the 
 windows (implemented as Jetpack Compose composables), each of which corresponds to a specific functionality of the program.
@@ -269,7 +276,7 @@ The list of users is stored locally and is available in every session.
 \label{sssec:data_menu}
 
 When this menu is opened, the app tries to connect to both devices and when able, starts exchanging data. The data is then shown to the user. On the left the user can select an active user profile and a label for the current movement. On the right, 
-from top to bottom, the \gls{ML} models' predictions are shown (\autoref{}). Beneath the models' projections, there are 2 switches - one to start/stop the \gls{ML} server connection and another one to start/stop sending the collected data to the 
+from top to bottom, the \gls{ML} models' predictions are shown (\autoref{sec:ml_code}). Beneath the models' projections, there are 2 switches - one to start/stop the \gls{ML} server connection and another one to start/stop sending the collected data to the 
 InfluxDB database. At last there is a button that takes the application to the Calibration Menu (\autoref{sssec:calib_menu}).
 
 %falar do VariabResult
@@ -336,7 +343,7 @@ to the user via a dedicated \gls{BLE} characteristic.
 When all the calibration operations are finished, the following screen (\autoref{fig:calibMenuFinished}) is presented and the values are saved to be uploaded when the devices reconnect
 
 
-\subsection{Arduino BLE Communication}
+\subsection{Arduino \gls{BLE} Communication}
 \label{ssec:android_com_arduino}
 
 In Android \gls{BLE}  data is handle asynchronously which means that the app receives callbacks which have to be handled. For the \gls{BLE} communication Android provides a package with a layered architecture:
@@ -412,9 +419,43 @@ It abstracts the DAO layer, providing clean functions for the application's View
 The active user's ID is exposed to the rest of the application as a reactive StateFlow and is sent along side the sensors' data to the database. This modern reactive programming paradigm ensures that whenever the active user changes in the 
 User Menu, any observing component in the application (such as the \gls{BLE} transmission service) is instantly and automatically updated with the new context.
 
-\subsection{Communication with the Machine Learning server}
-\label{ssec:com_ml_server}
+\subsection{Machine Learning Predictions}
+\label{ssec:ml_pred}
 
+The system was implemented with a double \gls{ML} architecture. This approach utilizes both local computing (executed directly on the Android device) and cloud computing (executed on a remote server). By running two models simultaneously on the exact same data 
+streams, the system is able to guarantee a low latency feedback for the user via the mobile application, while continuously logging a potentially more robust cloud prediction for comparative analysis.
+
+
+\subsubsection{Data Processing}
+\label{sssec:ml_data}
+
+To accurately identify every movement the user makes, the models require temporal context, making evaluating single 20ms data points insufficient. To resolve this, a time-series sliding window algorithm was implemented. The Android application synchronizes 
+the \gls{BLE} packets from the left and right insoles, combining their respective 15 features into a singular 30-feature vector per timestamp. These vectors are accumulated in a First-In-First-Out (FIFO) buffer to create a continuous observation window of 300ms 
+that is then fed into the \gls{ML} models.
+
+
+The 300ms window size was specifically selected to capture the concentrated kinematic signature of transient, explosive basketball movements, effectively preventing the "label dilution" that could occur in larger windows. Furthermore, a step size of 100ms was 
+applied, resulting in a 66\% window overlap. This configuration compresses the classification rate to a highly efficient 10Hz, maintaining the illusion of instantaneous real-time feedback while preserving smartphone battery life and avoiding network congestion.
+
+Once the 15-frame buffer is filled, the local Edge inference is managed by the MovementClassifier class within the Android application. Since the TensorFlow Lite model resides directly in the application's assets directory, it 
+requires no internet connection to function. The model processes the flattened feature array and yields a probability distribution across the target classification labels. An argmax function is applied 
+to the output tensor to extract the highest confidence prediction. This prediction is immediately pushed to a Kotlin StateFlow, triggering a quick update to the Jetpack Compose User Interface, ensuring the athlete receives uninterrupted feedback even in 
+environments with degraded network connectivity.
+
+
+
+\subsubsection{Communication with the Cloud server}
+\label{sssec:com_ml_server}
+
+To facilitate the dual-tier prediction, the Android application securely transmits the buffered sensor data to the Flask server using the Retrofit network library. When the 15-frame buffer is filled, the data is serialized into a JSON payload and transmitted via 
+an asynchronous HTTP POST request to the /predict endpoint.
+
+To guarantee that network latency does not block the main thread or interrupt the continuous \gls{BLE} data ingestion, the API call is offloaded to a background thread utilizing Kotlin Coroutines (Dispatchers.IO). Upon receiving a successful HTTP 200 OK 
+response from the server, the application deserializes the cloud-computed prediction.
+
+Finally, to enable rigorous post-session analysis, the application utilizes the InfluxDB-Client-Kotlin library to asynchronously log both the TinyML local prediction and the Random Forest cloud prediction to an InfluxDB database. These predictions are uploaded
+tagged with a timestamp and User ID. %As this measurement shares the exact time-series axis as the raw \texttt{imu\_data} measurement, the system allows for the seamless, synchronized overlay 
+%of machine learning classifications directly on top of the raw biomechanical waveforms in data visualization platforms like Grafana.
 
 
 
@@ -423,14 +464,43 @@ User Menu, any observing component in the application (such as the \gls{BLE} tra
 \section{Machine Learning Code}
 \label{sec:ml_code}
 
-
+The development, training, and exportation of the machine learning models were conducted using Python within a Google Colab environment. This section details the data preprocessing pipeline, the time-series windowing algorithm, and the specific architectures used 
+for both the Cloud and Local classification models.
 
 \subsection{Models' Training}
 \label{ssec:ml_training}
 
+To train models capable of recognizing dynamic biomechanical movements, the raw sensor data previously logged to InfluxDB was exported as CSV files and ingested into a pandas DataFrame. The initial dataset consisted of discrete kinematic and electromyography 
+measurements mapped to specific target labels (see \autoref{ssec:other_movements}).
+
+The first phase of preprocessing involved synchronizing the independent left and right insole data streams. Timestamps were parsed and rounded to the nearest 20ms. The dataset was then pivoted from a long format to a wide format, aligning the 15 features from the 
+left insole and the 15 features from the right insole into a singular 30 feature vector for every discrete timestamp.
+
+Since transient basketball movements cannot be accurately classified from a single 20ms static frame, the synchronized data was subjected to a sliding window transformation. The algorithm grouped the continuous data into windows of 300ms. To ensure the models were 
+trained on contiguous sequences without mixing different movement classes, the grouping was strictly partitioned by userId and movement label. 
+
+Using a step size of 100ms, overlapping windows were generated. Each $15 \times 30$ matrix was then flattened into a 1-dimensional array of 450 features. This flattened array served as the input vector ($X$) for both models, with the corresponding movement acting 
+as the target label. To ensure a robust evaluation, the generated windows were divided using an 80/20 train-test split, employing stratification to maintain proportional class distributions across both sets.
 
 \subsection{Random Forest}
 \label{ssec:ml_rf}
 
+For the Cloud-Tier classification, a \gls{RF} algorithm was implemented using the scikit-learn library. \gls{RF} was selected due to its ensemble learning architecture, which constructs a multitude of decision trees during training and outputs the mode 
+of the classes for classification. This approach is highly resistant to overfitting and performs exceptionally well on high-dimensional tabular data, such as the 450-feature vectors generated by the sliding window.
+
+The model was instantiated with n\_estimators = 100 (utilizing 100 individual decision trees) and a max\_depth = 15 to prevent the trees from memorizing localized noise in the training data. The model was fitted on the 80\% training split and evaluated against 
+the 20\% testing split. Following successful validation, the trained model pipeline was serialized and exported as a .pkl file using the joblib library. This serialized file was subsequently deployed to the Python Flask backend on Render.com, allowing the server 
+to reconstruct the exact model state for real-time identification.
+
 \subsection{Tiny \gls{ML}}
 \label{ssec:ml_tml}
+
+To facilitate ultra-low latency inference directly on the Android edge device, a Tiny Machine Learning (TinyML) approach was employed - developing a lightweight \gls{NN} using the TensorFlow and Keras libraries.
+
+Given the strict computational constraints of mobile devices, the network architecture was aggressively optimized. The input layer was designed to dynamically accept the 450-feature flattened array. This was followed by two dense hidden layers consisting of 32 
+and 16 neurons, respectively, both utilizing the Rectified Linear Unit (ReLU) activation function to introduce non-linearity. The final output layer consisted of neurons corresponding to the total number of target classes, utilizing a softmax activation 
+function to output a normalized probability distribution.
+
+The model was compiled using the Adam optimizer and sparse categorical cross-entropy as the loss function, circumventing the need to manually one-hot encode the target labels. The network was trained over 40 epochs with a batch size of 32. Once validated against 
+the testing split, the Keras model was passed through the TFLiteConverter. Default optimizations were applied to quantize the model weights and reduce the overall memory footprint. The resulting binary file (tinyml\_model.tflite) was exported and embedded directly 
+into the Android application's asset directory, granting the mobile device autonomous classification capabilities without relying on external APIs.
