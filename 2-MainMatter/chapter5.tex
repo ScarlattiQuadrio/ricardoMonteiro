@@ -16,15 +16,27 @@
 \label{sec:arduino_emg_placement}
 
 %foto do dispositivo colocado
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{physicalSystemOverview.jpg}
+  \caption{Prototype in place}
+  \label{fig:protoInPlace}
+\end{figure}
 
 
 \subsection{EMG Positioning}
 \label{ssec:emg_positioning}
 
 The muscle chosen to be measured was the Gastrocnemius Lateralis as it is one of the most important muscles for a jumping motion.
-The position for the \gls{EMG} sensors was chosen as recommended by the \gls{EU}'s SENIAM project (Surface ElectroMyoGraphy for the Non-Invasive Assessment of Muscles)~\cite{emgPosition}.
+The position for the \gls{EMG} sensors was chosen as recommended by the \gls{EU}'s SENIAM project - Surface ElectroMyoGraphy for the Non-Invasive Assessment of Muscles~\cite{emgPosition}.
 
 %precisa de foto do posicionamento
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{emgPosition.jpg}
+  \caption{Gastrocnemius Lateralis Positioning ~\cite{emgPosition}}
+  \label{fig:emgPosition}
+\end{figure}
 
 
 \section{Machine Learning Model Evaluation}
@@ -33,17 +45,68 @@ The position for the \gls{EMG} sensors was chosen as recommended by the \gls{EU}
 \subsection{Classification Metrics}
 \label{ssec:classification_metrics}
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{TinyMLAccuracy.jpg}
+  \caption{TinyMLAccuracy}
+  \label{fig:tinyMLAccuracy}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{TinyMLLoss.jpg}
+  \caption{TinyMLLoss}
+  \label{fig:tinyMLLoss}
+\end{figure}
+
+\subsection{Feature Importance and Sensor Fusion}
+\label{ssec:feature_importance}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{featureImportance.jpg}
+  \caption{Feature Importance Graph}
+  \label{fig:featureImportance}
+\end{figure}
+
 \subsection{Confusion Matrices and Error Analysis}
 \label{ssec:confusion_matrices}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{tinyMLConfusionMatrix.jpg}
+  \caption{TinyML Confusion Matrix}
+  \label{fig:tinyMLConfusionMatrix}
+\end{figure}
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{RFConfusionMatrix.jpg}
+  \caption{Random ForestL Confusion Matrix}
+  \label{fig:RFConfusionMatrix}
+\end{figure}
+
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{RFROC.jpg}
+  \caption{RF ROC Curve}
+  \label{fig:RFROC}
+\end{figure}
 
 \section{System Performance and Latency}
 \label{sec:system_performance}
 
+
 \subsection{Local vs Cloud Latency}
 \label{ssec:latency_comparison}
 
+
 \subsection{Real-Time Windowing Validation}
 \label{ssec:window_validation}
+
 
 \section{Discussion of Results}
 \label{sec:discussion}

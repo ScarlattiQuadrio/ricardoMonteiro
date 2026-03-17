@@ -40,8 +40,8 @@ Besides the \gls{IMU}, the \gls{EMG} sensors will collect data from the muscles 
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.8\linewidth]{System_Overview.jpg}
-  \caption{System Overview~\cite{}}  %adicionar de onde fui buscar
+  \includegraphics[width=0.9\linewidth]{System_Overview.jpg}
+  \caption{System Overview}
   \label{fig:systemOverview}
 \end{figure}
 
@@ -51,18 +51,31 @@ Besides the \gls{IMU}, the \gls{EMG} sensors will collect data from the muscles 
 The Arduino chosen was the Nano 33 \gls{BLE} Rev 2 for its size, 9 axis \gls{IMU}, \gls{BLE} connection and versatility. The choice for the \gls{EMG} sensor was the BITalino Electromyography designed for surface \gls{EMG}. This 
 sensors were soldered to the Arduinos for power and communication.
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.8\linewidth]{deviceTop.jpg}
-  \caption{Topside of the Prototype - Arduino}
-  \label{fig:arduinoProto}
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{deviceTop.jpg}
+        \caption{Top side - Arduino}
+        \label{fig:portoTop}
+    \end{subfigure}
+    \hfill 
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{deviceBottom.jpg}
+        \caption{Bottom side - \gls{EMG} sensor}
+        \label{fig:portoBot}
+    \end{subfigure}
+  
+    \caption{Prototype Photos}
+    \label{fig:prototypePic}
 \end{figure}
 
 \subsubsection{Arduino Specifications}
 \label{ssec:arduinoSpecs}
 
 This Arduino runs at 3.3V and the \gls{IMU} sensors are the BMI270 (3-axis accelerometer + 3-axis gyroscope) and the BMM150 (3-axis Magnetometer) sensors. It has a 
-width of 18mm and length of 45mm weighting only 5g~\cite{arduinoDoc}. The Arduino IDE will be used for the Arduinos' programming.
+width of 18mm and length of 45mm weighing only 5g~\cite{arduinoDoc}. The Arduino IDE will be used for the Arduinos' programming.
 
 
 \begin{figure}[htbp]
@@ -75,7 +88,6 @@ width of 18mm and length of 45mm weighting only 5g~\cite{arduinoDoc}. The Arduin
 \subsubsection{BITalino Electromyography}
 \label{ssec:bitalinoEMG}
 
-
 The sensor has a gain of 1009 and an input of 2.0-3.5V making the output of 3.3V of the Arduino ideal for it. As seen in the figure bellow \ref{fig:emgProto}, The emg has an input channel for the electrode cables on the left side 
 and 4 connection points on the right side:
 
@@ -87,7 +99,7 @@ and 4 connection points on the right side:
 \end{itemize}
 
  A circuit was designed to obtain a stable reference for the \gls{EMG} sensor, implemented using a resistive divider followed by an operational amplifier. As shown in figure~\autoref{divisorTensao}, two identical resistors are 
- connnected between the 3.3V supply from the arduino and ground resulting on the node in the middle settling at half the voltage. The op-amp's purpose is to stabilize the circuit by lowering the impedance at the output.
+ connected between the 3.3V supply from the arduino and ground resulting on the node in the middle settling at half the voltage. The op-amp's purpose is to stabilize the circuit by lowering the impedance at the output.
 
 \begin{figure}[htbp]
   \centering
@@ -109,14 +121,6 @@ The analog sensor data are converted into digital values ranged between 0 and $2
 \end{equation}
 
 Where ADC is the digital value from the sensor, VCC is the 3.3V provided by the arduino, G is the sensor gain which is 1009 and EMG(V) and EMG(mV) is the signal in Volt and millivolt respectively.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.8\linewidth]{deviceBottom.jpg}
-  \caption{Bottom of the Prototype - Emg}
-  \label{fig:emgProto}
-\end{figure}
-
 
 \subsection{Data Acquisition}
 \label{sec:data_acquisition}
@@ -149,5 +153,5 @@ First the arduino converts the digital value of the \gls{EMG} to mV and afterwar
 
 
 Following the feature calculations, the arduinos send the data to the android device that forwards it to the database where it gets stored and to the server that predicts which movement 
-the user is doing. %Tiny ML?
+the user is doing. With the stored data, two \gls{ML} models are trained and then used for basketball movements recognition.
 

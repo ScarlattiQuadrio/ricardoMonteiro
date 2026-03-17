@@ -18,11 +18,16 @@ This section is split into different sections explaining the project's developed
 \label{sec:prototypeHardware}
 
 Two prototypes were developed composed by an Arduino 33 nano \gls{BLE} Rev 2, an \gls{EMG} sensor and a small power bank to provide power (see \ref{sec:prototype}).
-
-%Foto do sistema completo
-
 Standard power banks have a modern system to idle if not enough power is drawn. Since the Arduinos don't break that threshold, to keep the power banks active, a keep-alive circuit was utilized to periodically pulse 
 the current draw.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{physicalSystemOverview.jpg}
+  \caption{Physical System Overview}
+  \label{fig:physicalSystemOverview}
+\end{figure}
+
 
 \subsection{Arduino}
 \label{ssec:arduino}
@@ -168,7 +173,7 @@ The system defines a unique service identified by a 128-bit UUID. Within this se
   \item Accelerometer Data (6 bytes): X, Y, Z ($\times100$ scaling)
   \item Gyroscope Data (6 bytes): X, Y, Z ($\times100$ scaling)
   \item Magnetometer Data (6 bytes): X, Y, Z ($\times100$ scaling)
-  \item \gls{EMG} Features (12 bytes): gls{RMS}, gls{WL}, gls{ZC}, gls{MAV}, gls{SSC}, gls{VAR} (Mixed scaling: $\times10000, \times10000 or \times10$)
+  \item \gls{EMG} Features (12 bytes): gls{RMS}, gls{WL}, gls{ZC}, gls{MAV}, gls{SSC}, gls{VAR} (Mixed scaling: $\times10000, \times10000  or \times10$)
 \end{enumerate}
 
 \begin{equation}
@@ -212,7 +217,6 @@ testability, maintainability and division of tasks.
 The MainActivity.kt is the entry point of the application, initializing the navigation host and providing the top-level container for the user interface. From this activity, the navigation system manages the transitions between the 
 windows (implemented as Jetpack Compose composables), each of which corresponds to a specific functionality of the program.
 The Android application serves as bridge between the devices, the user and the database. 
-
 
 
 \subsection{User Interface}
@@ -492,15 +496,35 @@ The model was instantiated with n\_estimators = 100 (utilizing 100 individual de
 the 20\% testing split. Following successful validation, the trained model pipeline was serialized and exported as a .pkl file using the joblib library. This serialized file was subsequently deployed to the Python Flask backend on Render.com, allowing the server 
 to reconstruct the exact model state for real-time identification.
 
-\subsection{Tiny \gls{ML}}
+\subsection{Tiny\gls{ML}}
 \label{ssec:ml_tml}
 
-To facilitate ultra-low latency inference directly on the Android edge device, a Tiny Machine Learning (TinyML) approach was employed - developing a lightweight \gls{NN} using the TensorFlow and Keras libraries.
+To facilitate ultra-low latency inference directly on the Android edge device, a Tiny\gls{ML} approach was employed - developing a lightweight \gls{NN} using the TensorFlow and Keras libraries.
 
 Given the strict computational constraints of mobile devices, the network architecture was aggressively optimized. The input layer was designed to dynamically accept the 450-feature flattened array. This was followed by two dense hidden layers consisting of 32 
-and 16 neurons, respectively, both utilizing the Rectified Linear Unit (ReLU) activation function to introduce non-linearity. The final output layer consisted of neurons corresponding to the total number of target classes, utilizing a softmax activation 
+and 16 neurons, respectively, both utilizing the Rectified Linear Unit activation function to introduce non-linearity. The final output layer consisted of neurons corresponding to the total number of target classes, utilizing a softmax activation 
 function to output a normalized probability distribution.
 
 The model was compiled using the Adam optimizer and sparse categorical cross-entropy as the loss function, circumventing the need to manually one-hot encode the target labels. The network was trained over 40 epochs with a batch size of 32. Once validated against 
 the testing split, the Keras model was passed through the TFLiteConverter. Default optimizations were applied to quantize the model weights and reduce the overall memory footprint. The resulting binary file (tinyml\_model.tflite) was exported and embedded directly 
 into the Android application's asset directory, granting the mobile device autonomous classification capabilities without relying on external APIs.
+
+
+
+\subsection{Model Evaluation}
+\label{ssec:ml_evaluation}
+
+To rigorously validate the performance and relevance of the trained models, a comprehensive evaluation protocol was established. Going beyond standard accuracy scores, these chosen metrics were designed to provide insight into the models' 
+decision-making processes, sensor reliance, and generalized robustness across the different target classes.
+
+For the Cloud-Tier \gls{RF} model, a feature importance analysis was configured to quantify the contribution of each sensor. Since the sliding window technique flattened the data into a high-dimensional 450-feature array, the 
+protocol dictated that Gini importance scores extracted from the decision trees be aggregated across the 15 time-frames back to their 30 base sensor components. This aggregation is designed to produce a definitive ranking of the sensors, 
+allowing for a biomechanical assessment of whether the \gls{EMG} data provided a significant classification interest or if it is insignificant.
+
+Furthermore, to evaluate the multi-class discriminative power of the \gls{RF} algorithm, the generation of Receiver Operating Characteristic curves was integrated into the testing pipeline. By binarizing the target labels in a 
+One-vs-Rest configuration, the trade-off between the True Positive Rate and False Positive Rate can be plotted for each discrete movement class (Idle, Walking, Running, Defensive Slide, Rebound).
+
+For the Edge-Tier TinyML model, the evaluation strategy required continuously logging the training history over the 40 epochs to monitor the network's mathematical convergence. Tracking these temporal learning curves (categorical cross-entropy 
+loss and classification accuracy) is critical for neural network architectures to ensure the lightweight model did not overfit the training data or memorize localized noise. 
+
+Finally, the pipeline was programmed to compute confusion matrices for both the Cloud-Tier and Edge-Tier models mapping the predicted classifications against the actual target labels on the isolated 20\% testing split.

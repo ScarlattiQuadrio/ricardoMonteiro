@@ -43,7 +43,7 @@ There are two main types of \gls{EMG}:
 
 
 \section{Plantar Pressure Wearables}
-\label{ssec:plantar_pressure_wearables_STA}
+\label{sec:plantar_pressure_wearables_STA}
 
 Plantar pressure wearables are innovative devices designed to monitor and analyze the distribution of pressure across the soles of the feet. By embedding sensors into insoles, smart 
 socks, or even shoes, these wearables capture detailed data on foot loading patterns, which is critical for understanding gait, balance, and overall foot health. Plantar pressure data 
@@ -183,7 +183,7 @@ but they are essential for injury prevention and for the performance enhancement
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.6\linewidth]{basketPos.jpg}
+  \includegraphics[width=0.8\linewidth]{basketPos1.jpg}
   \caption{Some basketball stances.}
   \label{fig:basketPos}
 \end{figure}
@@ -221,6 +221,7 @@ but they are essential for injury prevention and for the performance enhancement
   \item Failed Landing (Incomplete layup) - Any type of fall characterized by the sudden fall of pressure and following.
 
 \end{itemize}
+
 
 \newpage
 \section{Related Work}
@@ -689,6 +690,47 @@ Where
   \end{cases}
   \label{eq:wampEQ2}
 \end{equation}
+
+\section{Injury prevention and Fatigue Monitoring}
+\label{sec:injury_prevention}
+
+As established in the first chapter~\autoref{cha:introduction}, the pursuit of "marginal gains" in high-intensity team sports like basketball requires the continuous development on the mitigation of related 
+injuries. This research has increasingly shifted from reactive treatments to proactive, data-driven prevention strategies. Historically, the monitoring of localized muscle fatigue during athletic performance has 
+relied on subjective athlete feedback or post-event analysis, both of which lack the temporal resolution required for real-time injury prevention. However, recent advancements in wearable biosensors and microcomputing 
+have enabled the continuous, objective monitoring of neuromuscular and kinematic parameters during dynamic athletic movements.
+
+Current research emphasizes that acute muscular failure is rarely an instantaneous event but rather precedented by a quantifiable period of continuous, localized muscular fatigue and deteriorating neuromuscular 
+efficiency. The best and most common approaches for detecting this fatigue utilize surface Electromyography (\gls{sEMG}) to track its temporal evolution. Physiological changes—such as the accumulation of metabolic 
+byproducts slow down muscle fibre conduction velocity, fundamentally altering the \gls{sEMG} signal~\cite{TheUseOfSEMG}. Time-domain features are highly effective markers for this phenomenon. As muscles fatigue, amplitude-based 
+features such as \gls{RMS} and \gls{MAV} typically exhibit an upward trend as the central nervous system increases motor unit recruitment and synchronization to maintain mechanical force. On the other hand, features 
+that act as proxies for frequency, such as \gls{ZC} and \gls{SSC} decrease as action potentials slow down. Research has successfully utilized these specific time-domain features to construct objective fatigue indices, 
+proving their efficiency in capturing impending muscle failure~\cite{ProposedFatigueIndex}.
+
+However, relying on isolated \gls{sEMG} data presents critical limitations in dynamic athletic environments. A high \gls{sEMG} amplitude indicates elevated electrical demand, which could signify impending fatigue-induced failure, or it could simply 
+reflect an athlete's intentional increase in mechanical output, such as executing a jump or rapidly accelerating. To resolve this ambiguity, modern systems utilize sensor fusion, coupling \gls{sEMG} with the Inertial Measurement Units (IMUs) 
+discussed previously. By correlating the electrical demand of the muscle (via \gls{sEMG}) with the actual mechanical output or kinematic stability (via IMU), researchers can accurately map true neuromuscular efficiency. Recent studies confirm 
+that multimodal fatigue detection systems using both kinematic and neuromuscular signals provide highly robust continuous fatigue classification, achieving accuracies above 95\% even in the presence of complex, continuous movements~\cite{DataDrivenApproachForUpper, MultimodalFatigueDetectionSystem}. 
+
+Edge computing and machine learning algorithms—such as Random Forests and Decision Trees—these multimodal wearable systems represent the cutting edge of real-time monitoring~\cite{MachineLearningBasedClassification}. By 
+identifying the precise moment neuromuscular efficiency begins to decline, these unobtrusive systems provide the foundational architecture necessary to predict and prevent specific, acute fatigue-related conditions.
+
+\subsection{Muscle Cramps and Pre-Cramp Anomalies}
+\label{ssec:cramping}
+
+Cramping that occurs in sports or conditioning is clinically called as an Exercise-Associated Muscle Cramp (EAMC). This is a sudden, involuntary, and painful contraction of skeletal muscle during or immediately following 
+physical activity, EAMCs severely disrupt athletic performance and can precipitate further musculoskeletal injury. While historically attributed to systemic factors such as dehydration or electrolyte imbalance, contemporary sports medicine 
+increasingly supports the "altered neuromuscular control" hypothesis. This theory posits that severe, localized muscle fatigue disrupts the neural mechanisms regulating muscle spindle and Golgi tendon organ activity, leading to sustained, 
+involuntary motor unit firing.
+
+Whenever an EAMC happens, the \gls{EMG} signal demonstrates an extreme and abnormal behaviour. The focal point of the cramp is characterized by massive localized spikes in \gls{sEMG} amplitude~\cite{PossibleMechanisms}. During the cramping, 
+the \gls{RMS} and \gls{MAV} features record very high values when compared to standard movements.
+
+Recent literature shows that these involuntary contractions aren't spontaneous but rather have some distinct pre-cramp anomalies.  For instance, in pilot studies observing involuntary nocturnal leg cramps, researchers found that changes in muscle tension patterns could reliably predict the start of the clinical cramp. Specifically, \gls{sEMG} 
+amplitude was observed spiking significantly—in some cases up to 40 seconds before the painful contraction physically manifested or triggered any movement artifacts~\cite{ChangesInMuscleTension}.
+
+This window of anomalies represents a crucial opportunity for injury prevention systems. By establishing a baseline of the normal activity of an athlete and identifying the rise in amplitude (\gls{RMS}) and \gls{MAV} and the drop in \gls{ZC} 
+and \gls{SSC}, a threshold can be outlined, representing severe fatigue, to predict future cramping. If an abrupt, localized spike in \gls{sEMG} amplitude occurs without a corresponding increase in mechanical output (as verified by kinematic IMU 
+data), it strongly indicates the altered neuromuscular control that immediately precedes an EAMC.
 
 
 

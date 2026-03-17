@@ -542,3 +542,92 @@ ISSN = {2073-8994},
 ABSTRACT = {Since surface electromyograghic (sEMG) signals are non-invasive and capable of reflecting humans' motion intention, they have been widely used for the motion recognition of upper limbs. However, limited research has been conducted for lower limbs, because the sEMGs of lower limbs are easily affected by body gravity and muscle jitter. In this paper, sEMG signals and accelerometer signals are acquired and fused to recognize the motion patterns of lower limbs. A curve fitting method based on median filtering is proposed to remove accelerometer noise. As for movement onset detection, an sEMG power spectral correlation coefficient method is used to detect the start and end points of active signals. Then, the time-domain features and wavelet coefficients of sEMG signals are extracted, and a dynamic time warping (DTW) distance is used for feature extraction of acceleration signals. At last, five lower limbs' motions are classified and recognized by using Gaussian kernel-based linear discriminant analysis (LDA) and support vector machine (SVM) respectively. The results prove that the fused feature-based classification outperforms the classification with only sEMG signals or accelerometer signals, and the fused feature can achieve 95\% or higher recognition accuracy, demonstrating the validity of the proposed method.},
 DOI = {10.3390/sym9080147}
 }
+
+@Article{ProposedFatigueIndex,
+AUTHOR = {Qassim, Hassan M. and Hasan, Wan Zuha Wan and Ramli, Hafiz R. and Harith, Hazreen Haizi and Mat, Liyana Najwa Inche and Ismail, Luthffi Idzhar},
+TITLE = {Proposed Fatigue Index for the Objective Detection of Muscle Fatigue Using Surface Electromyography and a Double-Step Binary Classifier},
+JOURNAL = {Sensors},
+VOLUME = {22},
+YEAR = {2022},
+NUMBER = {5},
+ARTICLE-NUMBER = {1900},
+URL = {https://www.mdpi.com/1424-8220/22/5/1900},
+PubMedID = {35271046},
+ISSN = {1424-8220},
+ABSTRACT = {The objective detection of muscle fatigue reports the moment at which a muscle fails to sustain the required force. Such a detection prevents any further injury to the muscle following fatigue. However, the objective detection of muscle fatigue still requires further investigation. This paper presents an algorithm that employs a new fatigue index for the objective detection of muscle fatigue using a double-step binary classifier. The proposed algorithm involves analyzing the acquired sEMG signals in both the time and frequency domains in a double-step investigation. The first step involves calculating the value of the integrated EMG (IEMG) to determine the continuous contraction of the muscle being investigated. It was found that the IEMG value continued to increase with prolonged muscle contraction and progressive fatigue. The second step involves differentiating between the high-frequency components (HFC) and low-frequency components (LFC) of the EMG, and calculating the fatigue index. Basically, the segmented EMG signal was filtered by two band-pass filters separately to produce two sub-signals, namely, a high-frequency sub-signal (HFSS) and a low-frequency sub-signal (LFSS). Then, the instantaneous mean amplitude (IMA) was calculated for the two sub-signals. The proposed algorithm indicates that the IMA of the HFSS tends to decrease during muscle fatigue, while the IMA of the LFSS tends to increase. The fatigue index represents the difference between the IMA values of the LFSS and HFSS, respectively. Muscle fatigue was found to be present and was objectively detected when the value of the proposed fatigue index was equal to or greater than zero. The proposed algorithm was tested on 75 EMG signals that were extracted from 75 middle deltoid muscles. The results show that the proposed algorithm had an accuracy of 94.66\% in distinguishing between conditions of muscle fatigue and non-fatigue.},
+DOI = {10.3390/s22051900}
+}
+
+
+@article{TheUseOfSEMG,
+author = {Kamaruddin, Asyikin and Khalid, Puspa Inayat and Sha'ameri, A.Z.},
+year = {2015},
+month = {05},
+pages = {119-124},
+title = {The Use of Surface Electromyography in Muscle Fatigue Assessments-A Review},
+volume = {74},
+journal = {Jurnal Teknologi},
+doi = {10.11113/jt.v74.4676}
+}
+
+@article{MachineLearningBasedClassification,
+author = {Baigarayeva, Zhanel and Boltaboyeva, Assiya and Imanbek, Baglan and Ozhikenov, Kassymbek and Karymssakova, Nurgul and Beisembekova, Roza},
+year = {2025},
+month = {12},
+pages = {5954},
+title = {Machine learning-based classification of local muscle fatigue using electromyography signals for enhanced rehabilitation outcomes},
+volume = {15},
+journal = {International Journal of Electrical and Computer Engineering (IJECE)},
+doi = {10.11591/ijece.v15i6.pp5954-5967}
+}
+
+@article{MultimodalFatigueDetectionSystem,
+author = {Hwang, Soree and Kwon, Nayeon and Lee, Dongwon and Kim, Jongman and Yang, Sumin and Youn, Inchan and Moon, Hyuk-June and Sung, Joon-Kyung and Han, Sungmin},
+year = {2025},
+month = {05},
+pages = {3309},
+title = {A Multimodal Fatigue Detection System Using sEMG and IMU Signals with a Hybrid CNN-LSTM-Attention Model},
+volume = {25},
+journal = {Sensors},
+doi = {10.3390/s25113309}
+}
+
+
+@Article{DataDrivenApproachForUpper,
+AUTHOR = {Otálora, Sophia and Segatto, Marcelo E. V. and Monteiro, Maxwell E. and Múnera, Marcela and Díaz, Camilo A. R. and Cifuentes, Carlos A.},
+TITLE = {Data-Driven Approach for Upper Limb Fatigue Estimation Based on Wearable Sensors},
+JOURNAL = {Sensors},
+VOLUME = {23},
+YEAR = {2023},
+NUMBER = {22},
+ARTICLE-NUMBER = {9291},
+URL = {https://www.mdpi.com/1424-8220/23/22/9291},
+PubMedID = {38005677},
+ISSN = {1424-8220},
+ABSTRACT = {Muscle fatigue is defined as a reduced ability to maintain maximal strength during voluntary contraction. It is associated with musculoskeletal disorders that affect workers performing repetitive activities, affecting their performance and well-being. Although electromyography remains the gold standard for measuring muscle fatigue, its limitations in long-term work motivate the use of wearable devices. This article proposes a computational model for estimating muscle fatigue using wearable and non-invasive devices, such as Optical Fiber Sensors (OFSs) and Inertial Measurement Units (IMUs) along the subjective Borg scale. Electromyography (EMG) sensors are used to observe their importance in estimating muscle fatigue and comparing performance in different sensor combinations. This study involves 30 subjects performing a repetitive lifting activity with their dominant arm until reaching muscle fatigue. Muscle activity, elbow angles, and angular and linear velocities, among others, are measured to extract multiple features. Different machine learning algorithms obtain a model that estimates three fatigue states (low, moderate and high). Results showed that between the machine learning classifiers, the LightGBM presented an accuracy of 96.2\% in the classification task using all of the sensors with 33 features and 95.4\% using only OFS and IMU sensors with 13 features. This demonstrates that elbow angles, wrist velocities, acceleration variations, and compensatory neck movements are essential for estimating muscle fatigue. In conclusion, the resulting model can be used to estimate fatigue during heavy lifting in work environments, having the potential to monitor and prevent muscle fatigue during long working shifts.},
+DOI = {10.3390/s23229291}
+}
+
+
+@article{PossibleMechanisms,
+author = {Roeleveld, Karin and Van Engelen, Baziel and Stegeman, Dick},
+year = {2000},
+month = {06},
+pages = {1698-706},
+title = {Possible mechanisms of muscle cramp from temporal and spatial surface EMG characteristics},
+volume = {88},
+journal = {Journal of applied physiology (Bethesda, Md. : 1985)},
+doi = {10.1152/jappl.2000.88.5.1698}
+}
+
+
+@article{ChangesInMuscleTension,
+author = {Chaney, Jacqueline and Sherman, Richard},
+year = {2023},
+month = {06},
+pages = {08-11},
+title = {Changes in muscle tension patterns predicting the start of nocturnal leg cramps: A pilot study},
+volume = {10},
+journal = {Annals of Psychophysiology},
+doi = {10.29052/2412-3188.v10.i1.2022.08-11}
+}
