@@ -21,10 +21,9 @@ to asynchronous \gls{BLE} transmissions.
 \section{Data Collection}
 \label{sec:data_collection}
 
+The data sets used to train and test the models were collected from several volunteer athletes. They were asked to do each of the five movements - Idle, Walking, Running, Defensive Slide and Rebounding - for some minutes 
+each. The cramping prevention system was only tested on one player that pushed his muscles to near involuntary contractions.
 
-%To validate the proposed dual-tier machine learning architecture and establish a robust dataset for model training, a comprehensive data collection protocol was designed and executed. This section details the physical experimental setup, 
-%including the mounting of the hardware prototypes and the precise anatomical placement of the electromyography (\gls{EMG}) electrodes. Furthermore, it outlines the specific testing protocols and the target biomechanical movements performed 
-%by the athlete to simulate real-world basketball scenarios, ensuring the collected telemetry accurately reflected dynamic athletic exertion.
 
 \subsection{Prototype Placement and Configuration}
 \label{ssec:prototype_placement}
@@ -59,8 +58,16 @@ signal-to-noise ratio.
 \section{Machine Learning Model Evaluation}
 \label{sec:ml_evaluation}
 
-\subsection{Classification Metrics}           %Rever
-\label{ssec:classification_metrics}
+This section goes over an evaluation of the two \gls{ML} models trained for this study. To effectively assess their performance, stability, and learning behaviour, we will examine the graphics generated throughout 
+the training phase giving us clear insights into how each model converges, identifying potential issues like under or overfitting, and ultimately compare their suitability for the objectives of this project.
+
+
+\subsection{Training Metrics and Performance Curves}           %Rever
+\label{ssec:training_metrics}
+
+For the TinyML model, the learning process is monitored iteratively across the training epochs. Figure~\ref{fig:tinyMLAccuracy} illustrates the model's accuracy progression, comparing the training dataset against the 
+validation dataset. This behaviour is further detailed by the loss curve in Figure~\ref{fig:tinyMLLoss}, which tracks the error rate during training. 
+
 
 
 
@@ -72,6 +79,9 @@ signal-to-noise ratio.
 %This stability is further corroborated by the loss metrics depicted in \autoref{fig:tinyMLLoss}. The categorical cross-entropy loss for the validation split decayed smoothly alongside the training split, plateauing effectively after 20 epochs. 
 %The minor fluctuations observed in the later epochs are characteristic of Adam optimizer adjustments across a complex, multi-class distribution, but the overall downward trajectory confirms that the TinyML model successfully captured the 
 %underlying biomechanical and neuromuscular patterns required for on-device inference.
+%A steady increase and subsequent plateau in validation accuracy suggest successful convergence.
+%By analysing the gap between the training and validation loss, we can assess the model's generalization capabilities.
+
 
 \begin{figure}[htbp]
   \centering
@@ -87,8 +97,27 @@ signal-to-noise ratio.
   \label{fig:tinyMLLoss}
 \end{figure}
 
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{RFROC.jpg}
+  \caption{RF ROC Curve}
+  \label{fig:RFROC}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{RFPrecisionRecall.jpg}
+  \caption{RF Precision Recall Curve}
+  \label{fig:RFPrecision}
+\end{figure}
+
+
 \subsection{Feature Importance and Sensor Fusion}
 \label{ssec:feature_importance}
+
+The next Figure~\autoref{fig:featureImportance} shows that even the \gls{IMU} data has greater importance and the \gls{EMG} provides a very small contribution to the movement identification (+/-10\%). This means that 
+for better performance the \gls{EMG} data could be cut and be used only for the injury prevention algorithm.
 
 \begin{figure}[htbp]
   \centering
@@ -116,20 +145,6 @@ signal-to-noise ratio.
 \end{figure}
 
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.9\linewidth]{RFROC.jpg}
-  \caption{RF ROC Curve}
-  \label{fig:RFROC}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.9\linewidth]{RFPrecisionRecall.jpg}
-  \caption{RF Precision Recall Curve}
-  \label{fig:RFPrecision}
-\end{figure}
-
 
 
 \section{System Performance} %rever
@@ -138,7 +153,6 @@ signal-to-noise ratio.
 A live test was performed in similar fashion to the data collection phase with the simple difference of running the server and taking note of the predictions and the movement made by the athlete (using the "Send Predictions" switch). The 
 player was also pushed until the fatigue warning triggered.
 
-%The primary objective of this test was to compare the classification accuracy of the ultra-lightweight Edge model against the deeper Cloud model under live, unpredictable athletic conditions. 
 
 \subsection{Overall System Accuracy}
 \label{ssec:overall_accuracy}
@@ -192,7 +206,6 @@ The Rebound movement was very confusing for the model predicting it to be Walkin
 
 On the other hand, the TinyML model mixed the Running movement with the Defensive Sliding and the Rebound movement 
 
-
 These graphics reveal that both models and a near-perfect precision when dealing with static or low-intensity states (Idle and Walking) while the more explosive movements
 
 
@@ -204,6 +217,7 @@ These graphics reveal that both models and a near-perfect precision when dealing
 \label{ssec:movement_accuracy}
 
 %Finally, analysing the accuracy on a per-movement basis highlights the specific biomechanical strengths of the neural network architecture. 
+
 
 
 %As seen in \autoref{fig:movement_accuracy}, the Edge TinyML model demonstrated superior or equal performance across almost all dynamic classes. Notably, during the ``Rebound'' phase—a highly complex, multi-axial movement involving a sudden 
