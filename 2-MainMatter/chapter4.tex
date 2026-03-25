@@ -433,18 +433,19 @@ streams, the system is able to guarantee a low latency feedback for the user via
 \subsubsection{Data Processing}
 \label{sssec:ml_data}
 
-To accurately identify every movement the user makes, the models require temporal context, making evaluating single 20ms data points insufficient. To resolve this, a time-series sliding window algorithm was implemented. The Android application synchronizes 
-the \gls{BLE} packets from the left and right insoles, combining their respective 15 features into a singular 30-feature vector per timestamp. These vectors are accumulated in a First-In-First-Out (FIFO) buffer to create a continuous observation window of 300ms 
-that is then fed into the \gls{ML} models.
+To accurately identify every movement the user makes, the models require temporal context, making evaluating single 20ms data points insufficient. To resolve this, a time-series sliding window algorithm was implemented. The Android application 
+synchronizes the \gls{BLE} packets from the left and right insoles, combining their respective 15 features into a singular 30-feature vector per timestamp. These vectors are accumulated in a First-In-First-Out (FIFO) buffer to create a 
+continuous observation window of 300ms that is then fed into the \gls{ML} models.
 
 
-The 300ms window size was specifically selected to capture the concentrated kinematic signature of transient, explosive basketball movements, effectively preventing the "label dilution" that could occur in larger windows. Furthermore, a step size of 100ms was 
-applied, resulting in a 66\% window overlap. This configuration compresses the classification rate to a highly efficient 10Hz, maintaining the illusion of instantaneous real-time feedback while preserving smartphone battery life and avoiding network congestion.
+The 300ms window size was specifically selected to capture the concentrated kinematic signature of transient, explosive basketball movements, effectively preventing the "label dilution" that could occur in larger windows. Furthermore, a step 
+size of 100ms was applied, resulting in a 66\% window overlap. This configuration compresses the classification rate to a highly efficient 10Hz, maintaining the illusion of instantaneous real-time feedback while preserving smartphone battery 
+life and avoiding network congestion.
 
 Once the 15-frame buffer is filled, the local Edge inference is managed by the MovementClassifier class within the Android application. Since the TensorFlow Lite model resides directly in the application's assets directory, it 
-requires no internet connection to function. The model processes the flattened feature array and yields a probability distribution across the target classification labels. An argmax function is applied 
-to the output tensor to extract the highest confidence prediction. This prediction is immediately pushed to a Kotlin StateFlow, triggering a quick update to the Jetpack Compose User Interface, ensuring the athlete receives uninterrupted feedback even in 
-environments with degraded network connectivity.
+requires no internet connection to function. The model processes the flattened feature array and yields a probability distribution across the target classification labels. An argmax function is applied to the output tensor to extract the 
+highest confidence prediction. This prediction is immediately pushed to a Kotlin StateFlow, triggering a quick update to the Jetpack Compose User Interface, ensuring the athlete receives uninterrupted feedback even in environments with 
+degraded network connectivity.
 
 
 
@@ -462,7 +463,16 @@ tagged with a timestamp and User ID. %As this measurement shares the exact time-
 %of machine learning classifications directly on top of the raw biomechanical waveforms in data visualization platforms like Grafana.
 
 
+\subsection{Cramping Prevention and Fatigue Monitoring} 
+\label{ssec:cramping_prevention}
 
+Besides movement classification, the Android app also has a real-time fatigue monitoring system to prevent cramping. This is achieved through an algorithm that fuses the predictions from the TinyML model with the \gls{RMS} \gls{EMG} feature.
+This script is located within the processLocalPrediction function of the VariabViewModel and it analyses the 300ms observation window raising a flag if the \gls{RMS} value breaches a pre-defined threshold for either leg while idling or walking 
+(not enough data was collected to monitor all movements). Since the \gls{EMG} signal varies significantly based on an athlete's muscle density, skin impedance, electrode placement, and baseline fitness, this threshold isn't universal. A calibration 
+should be conducted for every athlete. 
+Since a simple flag could keep firing every processed window, a counter tied to the flag is utilized to send a message to the application when a threshold is hit. This tracker resets whenever the \gls{RMS} signal drops bellow the defined threshold 
+or the movement changes (from Idle or Walking). When 10 consecutive flags are raised (corresponding to one second), the application sends a notification to the screen notifying the user of the athletes' fatigue and that he should rest. This 
+also helps to prevent false positives and filters out sudden stops that might spike the \gls{RMS} values.
 
 
 \section{Machine Learning Code}
