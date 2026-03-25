@@ -7,43 +7,71 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\typeout{NT FILE chapter5.tex}%
+\typeout{NT FILE chapter5.tex}
 
 \chapter{Verification and Testing}
 \label{cha:verificaton_testing}
 
-\section{Arduino and \gls{EMG} Placement and Configuration}
-\label{sec:arduino_emg_placement}
+In this chapter we'll go over the verification and testing procedures conducted to evaluate the proposed wearable monitoring system and the \gls{ML} models. This evaluation is divided into three sections addressing the full \gls{IoT} system.
+Starting with the hardware, we examine the position of the prototypes, and how they are attached, and the anatomical placement of the \gls{EMG} electrodes on the Gastrocnemius Lateralis. Secondly, an in-depth statistical analysis of the trained 
+\gls{ML} models is conducted. In this section, by leveraging classification metrics, confusion matrices, and feature importance distributions, both developed \gls{ML} models' performances are compared against each other and evaluated. Here, 
+we also determine the efficacy of fusing \gls{IMU} kinematics with \gls{EMG} neuromuscular data for basketball movements classification. In the final section, the system's performance is reviewed by assessing both models' latency and the resilience 
+to asynchronous \gls{BLE} transmissions.
 
-%foto do dispositivo colocado
+\section{Data Collection}
+\label{sec:data_collection}
+
+
+%To validate the proposed dual-tier machine learning architecture and establish a robust dataset for model training, a comprehensive data collection protocol was designed and executed. This section details the physical experimental setup, 
+%including the mounting of the hardware prototypes and the precise anatomical placement of the electromyography (\gls{EMG}) electrodes. Furthermore, it outlines the specific testing protocols and the target biomechanical movements performed 
+%by the athlete to simulate real-world basketball scenarios, ensuring the collected telemetry accurately reflected dynamic athletic exertion.
+
+\subsection{Prototype Placement and Configuration}
+\label{ssec:prototype_placement}
+
+The prototypes were mounted directly in the athletes' footwear to approximate the ideal positioning (on the bottom of the feet as an insole or a sock). The devices were secured using the shoe laces and the powerbank was secured in the users 
+socks, utilizing the existing infrastructure. With this configuration, the \gls{IMU} accurately captures the kinematics of the foot, such as accelerations and rotational velocities during the athletes' movements. Furthermore, this setup 
+minimizes the mechanical strain exerted by the power cables on the USB ports, while keeping the \gls{EMG} leads in close proximity to the chosen muscle group.
+
+
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{physicalSystemOverview.jpg}
-  \caption{Prototype in place}
-  \label{fig:protoInPlace}
+  \includegraphics[width=0.5\linewidth]{deviceInPlace.jpg}
+  \caption{An athlete wearing the prototype}
+  \label{fig:protoInPlace}  
 \end{figure}
 
 
-\subsection{EMG Positioning}
-\label{ssec:emg_positioning}
+The muscle chosen to be measured was the Gastrocnemius Lateralis as it is one of the most important muscles for explosive jumping motion.
+The position for the \gls{EMG} sensors was chosen as recommended by the \gls{EU}'s SENIAM (Surface ElectroMyoGraphy for the Non-Invasive Assessment of Muscles) project (~\cite{emgPosition}) ensuring standardization and maximization of the 
+signal-to-noise ratio.
 
-The muscle chosen to be measured was the Gastrocnemius Lateralis as it is one of the most important muscles for a jumping motion.
-The position for the \gls{EMG} sensors was chosen as recommended by the \gls{EU}'s SENIAM project - Surface ElectroMyoGraphy for the Non-Invasive Assessment of Muscles~\cite{emgPosition}.
-
-%precisa de foto do posicionamento
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{emgPosition.jpg}
+  \includegraphics[width=0.6\linewidth]{emgPosition.jpg}
   \caption{Gastrocnemius Lateralis Positioning ~\cite{emgPosition}}
   \label{fig:emgPosition}
 \end{figure}
 
+%\subsection{Collecting Data and Testing}
+%\label{ssec:prototype_placement}
 
 \section{Machine Learning Model Evaluation}
 \label{sec:ml_evaluation}
 
-\subsection{Classification Metrics}
+\subsection{Classification Metrics}           %Rever
 \label{ssec:classification_metrics}
+
+
+
+%To evaluate the learning stability and generalization capacity of the edge-tier TinyML neural network, the classification accuracy and categorical cross-entropy loss were continuously logged across the 40 training epochs. Evaluating these 
+%temporal learning curves is critical to ensure the lightweight model converged properly without memorizing localized noise within the dataset.
+%As illustrated in \autoref{fig:tinyMLAccuracy}, the network demonstrated rapid initial learning, with both training and validation accuracy climbing steeply during the first 15 epochs. The model successfully converged, achieving a final 
+%validation accuracy of approximately 95\%. The absence of a severe divergence between the training and validation accuracy curves indicates that the model did not suffer from substantial overfitting, despite the high-dimensional 450-feature 
+%input vectors. 
+%This stability is further corroborated by the loss metrics depicted in \autoref{fig:tinyMLLoss}. The categorical cross-entropy loss for the validation split decayed smoothly alongside the training split, plateauing effectively after 20 epochs. 
+%The minor fluctuations observed in the later epochs are characteristic of Adam optimizer adjustments across a complex, multi-class distribution, but the overall downward trajectory confirms that the TinyML model successfully captured the 
+%underlying biomechanical and neuromuscular patterns required for on-device inference.
 
 \begin{figure}[htbp]
   \centering
@@ -70,7 +98,7 @@ The position for the \gls{EMG} sensors was chosen as recommended by the \gls{EU}
 \end{figure}
 
 \subsection{Confusion Matrices and Error Analysis}
-\label{ssec:confusion_matrices}
+\label{ssec:confusion_matrices_ML}
 
 \begin{figure}[htbp]
   \centering
@@ -88,7 +116,6 @@ The position for the \gls{EMG} sensors was chosen as recommended by the \gls{EU}
 \end{figure}
 
 
-
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.9\linewidth]{RFROC.jpg}
@@ -96,16 +123,92 @@ The position for the \gls{EMG} sensors was chosen as recommended by the \gls{EU}
   \label{fig:RFROC}
 \end{figure}
 
-\section{System Performance and Latency}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{RFPrecisionRecall.jpg}
+  \caption{RF Precision Recall Curve}
+  \label{fig:RFPrecision}
+\end{figure}
+
+
+
+\section{System Performance} %rever
 \label{sec:system_performance}
 
+A live test was performed in similar fashion to the data collection phase with the simple difference of running the server and taking note of the predictions and the movement made by the athlete (using the "Send Predictions" switch). The 
+player was also pushed until the fatigue warning triggered.
 
-\subsection{Local vs Cloud Latency}
-\label{ssec:latency_comparison}
+
+\subsection{Overall System Accuracy}
+\label{ssec:overall_accuracy}
+
+The primary objective of this test was to compare the classification accuracy of the ultra-lightweight Edge model against the deeper Cloud model. In terms of latency, the tinyML model responded instantly while the \gls{RF} model had a slight
+ delay.
 
 
-\subsection{Real-Time Windowing Validation}
-\label{ssec:window_validation}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{testOverallAccuracyComparison.jpg}
+  \caption{Overall Classification Accuracy: Local TinyML vs. Cloud Random Forest}
+  \label{fig:overall_accuracy}
+\end{figure}
+
+As illustrated above (~\autoref{fig:overall_accuracy}), the localized TinyML edge inference successfully outperformed the cloud-based Random Forest model, achieving an overall accuracy of 74.65\% compared to the server's 71.11\%. Even tho 
+the local model achieved better results, with a bigger dataset the server should outperform it, especially with more confusing movements.
+
+\subsection{Confusion Matrices and Error Analysis}
+\label{ssec:confusion_matrices_test}
+
+In the graph below, we can see that overall, besides running, the TinyML model either outperformed the \gls{RF} model or was nearly as accurate. The \gls{RF} model struggled to correctly identify the movements 
+with less data (Running, Rebounding and Defensive Sliding) but excelled at the Idle and Walking movements. 
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{testMovementAccuracy.jpg}
+  \caption{Classification Accuracy by Movement}
+  \label{fig:movement_accuracy}
+\end{figure}
+
+Continuing the system's assessment, the confusion matrices for both models were generated:
+ 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=1\linewidth]{testConfusionMatrixRF.jpg}
+  \caption{Confusion Matrix for the Random Forest Model}
+  \label{fig:confusion_matrix_RF}
+\end{figure}
+
+In the \gls{RF}'s matrix we can see that the model tended to predict the movement Walking or Idle while barely choosing Rebound or Defensive Slide. This might be happening due to the low volume of data of these two 
+movements when compared to the others.
+The Rebound movement was very confusing for the model predicting it to be Walking half the time and barely getting it right.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=1\linewidth]{testConfusionMatrixTinyML.jpg}
+  \caption{Confusion Matrix for the TinyML Model}
+  \label{fig:confusion_matrix_TinyML}
+\end{figure}
+
+On the other hand, the TinyML model mixed the Running movement with the Defensive Sliding and the Rebound movement 
+
+
+These graphics reveal that both models and a near-perfect precision when dealing with static or low-intensity states (Idle and Walking) while the more explosive movements
+
+
+%The matrices reveal that both models demonstrate near-perfect precision when identifying static or low-intensity states, such as ``Idle'' and ``Walking''. However, transient and explosive movements introduced a higher degree of misclassification. 
+%For instance, the models occasionally confused a ``Defensive Slide'' with ``Running'', as both movements generate high-amplitude, lateral acceleration vectors on the \gls{IMU}. The TinyML model proved slightly more robust at isolating the 
+%``Defensive Slide'' signature, contributing to its higher overall accuracy.
+
+\subsection{Movements Performance Breakdown}
+\label{ssec:movement_accuracy}
+
+%Finally, analysing the accuracy on a per-movement basis highlights the specific biomechanical strengths of the neural network architecture. 
+
+
+
+%As seen in \autoref{fig:movement_accuracy}, the Edge TinyML model demonstrated superior or equal performance across almost all dynamic classes. Notably, during the ``Rebound'' phase—a highly complex, multi-axial movement involving a sudden 
+%vertical leap and harsh landing—the Edge model maintained a strong classification rate, whereas the Cloud model's accuracy dropped significantly. This suggests that the deep neural network layers of the TinyML model were better suited to 
+%capturing the non-linear kinematic relationships of explosive jumping than the decision trees utilized by the Random Forest algorithm.
 
 
 \section{Discussion of Results}
