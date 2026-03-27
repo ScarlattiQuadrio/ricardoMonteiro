@@ -66,48 +66,48 @@ the training phase giving us clear insights into how each model converges, ident
 \label{ssec:training_metrics}
 
 For the TinyML model, the learning process is monitored iteratively across the training epochs. Figure~\ref{fig:tinyMLAccuracy} illustrates the model's accuracy progression, comparing the training dataset against the 
-validation dataset. This behaviour is further detailed by the loss curve in Figure~\ref{fig:tinyMLLoss}, which tracks the error rate during training. 
-
-
-
-
-%To evaluate the learning stability and generalization capacity of the edge-tier TinyML neural network, the classification accuracy and categorical cross-entropy loss were continuously logged across the 40 training epochs. Evaluating these 
-%temporal learning curves is critical to ensure the lightweight model converged properly without memorizing localized noise within the dataset.
-%As illustrated in \autoref{fig:tinyMLAccuracy}, the network demonstrated rapid initial learning, with both training and validation accuracy climbing steeply during the first 15 epochs. The model successfully converged, achieving a final 
-%validation accuracy of approximately 95\%. The absence of a severe divergence between the training and validation accuracy curves indicates that the model did not suffer from substantial overfitting, despite the high-dimensional 450-feature 
-%input vectors. 
-%This stability is further corroborated by the loss metrics depicted in \autoref{fig:tinyMLLoss}. The categorical cross-entropy loss for the validation split decayed smoothly alongside the training split, plateauing effectively after 20 epochs. 
-%The minor fluctuations observed in the later epochs are characteristic of Adam optimizer adjustments across a complex, multi-class distribution, but the overall downward trajectory confirms that the TinyML model successfully captured the 
-%underlying biomechanical and neuromuscular patterns required for on-device inference.
-%A steady increase and subsequent plateau in validation accuracy suggest successful convergence.
-%By analysing the gap between the training and validation loss, we can assess the model's generalization capabilities.
-
+unseen validation dataset. As observed in the accuracy curve, the model learns rapidly during the initial epochs before stabilizing reaching an validation accuracy of approximately 94\%. The validation curve 
+remains close to the training line throughout the training epochs indicating that the model generalizes well to new data rather than simply memorizing the training samples.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{TinyMLAccuracy.jpg}
+  \includegraphics[width=0.8\linewidth]{TinyMLAccuracy.jpg}
   \caption{TinyMLAccuracy}
   \label{fig:tinyMLAccuracy}
 \end{figure}
 
+Figure~\autoref{fig:tinyMLLoss} further demonstrates that behaviour. The categorical cross-entropy loss curve shows a synchronized descent of both the training and validation loss curves confirming that the model is
+successfully minimizing its errors during the training and attributing high confidence to the correct movement.
+
+
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{TinyMLLoss.jpg}
+  \includegraphics[width=0.8\linewidth]{TinyMLLoss.jpg}
   \caption{TinyMLLoss}
   \label{fig:tinyMLLoss}
 \end{figure}
 
+While the Neural Network was evaluated via epoch progression, the Cloud-based Random Forest model is evaluated using ensemble classification metrics, specifically the Receiver Operating Characteristic and 
+Precision-Recall curves.
+
+The Receiver Operating Characteristic curve (~\autoref{fig:RFROC}) evaluates the true positive rate against the false positive rate for each individual movement class. The Area Under the Curve scores approach 
+1.0 across all movements, demonstrating that the \gls{RF} algorithm is highly capable of distinguishing the mathematical boundaries between distinct biomechanical states.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{RFROC.jpg}
+  \includegraphics[width=0.87\linewidth]{RFROC.jpg}
   \caption{RF ROC Curve}
   \label{fig:RFROC}
 \end{figure}
 
+The Precision-Recall curve (~\autoref{fig:RFPrecision}) shows the trade-off between precision and recall for different thresholds. This type of chart is specially crucial in in highly imbalanced sports datasets 
+where the vast majority of movements recorded are Walking, Running or Defensive Sliding while movements like Rebounds, Shooting and Crossover happen in a split second. The resulting curve demonstrates that the \gls{RF} 
+model is able to detect all movements with high precision and low false positives.
+
+
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{RFPrecisionRecall.jpg}
+  \includegraphics[width=0.8\linewidth]{RFPrecisionRecall.jpg}
   \caption{RF Precision Recall Curve}
   \label{fig:RFPrecision}
 \end{figure}
@@ -116,22 +116,30 @@ validation dataset. This behaviour is further detailed by the loss curve in Figu
 \subsection{Feature Importance and Sensor Fusion}
 \label{ssec:feature_importance}
 
-The next Figure~\autoref{fig:featureImportance} shows that even the \gls{IMU} data has greater importance and the \gls{EMG} provides a very small contribution to the movement identification (+/-10\%). This means that 
+The \gls{RF} approach utilizes decision trees so it inherently provides a quantifiable measure of how much each sensor contributes to the final classification, known as Gini Feature Importance.
+
+The next ~\autoref{fig:featureImportance} shows that even the \gls{IMU} data has greater importance and the \gls{EMG} provides a very small contribution to the movement identification (+/-10\%). This means that 
 for better performance the \gls{EMG} data could be cut and be used only for the injury prevention algorithm.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{featureImportance.jpg}
-  \caption{Feature Importance Graph}
+  \includegraphics[width=1\linewidth]{featureImportance.jpg}
+  \caption{Aggregated Feature Importance Graph}
   \label{fig:featureImportance}
 \end{figure}
+
+As illustrated in ~\autoref{fig:featureImportance}, the \gls{EMG} features \gls{VAR} and \gls{RMS} had the biggest impact. This shows that the \gls{EMG} is valuable for movement recognition systems alongside the 
+\gls{IMU}. The graph also shows a preference for the left side suggesting that the model picked up on a dominant players' foot.
 
 \subsection{Confusion Matrices and Error Analysis}
 \label{ssec:confusion_matrices_ML}
 
+To conduct an analysis of the models' predictive flaws, confusion matrices were generated for both the Edge and Cloud classifiers based on the offline test dataset.
+
+
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{tinyMLConfusionMatrix.jpg}
+  \includegraphics[width=0.7\linewidth]{tinyMLConfusionMatrix.jpg}
   \caption{TinyML Confusion Matrix}
   \label{fig:tinyMLConfusionMatrix}
 \end{figure}
@@ -139,43 +147,45 @@ for better performance the \gls{EMG} data could be cut and be used only for the 
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{RFConfusionMatrix.jpg}
-  \caption{Random ForestL Confusion Matrix}
+  \includegraphics[width=0.7\linewidth]{RFConfusionMatrix.jpg}
+  \caption{Random Forest Confusion Matrix}
   \label{fig:RFConfusionMatrix}
 \end{figure}
 
 
+\autoref{fig:tinyMLConfusionMatrix,fig:RFConfusionMatrix} reveal strong diagonal density confirming high accuracy overall. However, looking at the errors reveal that most of the misclassification occurs between 
+movements that share similar profiles (for example the models sometimes confuse the movement Defensive Sliding with Running and vice-versa or Rebound with Idle). 
 
 
 \section{System Performance} %rever
 \label{sec:system_performance}
 
 A live test was performed in similar fashion to the data collection phase with the simple difference of running the server and taking note of the predictions and the movement made by the athlete (using the "Send Predictions" switch). The 
-player was also pushed until the fatigue warning triggered.
+player also worked intensively until the fatigue warning triggered.
 
 
 \subsection{Overall System Accuracy}
 \label{ssec:overall_accuracy}
 
-The primary objective of this test was to compare the classification accuracy of the ultra-lightweight Edge model against the deeper Cloud model. In terms of latency, the tinyML model responded instantly while the \gls{RF} model had a slight
- delay.
-
+The primary objective of this test was to compare the classification accuracy of the ultra-lightweight Edge model against the deeper Cloud model and the variation of smoothed predictions vs raw. In terms of latency, 
+the tinyML model responded instantly while the \gls{RF} model had a slight delay.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\linewidth]{testOverallAccuracyComparison.jpg}
-  \caption{Overall Classification Accuracy: Local TinyML vs. Cloud Random Forest}
+  \caption{Overall Classification Accuracy: Local TinyML vs Cloud Random Forest (Raw and Smoothed)}
   \label{fig:overall_accuracy}
 \end{figure}
 
-As illustrated above (~\autoref{fig:overall_accuracy}), the localized TinyML edge inference successfully outperformed the cloud-based Random Forest model, achieving an overall accuracy of 74.65\% compared to the server's 71.11\%. Even tho 
-the local model achieved better results, with a bigger dataset the server should outperform it, especially with more confusing movements.
+As illustrated in ~\autoref{fig:overall_accuracy}, the localized TinyML model successfully outperformed the cloud-based Random Forest model, achieving an overall accuracy of 79.5\% compared to the server's 
+71.2\%. Even tho the local model achieved better results, with a greater dataset the server model should outperform it, especially with more confusing movements. The smoothed version of the local model has a 6.4\% 
+higher accuracy than its counterpart while the server's is worse by 0.3\%. This shows that smoothing the predictions is a viable and worthwhile algorithm if the base model is consistent enough.
 
 \subsection{Confusion Matrices and Error Analysis}
 \label{ssec:confusion_matrices_test}
 
-In the graph below, we can see that overall, besides running, the TinyML model either outperformed the \gls{RF} model or was nearly as accurate. The \gls{RF} model struggled to correctly identify the movements 
-with less data (Running, Rebounding and Defensive Sliding) but excelled at the Idle and Walking movements. 
+In ~\autoref{fig:movement_accuracy}, we can see that overall, besides Defensive Sliding, the \gls{RF} model either outperformed the TinyML model or was nearly as accurate. The \gls{RF} model struggled to correctly 
+identify the movements Rebounding and Defensive Sliding but excelled at the Idle, Walking and Running movements. The improvement from the smoothing algorithm is also prevalent here in the majority of the movements.
 
 \begin{figure}[htbp]
   \centering
@@ -188,43 +198,43 @@ Continuing the system's assessment, the confusion matrices for both models were 
  
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=1\linewidth]{testConfusionMatrixRF.jpg}
-  \caption{Confusion Matrix for the Random Forest Model}
-  \label{fig:confusion_matrix_RF}
+  \includegraphics[width=1\linewidth]{testConfusionMatrixRFRaw.jpg}
+  \caption{Confusion Matrix for the Random Forest Model before Smoothing}
+  \label{fig:confusion_matrix_RF_Raw}
 \end{figure}
 
-In the \gls{RF}'s matrix we can see that the model tended to predict the movement Walking or Idle while barely choosing Rebound or Defensive Slide. This might be happening due to the low volume of data of these two 
-movements when compared to the others.
-The Rebound movement was very confusing for the model predicting it to be Walking half the time and barely getting it right.
+The \gls{RF}'s matrices (~\autoref{fig:confusion_matrix_RF_Raw},~\autoref{fig:confusion_matrix_RF_Smooth}) are very similar showing that when the athlete was Defensive Sliding, the model predicted the movement Running or Walking 
+while only predicting about 12\% of the time right. However, the model has a very high accuracy on the movements Walking, Idle and Running while Rebounding was mistaken with Walking or Running half the time.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=1\linewidth]{testConfusionMatrixTinyML.jpg}
-  \caption{Confusion Matrix for the TinyML Model}
-  \label{fig:confusion_matrix_TinyML}
+  \includegraphics[width=1\linewidth]{testConfusionMatrixRFSmoothed.jpg}
+  \caption{Confusion Matrix for the Random Forest Model after Smoothing}
+  \label{fig:confusion_matrix_RF_Smooth}
 \end{figure}
 
-On the other hand, the TinyML model mixed the Running movement with the Defensive Sliding and the Rebound movement 
 
-These graphics reveal that both models and a near-perfect precision when dealing with static or low-intensity states (Idle and Walking) while the more explosive movements
+On the other hand, the TinyML model had a slight accuracy boost by the smoothing algorithm. Analysing ~\autoref{fig:confusion_matrix_TinyML_Raw} and in~\autoref{fig:confusion_matrix_TinyML_Smooth}, the edge model 
+also mistaken Running with Defensive Sliding and vice-versa as the \gls{RF} model did. Even so, the matrix's diagonal is pretty strong and the movements Walking and Idle and phenomenal having a near perfect accuracy.
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=1\linewidth]{testConfusionMatrixTinyMLRaw.jpg}
+  \caption{Confusion Matrix for the Raw TinyML Model}
+  \label{fig:confusion_matrix_TinyML_Raw}
+\end{figure}
 
-%The matrices reveal that both models demonstrate near-perfect precision when identifying static or low-intensity states, such as ``Idle'' and ``Walking''. However, transient and explosive movements introduced a higher degree of misclassification. 
-%For instance, the models occasionally confused a ``Defensive Slide'' with ``Running'', as both movements generate high-amplitude, lateral acceleration vectors on the \gls{IMU}. The TinyML model proved slightly more robust at isolating the 
-%``Defensive Slide'' signature, contributing to its higher overall accuracy.
-
-\subsection{Movements Performance Breakdown}
-\label{ssec:movement_accuracy}
-
-%Finally, analysing the accuracy on a per-movement basis highlights the specific biomechanical strengths of the neural network architecture. 
-
-
-
-%As seen in \autoref{fig:movement_accuracy}, the Edge TinyML model demonstrated superior or equal performance across almost all dynamic classes. Notably, during the ``Rebound'' phase—a highly complex, multi-axial movement involving a sudden 
-%vertical leap and harsh landing—the Edge model maintained a strong classification rate, whereas the Cloud model's accuracy dropped significantly. This suggests that the deep neural network layers of the TinyML model were better suited to 
-%capturing the non-linear kinematic relationships of explosive jumping than the decision trees utilized by the Random Forest algorithm.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=1\linewidth]{testConfusionMatrixTinyMLSmoothed.jpg}
+  \caption{Confusion Matrix for the Smoothed TinyML Model}
+  \label{fig:confusion_matrix_TinyML_Smooth}
+\end{figure}
 
 
 \section{Discussion of Results}
 \label{sec:discussion}
 
+
+\subsection{Known Problems}
+\label{ssec:problems}

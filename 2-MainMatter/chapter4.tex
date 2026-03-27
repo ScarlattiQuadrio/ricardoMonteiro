@@ -462,6 +462,15 @@ Finally, to enable rigorous post-session analysis, the application utilizes the 
 tagged with a timestamp and User ID. %As this measurement shares the exact time-series axis as the raw \texttt{imu\_data} measurement, the system allows for the seamless, synchronized overlay 
 %of machine learning classifications directly on top of the raw biomechanical waveforms in data visualization platforms like Grafana.
 
+\subsubsection{Temporal Smoothing and Output Stabilization}
+\label{sssec:temporal_smoothing}
+
+During the first live test, a susceptibility to "prediction flickering" was noticed. Since the classifiers evaluate discrete 300ms data windows, anomalies such as an irregular movement or sensor noise could cause 
+isolated 100ms frames to be misclassified. To mitigate this instability, a post-processing Temporal Smoothing algorithm was developed within the Android application. This algorithm functions as a 
+digital low-pass filter utilizing a majority voting logic. A continuous sliding window, implemented via a Kotlin ArrayDeque, was configured to store the last 5 consecutive predictions, effectively granting 
+the system 500ms of temporal short-term memory. 
+To compare the original prediction values with the filtered ones, the system sends both values from both models to a database for future analysis.
+
 
 \subsection{Cramping Prevention and Fatigue Monitoring} 
 \label{ssec:cramping_prevention}
