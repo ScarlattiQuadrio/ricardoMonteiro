@@ -14,11 +14,64 @@
 \chapter{Conclusion}
 \label{cha:conclusion}
 
-With the ongoing development of wearable technology, particularly smart insoles and socks, there is also a significant advancement in basketball motion recognition and 
-injury prevention. Even tho wearables have several restraints, this technology is the most appropriate for basketball motion recognition and injury prevention and its biggest step 
+With the ongoing development of wearable technology, particularly smart insoles and socks, there has been a significant advancement in basketball motion recognition and 
+injury prevention. Even tho wearables have several restraints, this technology is the most appropriate for basketball motion recognition and injury prevention as its biggest step 
 back is the prohibition in official matches.
 
-By capturing real-time data on pressure distribution, foot orientation, and movement dynamics, these wearables allow for a 
-detailed analysis of key basketball actions like jump shots, layups, pivots, and lateral movements, providing valuable insights into each player's unique biomechanics for the players 
-and coaches. 
+The primary objective of this dissertation was to design, implement, and evaluate a  wearable system capable of high-frequency basketball movement classification and real-time fatigue monitoring. This research demonstrated 
+that, by adding other types of data to the traditional kinematics only sports wearables, it's possible to not only improve recognition models but also add other systems that help the players improve their performance 
+and health.
 
+\section{Summary of Achievements}
+\label{sec:conclusion_achievements}
+
+The realization of this project required the end-to-end development of a comprehensive \gls{IoT} and \gls{ML} ecosystem. Rather than relying on off-the-shelf software or pre-existing tracking 
+platforms, the entire system architecture was engineered from the ground up. This monumental scope included programming the embedded C++ firmware for the Arduino microcontrollers to handle high-frequency sensor 
+polling and optimized \gls{BLE} transmission. To bridge the hardware to the cloud, a native Kotlin Android application was developed utilizing an MVVM architecture, serving as the central hub for real-time data 
+processing, user interface management, and InfluxDB database synchronization. Furthermore, the backend infrastructure was custom-built, featuring a Python Flask server deployed for cloud inference, alongside a 
+complete machine learning training pipeline developed in Google Colab to preprocess the time-series data and export the finalized classification models.
+
+Through this architecture, the core hypothesis of validating a multi sensor fusion system was definitively proven. The machine learning training pipeline demonstrated that combining mechanical and physiological 
+data results in a better contextual awareness.
+Deploying these models into a live environment further validated the viability of decentralized sports analytics. By quantizing a custom TinyML neural network and embedding it directly into the Android application, 
+the system achieved a robust Edge Computing architecture capable of recognizing basic basketball movements. 
+
+Finally, beyond passive activity tracking, the developed ecosystem successfully introduced an active, real-time injury prevention mechanism by fusing the smoothed TinyML kinematic predictions with the \gls{EMG} 
+features. This logic proved capable of identifying pre-cramp hypertensive muscle states during periods of rest, providing coaches and users with real-time warnings offering the option to rest and massage hte muscles 
+preventing cramping.
+
+
+\section{Future Work}
+\label{sec:future} 
+
+While the current prototype successfully demonstrates the viability of multi-modal sensor fusion and dual-tier machine learning in sports wearables, many steps for future research and development remain to 
+transition the system from a proof-of-concept to a robust helpful tool.
+
+\subsection{Hardware Evolution and Textile Integration}
+\label{sec:future_hardware} 
+The most immediate hardware improvement involves transitioning from the modular, externally strapped prototype to a fully integrated smart sock. By utilizing miniaturized flexible printed circuit boards and conductive 
+woven threads instead of traditional adhesive \gls{EMG} electrodes, the system would completely eliminate the mechanical obstacles caused by device shifting and cable strain while being as unobtrusive as possible. 
+Furthermore, integrating the power supply directly into the fabric would resolve the current ergonomic issue, ensuring maximum comfort and zero interference with the athlete's natural motions.
+
+\subsection{Dataset Expansion and Automated Labeling}
+\label{sec:future_data}
+Future data collection has to be greater in both quantity and quality. Expanding the demographic pool to include variety in height, weight, skill level, gender and play styles will prevent the algorithms from overfitting 
+to a specific user's biomechanical signature. Additionally the data collection methodology must be refined to eliminate the noise caused by manual app-based labeling.
+
+
+\subsection{Clinical Validation of Fatigue Algorithms}
+\label{sec:future_cramp}
+Finally, the deterministic cramping prevention system requires rigorous clinical validation. Since safely and consistently inducing a pre-cramp state in a live basketball environment is practically difficult, 
+future data collection for this subsystem should be conducted in a controlled sports science laboratory to properly delimit the fatigue levels. By correlating the different \gls{EMG} features and with a better recognition 
+system, the cramping prevention algorithm could be upgraded. Rather than relying on manually calibrated static thresholds, future iterations could employ dynamic, auto-calibrating 
+baselines that adapt to the athlete's specific physiological state in real-time before a game or practice while warming up.
+
+
+\section{Final Remarks}
+The transition from passive data logging to active, real-time physiological monitoring represents the next critical evolution in sports science technology. The prototype developed in this study serves as a 
+ proof-of-concept for this shift. While challenges regarding hardware ergonomics and individualized calibration remain, the underlying software architecture, specifically the dual-tier inference pipeline 
+ establishes a robust foundation for future iterations.
+
+Ultimately, this dissertation demonstrates that the future of athletic wearables does not lie merely in tracking how fast or how far an athlete moves, but in understanding the underlying neuromuscular cost of those 
+movements. By successfully harmonizing mechanical sensors, electrical physiology, and machine learning, this work contributes a meaningful step forward in the pursuit of optimizing athletic performance 
+and safeguarding player health.

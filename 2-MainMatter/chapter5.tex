@@ -131,7 +131,7 @@ for better performance the \gls{EMG} data could be cut and be used only for the 
 As illustrated in ~\autoref{fig:featureImportance}, the \gls{EMG} features \gls{VAR} and \gls{RMS} had the biggest impact. This shows that the \gls{EMG} is valuable for movement recognition systems alongside the 
 \gls{IMU}. The graph also shows a preference for the left side suggesting that the model picked up on a dominant players' foot.
 
-\subsection{Confusion Matrices and Error Analysis}
+\subsection{\gls{ML} Training - Confusion Matrices and Error Analysis}
 \label{ssec:confusion_matrices_ML}
 
 To conduct an analysis of the models' predictive flaws, confusion matrices were generated for both the Edge and Cloud classifiers based on the offline test dataset.
@@ -181,7 +181,7 @@ As illustrated in ~\autoref{fig:overall_accuracy}, the localized TinyML model su
 71.2\%. Even tho the local model achieved better results, with a greater dataset the server model should outperform it, especially with more confusing movements. The smoothed version of the local model has a 6.4\% 
 higher accuracy than its counterpart while the server's is worse by 0.3\%. This shows that smoothing the predictions is a viable and worthwhile algorithm if the base model is consistent enough.
 
-\subsection{Confusion Matrices and Error Analysis}
+\subsection{Real Test - Confusion Matrices and Error Analysis}
 \label{ssec:confusion_matrices_test}
 
 In ~\autoref{fig:movement_accuracy}, we can see that overall, besides Defensive Sliding, the \gls{RF} model either outperformed the TinyML model or was nearly as accurate. The \gls{RF} model struggled to correctly 
@@ -279,27 +279,3 @@ with the current limited dataset.
 
 
 
-\subsection{Future Work}
-\label{ssec:future} 
-
-While the current prototype successfully demonstrates the viability of multi-modal sensor fusion and dual-tier machine learning in sports wearables, many steps for future research and development remain to 
-transition the system from a proof-of-concept to a robust helpful tool.
-
-\subsubsection{Hardware Evolution and Textile Integration}
-\label{ssec:future_hardware} 
-The most immediate hardware improvement involves transitioning from the modular, externally strapped prototype to a fully integrated smart sock. By utilizing miniaturized flexible printed circuit boards and conductive 
-woven threads instead of traditional adhesive \gls{EMG} electrodes, the system would completely eliminate the mechanical obstacles caused by device shifting and cable strain while being as unobtrusive as possible. 
-Furthermore, integrating the power supply directly into the fabric would resolve the current ergonomic issue, ensuring maximum comfort and zero interference with the athlete's natural motions.
-
-\subsubsection{Dataset Expansion and Automated Labeling}
-\label{ssec:future_data}
-Future data collection has to be greater in both quantity and quality. Expanding the demographic pool to include variety in height, weight, skill level, gender and play styles will prevent the algorithms from overfitting 
-to a specific user's biomechanical signature. Additionally the data collection methodology must be refined to eliminate the noise caused by manual app-based labeling.
-
-
-\subsubsection{Clinical Validation of Fatigue Algorithms}
-\label{ssec:future_cramp}
-Finally, the deterministic cramping prevention system requires rigorous clinical validation. Since safely and consistently inducing a pre-cramp state in a live basketball environment is practically difficult, 
-future data collection for this subsystem should be conducted in a controlled sports science laboratory to properly delimit the fatigue levels. By correlating the different \gls{EMG} features and with a better recognition 
-system, the cramping prevention algorithm could be upgraded. Rather than relying on manually calibrated static thresholds, future iterations could employ dynamic, auto-calibrating 
-baselines that adapt to the athlete's specific physiological state in real-time before a game or practice while warming up.

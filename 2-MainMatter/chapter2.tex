@@ -13,10 +13,90 @@
 \glsresetall
 \newpage
 
-\section{Movement Recognition Wearables}
+\section{Wearables}
+\label{sec:wearables}
+A Wearable is any smart device with sensors that can be worn, embedded in clothing, accessories or in the body or even adhered to or tattooed on the skin. There are many different 
+types of Wearables such as Smart Socks, Smart Insoles, Smartwatches, Smart Rings amongst others. These devices are able to measure many different types of data such as position, pressure, 
+brightness, velocity, heart rate and many others~\cite{reviewWearableTech}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.55\linewidth]{differentWearables.jpg}
+    \caption{Different wearables~\cite{wearablesAndIOT}.}
+    \label{fig:difWearables}
+\end{figure}
+
+Nowadays there are many different wearables that can collect the same type of data. With this in mind, the choice for the right device doesn't only revolve around what type of information 
+it can collect. Portability, processing power, accessibility, battery life are some other important characteristics.
+
+
+\subsection{Applications}
+\label{sub:aplications}
+
+Wearables provide data useful for many applications. Their portability, affordability, easy connection to a mobile phone and non-prescription nature of these devices
+ makes them an easy choice for several uses. Amongst others the main ones are Health, Activity Recognition and Sports and Tracking/Localization~\cite{wearablesAndIOT}. 
+
+\subsubsection{Health}
+\label{ssub:health}
+
+In the health sector wearables have gained a lot of importance over the last few years. With smart devices, doctors and patients can get a continuous health monitoring which lead to better diagnostics and disease and injury prevention. 
+The data provided by the devices is also used to design insoles, shoes and other objects that aid health care and injury prevention~\cite{injuryWalking}.
+Besides this, wearables are also being used by people to track their own health without any prescription. 
+
+Construction companies have also been investing in wearables to prevent injuries in their staff when working with heavy loads. In 2020 there were 619 million people affected by lower 
+back pain globally and the number is estimated to increase to 843 million by 2050~\cite{lowerBack}.
+
+
+\subsubsection{Tracking and Localization}
+\label{ssub:trackingAndLocalization}
+
+Knowing the position of a person or an animal is important in many occasions. From tracking animals to understand their behaviour to simply finding where a lost elder is, this category has many useful applications.
+
+This devices tend to have a great battery life efficiency since they have to last long periods of time without being charged. 
+
+\subsubsection{Activity Recognition and Sports}
+\label{ssub:activityRecognitionAndSports}
+
+Even though this section has a lot of overlapping technology with the health segment, its use cases go beyond the health category. Besides the day-to-day monitoring these devices can also recognize and monitor your physical activities.
+
+With information about timings, amount of force, position and others, coaches and players can prevent injuries and improve their skills.
+
+\subsubsection{Others}
+\label{ssub:others}
+
+Wearables are also used for education, gaming, virtual and augmented reality, law enforcement besides other applications.
+
+\newpage
+
+\subsection{Wearables in Basketball}
+\label{sub:wearablesInBasketball}
+
+Basketball was created in 1891 by a Canadian physical education professor named James Naismith in Springfield, Massachusetts as an indoor game to avoid the rain. 
+
+Sensors initially became part of the game through the ball manufacturing process in the 1950s to improve safety and standardization of its pressure. In the 1980s the players started 
+using blood oxygen and hear rate monitors in their training to improve strength and conditioning. The development of image sensors led to the recording and live broadcasting of basketball 
+games in the 1990s and the 2000s. Displacement and acceleration sensors starting being used in the 2010s to monitor the players' shooting form and other movements. As mentioned in \autoref{sec:wearables} 
+wearable technology is rapidly evolving and it is the next big step for sports statistics and performance improvement.~\cite{perspective}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth]{timeline.jpg}
+    \caption{~\cite[Timeline of sensing technology intertwined with basketball sport]{perspective}.}
+    \label{fig:sensorTimeline}
+\end{figure}
+
+Dave Brailsford popularized the concept "Marginal gains" which consists in improving every single detail, no matter how small in order to get better. The biggest obstacle in 
+this philosophy is quantifying and identifying what we can improve. The answer to this distress are Wearables~\cite{impactWearable}.
+
+For this purpose the technology used consists mostly of micro-electromechanical systems such as inertial measurement units (\gls{IMU}'s), networked sensor suites and exoskeletons. 
+Risk assessment shares some of its data with performance enhancement devices but it also works with 
+pressure sensors and IMU's that host several sensors (e.g., accelerometers, gyroscopes, and magnetometers)~\cite{biomechanicalPerfomance}. 
+
+
+\section{Movement Recognition Sensors}
 \label{sec:movement_recognition_wearablesT}
 
-As mentioned in the introduction, there are many different wearables capable of capturing similar data through different mechanisms. % devInsole
+There are many different technologies capable of capturing similar data through different mechanisms. % devInsole
 For acquiring movement related data the usual methods are through an \gls{IMU}, image capture or some sort of pressure sensors.
 
 Another way to collect information about player movements is through the muscles, for example, with an \gls{EMG} sensor.
@@ -42,8 +122,8 @@ There are two main types of \gls{EMG}:
 \end{itemize}
 
 
-\section{Plantar Pressure Wearables}
-\label{sec:plantar_pressure_wearables_STA}
+\subsection{Plantar Pressure Wearables}
+\label{ssec:plantar_pressure_wearables_STA}
 
 Plantar pressure wearables are innovative devices designed to monitor and analyze the distribution of pressure across the soles of the feet. By embedding sensors into insoles, smart 
 socks, or even shoes, these wearables capture detailed data on foot loading patterns, which is critical for understanding gait, balance, and overall foot health. Plantar pressure data 
@@ -81,8 +161,8 @@ flexibility and data accessibility are particularly valuable in basketball train
 whether in an indoor or outdoor court.
 %Muscle Sensors
 
-\subsection{Restraints}
-\label{ssec:restraints}
+\section{Restraints}
+\label{sec:restraints}
 
 Wearables have to be light and comfortable since they should be unnoticeable and not disturb the user's activities. This means that these gadgets have low processing capacities 
 and their sensors monitor the data at lower frequencies then non wearable devices. Due to their size they often use miniature sensors that can be sensitive to placement and alignment. 
@@ -106,8 +186,8 @@ Due to the lack of privacy of the athlete's data and since wearable technology c
 devices~\cite{NBPAWearables, hawksWear}.
 
 
-\subsection{Communication Protocols} %dá para aumentar
-\label{ssec:communication_protocols}
+\section{Communication Protocols} %dá para aumentar
+\label{sec:communication_protocols}
 
 Wearable technology relies heavily on efficient communication protocols to ensure seamless data exchange between devices, applications, and networks. These protocols define the rules 
 for data transmission, enabling wearables to monitor health, track activity, and connect with other devices in real time. Given the constraints of wearables, communication protocols 
@@ -115,8 +195,8 @@ play a critical role in balancing performance with power efficiency.
 For this project two kinds of protocols will be discussed: Bluetooth Low Energy and WiFi.
 
 
-\subsubsection{BLE - Bluetooth Low Energy}
-\label{sssec:bleT}
+\subsection{BLE - Bluetooth Low Energy}
+\label{ssec:bleT}
 
 BLE is a short-range communication technology known for its low power consumption. Classified as a Wireless Personal Area Network (WPAN), BLE is widely used in 
 various wearable applications, from diabetes monitoring devices to smartwatches. The original insole design employed BLE for communication between the insole and the paired mobile application.
@@ -125,8 +205,8 @@ developer requirements and contributing to its swift adoption.
 The main difference between BLE and the classic Bluetooth is their transmission rates. BLE transmits at around 2000 Kbps while Bluetooth Classic transmits at around 2-3 Mbps making its energy consumption 
 around two times bigger than BLE. This is the reason BLE is the usual choice for IOT devices. Besides this difference BLE works the same way as Bluetooth Classic~\cite{masterInsole, bachelorInsole}.
 
-\subsubsection{WiFI}
-\label{sssec:wifiT}
+\subsection{WiFI}
+\label{ssec:wifiT}
 
 WiFi is a widely used wireless Local Area Network (LAN) technology, primarily aimed at connecting mobile devices to the internet. Its broad adoption means it's available in most homes, businesses, and many public 
 spaces. WiFi uses variations of the IEEE 802.11 protocol depending on the generation, with the latest generation, WiFi 6 (802.11ax), approved in September 2024. Operating on the 2.4 GHz or 5 GHz 
@@ -134,8 +214,8 @@ frequency bands, WiFi 6 also supports wider channels, optimized mainly for video
 WiFi delivers high data speeds and easy setup for access points, making it a mature and well-proven technology. However, its range is somewhat limited indoors due to high signal 
 absorption, though range improves in open, line-of-sight environments. Due to its relatively high power consumption, WiFi is not ideal for direct communication in IoT devices~\cite{masterInsole, bachelorInsole}.
 
-\subsection{Gait Cycle}
-\label{ssec:gait_cycleT}
+\section{Gait Cycle}
+\label{sec:gait_cycleT}
 
 The Gait Cycle is the sequence of movements that one leg takes in each step in walking or running. It is the whole moving process from the first point of contact between 
 a foot and the ground until it reaches the ground again (see figure\autoref{fig:gaitCycle})~\cite{masterInsole, freewalker}.
@@ -175,8 +255,8 @@ There are two different stages for this motion in slower gaits and an extra stag
 
 \newpage
 
-\subsection{Other Movements}
-\label{ssec:other_movements}
+\subsection{Basketball Movements}
+\label{ssec:baskebtall_movements}
 
 Basketball involves many other distinct movements besides gait. These motions are very complex making them difficult to accurately identify 
 but they are essential for injury prevention and for the performance enhancement analysis. In this project data will be collected from three groups of movements with increasing complexity.
