@@ -8,44 +8,29 @@
 
 \typeout{NT FILE abstract-pt.tex}%
 
-Independentemente da língua em que a dissertação está escrita, geralmente esta contém pelo menos dois resumos: um resumo na mesma língua do texto principal e outro resumo numa outra língua.
 
-A ordem dos resumos varia de acordo com a escola. Se a sua escola tiver regulamentos específicos sobre a ordem dos resumos, o template (\LaTeX) \gls{novathesis} irá respeitá-los. Caso contrário, a regra padrão no template \gls{novathesis} é ter em primeiro lugar o resumo \emph{no mesmo idioma do texto principal} e depois o resumo \emph{no outro idioma}. Por exemplo, se a dissertação for escrita em português, a ordem dos resumos será primeiro o português e depois o inglês, seguido do texto principal em português. Se a dissertação for escrita em inglês, a ordem dos resumos será primeiro em inglês e depois em português, seguida do texto principal em inglês.
-%
-%No entanto, esse pedido pode ser personalizado adicionando um dos seguintes ao arquivo \verb+5_packages.tex+.
 
-\begin{verbatim}
-    \abstractorder(<MAIN_LANG>):={<LANG_1>,...,<LANG_N>}
-\end{verbatim}
+Os dispositivos \textit{wearables} de desporto comuns dependem predominantemente de dados cinemáticos provenientes de Unidades de Medição Inercial (\glspl{IMU}), não contendo o contexto fisiológico muscular que ajuda
+a classificar movimentos atléticos complexos e de alta intensidade. Para colmatar esta limitação, esta dissertação apresenta o desenho, implementação e avaliação de um ecossistema de \textit{wearables} 
+multimodal concebido especificamente para a análise de basquetebol. A arquitetura de hardware desenvolvida funde a cinemática de \glspl{IMU} de 9 eixos com os dados de sensores de Eletromiografia (\gls{EMG}), 
+sendo transmitidos através de microcontroladores Arduino \gls{BLE} à frequência de 50Hz.
 
-Por exemplo, para um documento escrito em Alemão com resumos em Alemão, Inglês e Italiano (por esta ordem), pode usar-se:
-\begin{verbatim}
-    \ntsetup{abstractorder={de={de,en,it}}}
-\end{verbatim}
+Para processar estes dados de alta frequência, foi desenvolvida uma aplicação Android dedicada para atuar como um centro descentralizado de computação. O software sincroniza os fluxos de dados de ambos os sensores 
+numa janela deslizante de 300ms alimentando dois modelos de \gls{ML}: um classificador \textit{Random Forest} (\gls{RF}) sedeado num servidor para uma análise mais aprofundada, e uma rede neuronal TinyML quantizada, 
+executada localmente para inferência de latência ultrabaixa.
 
-Relativamente ao seu conteúdo, os resumos não devem ultrapassar uma página e frequentemente tentam responder às seguintes questões (é imprescindível a adaptação às práticas habituais da sua área científica):
+A avaliação validou matematicamente a hipótese central da fusão de sensores. A análise de importância das características revelou que a \gls{VAR} e o valor \gls{RMS} da \gls{EMG} superaram a cinemática 
+padrão do acelerómetro como os principais contribuidores na distinção de movimentos semelhantes no basquetebol. Em última análise, a implementação bem-sucedida de \textit{Edge} \gls{ML} eliminou 
+totalmente a latência induzida pela rede, permitindo alertas instantâneos e ativos para a prevenção de cãimbras. Esta investigação demonstra que a harmonização entre sensores mecânicos, fisiologia elétrica e 
+\gls{ML} incorporada constitui uma abordagem eficaz na salvaguarda da saúde de atletas.
 
-%\begin{enumerate}
-%  \item Qual é o problema?
-%  \item Porque é que é um problema interessante/desafiante?
-%  \item Qual é a proposta de abordagem/solução?
-%  \item Quais são as consequências/resultados da solução proposta?
-%\end{enumerate}
-
-% E agora vamos fazer um teste com uma quebra de linha no hífen a ver se a \LaTeX\ duplica o hífen na linha seguinte se usarmos \verb+"-+… em vez de \verb+-+.
-%
-% zzzz zzz zzzz zzz zzzz zzz zzzz zzz zzzz zzz zzzz zzz zzzz zzz zzzz zzz zzzz comentar"-lhe zzz zzzz zzz zzzz
-%
-% Sim!  Funciona! :)
-
-% Palavras-chave do resumo em Português
-% \begin{keywords}
-% Palavra-chave 1, Palavra-chave 2, Palavra-chave 3, Palavra-chave 4
-% \end{keywords}
+% Palavras-chave
 \keywords{
-  Primeira palavra-chave \and
-  Outra palavra-chave \and
-  Mais uma palavra-chave \and
-  A última palavra-chave
+  \textit{Wearables} Desportivos \and
+  Fusão de Sensores \and
+  Eletromiografia (EMG) \and
+  Unidade de Medição Inercial (IMU) \and
+  \textit{Edge} ML \and
+  TinyML \and
+  Aprendizagem Automática (ML)
 }
-% to add an extra black line

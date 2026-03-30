@@ -16,7 +16,7 @@ To process this high-frequency data, a custom Android application was engineered
 and feeds a dual-tier machine learning pipeline: a cloud-based Random Forest (\gls{RF}) classifier for deep post-session analysis, and a quantized TinyML neural network executing locally for ultra-low latency 
 inference.
 
-Empirical evaluation mathematically validated the core sensor fusion hypothesis. Feature importance analysis revealed that localized \gls{EMG} variance and \gls{RMS} outranked standard accelerometer kinematics as 
+Empirical evaluation mathematically validated the core sensor fusion hypothesis. Feature importance analysis revealed that localized \gls{EMG} \gls{VAR} and \gls{RMS} outranked standard accelerometer kinematics as 
 the primary contributors for differentiating similar basketball movements. Ultimately, the successful deployment of Edge \gls{ML} completely eliminated network-induced latency, enabling instantaneous, active 
 injury prevention alerts. This research demonstrates that harmonizing mechanical sensors, electrical physiology, and embedded machine learning provides a good approach to safeguarding athlete health.
 
@@ -31,10 +31,10 @@ injury prevention alerts. This research demonstrates that harmonizing mechanical
 \keywords{
   Sports Wearables \and
   Sensor Fusion \and
-  Electromyography (EMG) \and
-  Inertial Measurement Unit (IMU) \and
-  Edge ML \and
+  Electromyography (\gls{EMG}) \and
+  Inertial Measurement Unit (\gls{IMU}) \and
+  Edge \gls{ML} \and
   TinyML \and
-  Machine Learning (ML)
+  Machine Learning (\gls{ML})
 } 
 

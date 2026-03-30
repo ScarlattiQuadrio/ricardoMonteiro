@@ -12,7 +12,8 @@
 \chapter{Implementation}
 \label{cha:implementation}
 
-This section is split into different sections explaining the project's developed software.
+%This section is split into different sections explaining the project's developed software.
+\newpage
 
 \section{Prototype Hardware}
 \label{sec:prototypeHardware}
@@ -21,7 +22,7 @@ Two prototypes were developed composed by an Arduino 33 nano \gls{BLE} Rev 2, an
 Standard power banks have a modern system to idle if not enough power is drawn. Since the Arduinos don't break that threshold, to keep the power banks active, a keep-alive circuit was utilized to periodically pulse 
 the current draw.
 
-\begin{figure}[htbp]
+\begin{figure}[h]
   \centering
   \includegraphics[width=0.9\linewidth]{physicalSystemOverview.jpg}
   \caption{Physical System Overview}
@@ -207,7 +208,7 @@ ensure modularity, maintainability, and extensibility.
 This application follows a modular architecture separating responsibilities between the user interface, data handling, and Bluetooth communication. At its core, the program follow the MVVM (Model-View-ViewModel) design pattern, improving 
 testability, maintainability and division of tasks.
 
-\begin{figure}[htbp]
+\begin{figure}[h]
   \centering
   \includegraphics[width=1\linewidth]{appOverview.jpg}
   \caption{Android Application Overview}
@@ -228,7 +229,7 @@ and the application logic. These ViewModels handle any calls made by the screens
 At first, when the app is launched, some necessary permissions are checked, specifically the Bluetooth (\texttt{BLUETOOTH\_SCAN and BLUETOOTH\_CONNECT}), 
 the location (\texttt{ACCESS\_FINE\_LOCATION and ACCESS\_COARSE\_LOCATION}) and the internet access permissions. Even though the app doesn't use the user's location, its permission is required for \gls{BLE} in Android 12 and higher. 
 
-\begin{figure}[htbp]
+\begin{figure}[h]
   \centering
   \includegraphics[width=0.8\linewidth]{bleTurnOn.jpg}
   \caption{Request message to turn on Bluetooth}
@@ -242,7 +243,7 @@ the location (\texttt{ACCESS\_FINE\_LOCATION and ACCESS\_COARSE\_LOCATION}) and 
 This is the first menu shown to the user and it has the simple task of guiding the user through the application's functions. It has one button that takes us to the profile menu (\ref{sssec:profile_menu}) and another that takes us to 
 data menu(\autoref{sssec:data_menu}).
 
-\begin{figure}[htbp]
+\begin{figure}[h]
   \centering
   \includegraphics[width=0.8\linewidth]{startScreen.jpg}
   \caption{Start Menu}
@@ -252,28 +253,36 @@ data menu(\autoref{sssec:data_menu}).
 \subsubsection{Profile Menu}
 \label{sssec:profile_menu}
 
-In this menu every saved user profile is listed and the user is able to create new profiles and delete existing ones. When creating a profile the app generates a unique id and the user is asked for a name and height. 
+In this menu every saved user profile is listed and the user is able to create new profiles and delete existing ones. When creating a profile the app generates a unique id and the user is asked for a name and height (~autoref{fig:newUserWindow}). 
 The list of users is stored locally and is available in every session.
 
-\begin{figure}[ht]
-    \centering
-    \begin{subfigure}[b]{0.5\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{usersScreen.jpg}
-        \caption{Profiles' Menu}
-        \label{fig:usersScreen}
-    \end{subfigure}
-    \hfill 
-    \begin{subfigure}[b]{0.35\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{newUserWindowOnly.jpg}
-        \caption{New User Window}
-        \label{fig:newUserWindow}
-    \end{subfigure}
-    
-    \caption{Profile's Menu and User Creation}
-    \label{fig:dataScreens}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.30\linewidth]{newUserWindowOnly.jpg}
+  \caption{New User Window}
+  \label{fig:newUserWindow}
 \end{figure}
+
+
+    %\begin{figure}[ht]
+%    \centering
+%    \begin{subfigure}[b]{0.5\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{usersScreen.jpg}
+%        \caption{Profiles' Menu}
+%        \label{fig:usersScreen}
+%    \end{subfigure}
+%    \hfill 
+%    \begin{subfigure}[b]{0.35\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{newUserWindowOnly.jpg}
+%        \caption{New User Window}
+%        \label{fig:newUserWindow}
+%    \end{subfigure}
+%    
+%    \caption{Profile's Menu and User Creation}
+%    \label{fig:dataScreens}
+%%\end{figure}
 
 
 \subsubsection{Data Menu}
@@ -285,25 +294,32 @@ InfluxDB database. At last there is a button that takes the application to the C
 
 %falar do VariabResult
 
-\begin{figure}[ht]
-    \centering
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{dataScreenNoCon.jpg}
-        \caption{Without devices' connections}
-        \label{fig:dataScreenNoC}
-    \end{subfigure}
-    \hfill 
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{dataScreenWithCon.jpg}
-        \caption{When both devices are connected}
-        \label{fig:dataScreenWithCon}
-    \end{subfigure}
-    
-    \caption{Data Menu}
-    \label{fig:dataScreen}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{dataScreenWithCon.jpg}
+  \caption{Data Menu when both prototypes are connected}
+  \label{fig:dataScreenWithCon}
 \end{figure}
+
+%\begin{figure}[ht]
+%    \centering
+%    \begin{subfigure}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{dataScreenNoCon.jpg}
+%        \caption{Without devices' connections}
+%        \label{fig:dataScreenNoC}
+%    \end{subfigure}
+%    \hfill 
+%    \begin{subfigure}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{dataScreenWithCon.jpg}
+%        \caption{When both devices are connected}
+%        \label{fig:dataScreenWithCon}
+%    \end{subfigure}
+    
+%    \caption{Data Menu}
+%    \label{fig:dataScreen}
+%\end{figure}
 
 
 \subsubsection{Calibration Menu}
@@ -314,7 +330,7 @@ drift and environmental magnetic interference, the gyroscope and magnetometer ha
 In this page the user can trigger the calibration methods that send specific commands to the devices with the instructions needed. For the gyroscope, the firmware executes a static calibration by averaging 1000 samples to compute and nullify 
 the offset. For the magnetometer, the system performs a dynamic hard-iron calibration, recording the maximum and minimum magnetic field intensities during a multi-axis rotation to calculate precise spatial offsets and scaling factors.
 
-\begin{figure}[htbp]
+\begin{figure}[h]
   \centering
   \includegraphics[width=0.8\linewidth]{calibScreen.jpg}
   \caption{Calibration Menu}
@@ -324,27 +340,36 @@ the offset. For the magnetometer, the system performs a dynamic hard-iron calibr
 The gyroscope calibration for both devices is done at the same time while the magnetometers' are executed one at a time. For each operation the app has a respective button and while ongoing calibration, the app display some real-time progress 
 to the user via a dedicated \gls{BLE} characteristic.
 
-\begin{figure}[ht]
-    \centering
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{calibScreenIMU.jpg}
-        \caption{Gyroscope Calibration in Progress}
-        \label{fig:calibMenuIMU}
-    \end{subfigure}
-    \hfill 
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{calibScreenFinished.jpg}
-        \caption{Calibration Finished}
-        \label{fig:calibMenuFinished}
-    \end{subfigure}
-    
-    \caption{Calibration Menu}
-    \label{fig:calibMenu2}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{calibScreenIMUsmall.jpg}
+  \caption{Left Gyroscope Calibration in Progress}
+  \label{fig:calibMenuIMU}
 \end{figure}
 
-When all the calibration operations are finished, the following screen (\autoref{fig:calibMenuFinished}) is presented and the values are saved to be uploaded when the devices reconnect
+
+%\begin{figure}[ht]
+%    \centering
+%    \begin{subfigure}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{calibScreenIMU.jpg}
+%        \caption{Gyroscope Calibration in Progress}
+%        \label{fig:calibMenuIMU}
+%    \end{subfigure}
+%    \hfill 
+%    \begin{subfigure}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{calibScreenFinished.jpg}
+%        \caption{Calibration Finished}
+%        \label{fig:calibMenuFinished}
+%    \end{subfigure}
+%    
+%    \caption{Calibration Menu}
+%    \label{fig:calibMenu2}
+%\end{figure}
+
+When all the calibration operations are finished, the save button turns green and the values are saved to be uploaded when the devices reconnect.
 
 
 \subsection{Arduino \gls{BLE} Communication}
