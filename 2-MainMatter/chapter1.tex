@@ -37,13 +37,41 @@ insole or a sock making it as comfortable and as unobtrusive as possible. An and
 Although other devices may offer higher precision or additional data types, basketball regulations only allow unobtrusive devices that can be concealed and do not interfere with gameplay or player safety.
 \newpage
 
-\section{Motivation}
-\label{sec:motivation}
-
-
 \section{Objectives}
 \label{sec:objectives}
 
+The primary objective of this dissertation is to design, implement, and evaluate a wearable system tailored for high-intensity sports analytics, specifically focusing on basketball mechanics. Moving beyond the 
+limitations of traditional commercial fitness trackers that rely predominantly on passive kinematic data logging, this project aims to create an active, real-time monitoring ecosystem capable of simultaneous 
+movement classification and localized fatigue detection. In other words, develop everything from the software of the arduinos themselves and the interface to the database management.
 
-\section{Document Structure}
-\label{sec:structure}
+The research seeks to prove that combining standard \gls{IMU} with \gls{EMG} sensors provides a fundamentally richer, multi-dimensional dataset by collecting data with the developed system and training capable \gls{ML} 
+models. Another major goal is to demonstrate the viability of a lightweight Edge model deployed onto a mobile device and compare it to a "normal" \gls{ML} model ran on a cloud service.
+
+Ultimately, the objective is to equip athletes and coaches with a wearable tool that not only categorizes athletic performance, but actively safeguards player health by pre-emptively identifying hypertensive 
+muscle activity before cramping occurs.
+
+
+\section{Motivation}
+\label{sec:motivation}
+
+I've been playing basketball since I was five years old and I've never lost my passion for the sport. As a player that has dealt with cramping before, I know that after it happens, you need a lot of rest and massaging to 
+get back to a proper state and that takes time. It is very difficult to keep plating at a high level after cramping. With the opportunity of combining both my studies and this hobby, I knew I had to research it and 
+contribute to the betterment of these technologies.
+
+
+\subsection{Document Structure}
+\label{ssec:document_structure}
+
+The remainder of this dissertation is organized into five main chapters, each detailing a specific phase of the research, development, and evaluation of the proposed wearable system:
+
+\begin{itemize}
+    \item \textbf{\autoref{cha:soa}: State Of The Art} - Reviews the existing literature and technological landscape regarding sports wearables, specifically tailored to basketball. It explores the foundational concepts of 
+    movement recognition sensors (such as \gls{IMU} and \gls{EMG}), wireless communication protocols, the biomechanics of the gait cycle, and \gls{ML} algorithms.
+    \item \textbf{\autoref{cha:workProposal}: Work Proposal} - Outlines the architecture of the proposed solution. It defines the core project description, the initial design of the hardware prototype, and the methodologies planned 
+    for high-frequency data acquisition and processing.
+    \item \textbf{\autoref{cha:implementation}} - Provides a comprehensive, highly technical breakdown of the system's development. This chapter details the embedded firmware written for the Arduino microcontrollers, 
+    the architecture of the Kotlin-based Android application, the integration with the InfluxDB database, and the complete development for both the cloud and edge \gls{ML} models.
+    \item \textbf{\autoref{cha:verificaton_testing}} - Presents the evaluation of the developed system. It details the physical data collection protocol and rigorously assesses the \gls{ML} models using metrics 
+    such as feature importance and confusion matrices. The chapter concludes with a critical discussion of the system's real-world performance and an analysis of known limitations.
+    \item \textbf{\autoref{cha:conclusion}} - Summarizes the achievements of the dissertation. It revisits the initial objectives and proposes concrete avenues for future work.
+\end{itemize}

@@ -81,14 +81,14 @@ width of 18mm and length of 45mm weighing only 5g~\cite{arduinoDoc}. The Arduino
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\linewidth]{arduino-pinout.jpg}
-  \caption{Arduino Nano \gls{BLE} Rev 2 - Pinout\cite{arduinoDoc}}
+  \caption{Arduino Nano \gls{BLE} Rev 2 - Pinout~\cite{arduinoDoc}}
   \label{fig:arduinoPinout}
 \end{figure}
 
 \subsubsection{BITalino Electromyography}
 \label{ssec:bitalinoEMG}
 
-The sensor has a gain of 1009 and an input of 2.0-3.5V making the output of 3.3V of the Arduino ideal for it. As seen in the figure bellow \ref{fig:emgProto}, The emg has an input channel for the electrode cables on the left side 
+The sensor has a gain of 1009 and an input of 2.0-3.5V making the output of 3.3V of the Arduino ideal for it. As seen in figure \ref{fig:emg}, The emg has an input channel for the electrode cables on the left side 
 and 4 connection points on the right side:
 
 \begin{itemize}
@@ -98,13 +98,20 @@ and 4 connection points on the right side:
   \item \gls{GND} - The black wire connect the Arduino's ground to this point.
 \end{itemize}
 
- A circuit was designed to obtain a stable reference for the \gls{EMG} sensor, implemented using a resistive divider followed by an operational amplifier. As shown in figure~\autoref{divisorTensao}, two identical resistors are 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\linewidth]{emg.jpg}
+  \caption{BITalino \gls{EMG} sensor~\cite{}}
+  \label{fig:emg}
+\end{figure}
+
+ A circuit was designed to obtain a stable reference for the \gls{EMG} sensor, implemented using a resistive divider followed by an operational amplifier. As shown in figure~\autoref{fig:divisorTensao}, two identical resistors are 
  connected between the 3.3V supply from the arduino and ground resulting on the node in the middle settling at half the voltage. The op-amp's purpose is to stabilize the circuit by lowering the impedance at the output.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\linewidth]{divisorTensao.jpg}
-  \caption{Halving the \gls{VCC}.}
+  \caption{Halving the \gls{VCC}}
   \label{fig:divisorTensao}
 \end{figure}
 
