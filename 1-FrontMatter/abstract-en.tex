@@ -8,17 +8,31 @@
 
 \typeout{NT FILE abstract-en.tex}%
 
-Standard sports wearables rely predominantly on kinematic data from Inertial Measurement Units (\glspl{IMU}), missing the physiological context of the muscles to classify complex, high-intensity athletic movements. 
-Addressing this limitation, this dissertation presents the design, implementation, and evaluation of a multi-modal wearable ecosystem tailored for basketball analytics. The custom hardware architecture fuses 9-axis 
-\gls{IMU} kinematics with Electromyography (\gls{EMG}) sensors' data transmitting via Arduino \gls{BLE} microcontrollers at 50Hz. 
+Standard sports wearables rely predominantly on kinematic data from Inertial Measurement Units (Inertia Measurement Units (IMUs)), missing the physiological context of the
+muscles to classify complex, high-intensity athletic movements. Addressing this limitation, this dissertation presents the design, implementation, and evaluation of a multi-modal
+wearable ecosystem tailored for basketball analytics. The custom hardware architecture fuses 9-axis IMU kinematics with Electromyography (EMG) sensors'
+data transmitting via Arduino Bluetooth Low Energy (BLE) microcontrollers at 50Hz.
 
-To process this high-frequency data, a custom Android application was engineered to serve as a decentralized edge-computing hub. The software synchronizes the bilateral sensor streams into a 300ms sliding window 
-and feeds a dual-tier machine learning pipeline: a cloud-based Random Forest (\gls{RF}) classifier for deep post-session analysis, and a quantized TinyML neural network executing locally for ultra-low latency 
-inference.
+To process this high-frequency data, a custom Android application was engineered to serve as a decentralized edge-computing hub. The software synchronizes the bilateral
+sensor streams into a 300ms sliding window and feeds a dual-tier machine learning pipeline: a cloud-based Random Forest (Random Forest (RF)) classifier for deep post session
+analysis, and a quantized TinyML neural network executing locally for ultra-low latency inference. Empirical evaluation mathematically validated the core sensor fusion hypothesis. Feature
+importance analysis revealed that localized EMG Variance (VAR) and Root Mean Square (RMS) outranked standard accelerometer kinematics as the primary contributors
+for differentiating similar basketball movements. 
 
-Empirical evaluation mathematically validated the core sensor fusion hypothesis. Feature importance analysis revealed that localized \gls{EMG} \gls{VAR} and \gls{RMS} outranked standard accelerometer kinematics as 
-the primary contributors for differentiating similar basketball movements. Ultimately, the successful deployment of Edge \gls{ML} completely eliminated network-induced latency, enabling instantaneous, active 
-injury prevention alerts. This research demonstrates that harmonizing mechanical sensors, electrical physiology, and embedded machine learning provides a good approach to safeguarding athlete health.
+Ultimately, the successful deployment of Edge Machine Learning (ML) completely eliminated network-induced latency, enabling
+instantaneous, active injury prevention alerts. This research demonstrates that harmonizing mechanical sensors, electrical physiology, and embedded machine learning provides
+a good approach to safeguarding athlete health.
+%Standard sports wearables rely predominantly on kinematic data from Inertial Measurement Units (\glspl{IMU}), missing the physiological context of the muscles to classify complex, high-intensity athletic movements. 
+%Addressing this limitation, this dissertation presents the design, implementation, and evaluation of a multi-modal wearable ecosystem tailored for basketball analytics. The custom hardware architecture fuses 9-axis 
+%\gls{IMU} kinematics with Electromyography (\gls{EMG}) sensors' data transmitting via Arduino \gls{BLE} microcontrollers at 50Hz. 
+
+%To process this high-frequency data, a custom Android application was engineered to serve as a decentralized edge-computing hub. The software synchronizes the bilateral sensor streams into a 300ms sliding window 
+%and feeds a dual-tier machine learning pipeline: a cloud-based Random Forest (\gls{RF}) classifier for deep post-session analysis, and a quantized TinyML neural network executing locally for ultra-low latency 
+%inference.
+
+%Empirical evaluation mathematically validated the core sensor fusion hypothesis. Feature importance analysis revealed that localized \gls{EMG} \gls{VAR} and \gls{RMS} outranked standard accelerometer kinematics as 
+%the primary contributors for differentiating similar basketball movements. Ultimately, the successful deployment of Edge \gls{ML} completely eliminated network-induced latency, enabling instantaneous, active 
+%injury prevention alerts. This research demonstrates that harmonizing mechanical sensors, electrical physiology, and embedded machine learning provides a good approach to safeguarding athlete health.
 
 %\begin{enumerate}
 %  \item What is the problem?
@@ -36,5 +50,5 @@ injury prevention alerts. This research demonstrates that harmonizing mechanical
   Edge \gls{ML} \and
   TinyML \and
   Machine Learning (\gls{ML})
-} 
+}
 

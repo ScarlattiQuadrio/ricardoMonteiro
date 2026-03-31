@@ -240,8 +240,8 @@ the location (\texttt{ACCESS\_FINE\_LOCATION and ACCESS\_COARSE\_LOCATION}) and 
 \label{sssec:start_menu}
 
 %falar de cada viewmodel
-This is the first menu shown to the user and it has the simple task of guiding the user through the application's functions. It has one button that takes us to the profile menu (\ref{sssec:profile_menu}) and another that takes us to 
-data menu(\autoref{sssec:data_menu}).
+This is the first menu shown to the user and it has the simple task of guiding the user through the application's functions. It has one button that takes us to the profile menu (\autoref{sssec:profile_menu}) and another that takes us to 
+data menu (\autoref{sssec:data_menu}).
 
 \begin{figure}[h]
   \centering
@@ -253,7 +253,7 @@ data menu(\autoref{sssec:data_menu}).
 \subsubsection{Profile Menu}
 \label{sssec:profile_menu}
 
-In this menu every saved user profile is listed and the user is able to create new profiles and delete existing ones. When creating a profile the app generates a unique id and the user is asked for a name and height (~autoref{fig:newUserWindow}). 
+In this menu every saved user profile is listed and the user is able to create new profiles and delete existing ones. When creating a profile the app generates a unique id and the user is asked for a name and height (\autoref{fig:newUserWindow}). 
 The list of users is stored locally and is available in every session.
 
 \begin{figure}[h]
@@ -289,8 +289,8 @@ The list of users is stored locally and is available in every session.
 \label{sssec:data_menu}
 
 When this menu is opened, the app tries to connect to both devices and when able, starts exchanging data. The data is then shown to the user. On the left the user can select an active user profile and a label for the current movement. On the right, 
-from top to bottom, the \gls{ML} models' predictions are shown (\autoref{sec:ml_code}). Beneath the models' projections, there are 2 switches - one to start/stop the \gls{ML} server connection and another one to start/stop sending the collected data to the 
-InfluxDB database. At last there is a button that takes the application to the Calibration Menu (\autoref{sssec:calib_menu}).
+from top to bottom, the \gls{ML} models' predictions are shown (\autoref{sec:ml_code}). Beneath the models' projections, there are 3 switches - one to start/stop the \gls{ML} server connection and two others to start/stop sending the collected data
+or the \gls{ML} predictions to the InfluxDB database. At last there is a button that takes the application to the Calibration Menu (\autoref{sssec:calib_menu}).
 
 %falar do VariabResult
 
@@ -337,8 +337,8 @@ the offset. For the magnetometer, the system performs a dynamic hard-iron calibr
   \label{fig:calibMenu}
 \end{figure}
 
-The gyroscope calibration for both devices is done at the same time while the magnetometers' are executed one at a time. For each operation the app has a respective button and while ongoing calibration, the app display some real-time progress 
-to the user via a dedicated \gls{BLE} characteristic.
+The gyroscope calibration for both devices is done at the same time while the magnetometers' are executed one at a time. For each operation the app has a respective button and while ongoing calibration, the app displays some real-time progress 
+to the user that are sent via a dedicated \gls{BLE} characteristic.
 
 
 \begin{figure}[h]
@@ -404,8 +404,7 @@ characteristic.
 
 The managers subscribe to the data characteristic of the respective device and rely on the onCharacteristicChanged callback. This allows the microcontrollers to asynchronously push data bundles at 10 Hz. Upon receiving the payload, the 
 managers decode the byte arrays into their respective float and integer values. If the data upload switch is active, this payload is appended with the active userId, the selected movement label, and a timestamp, and is immediately sent 
-to the database.
-
+to the database. And if the predictions switch is active, the payload is switched for the four \gls{ML} predictions and the data is sent to another database for further inquiring.
 
 \subsection{Communication with InfluxDB}
 \label{ssec:android_com_data_base}
@@ -492,7 +491,7 @@ tagged with a timestamp and User ID. %As this measurement shares the exact time-
 
 During the first live test, a susceptibility to "prediction flickering" was noticed. Since the classifiers evaluate discrete 300ms data windows, anomalies such as an irregular movement or sensor noise could cause 
 isolated 100ms frames to be misclassified. To mitigate this instability, a post-processing Temporal Smoothing algorithm was developed within the Android application. This algorithm functions as a 
-digital low-pass filter utilizing a majority voting logic. A continuous sliding window, implemented via a Kotlin ArrayDeque, was configured to store the last 5 consecutive predictions, effectively granting 
+digital low-pass filter utilizing a majority voting logic. A continuous sliding window, implemented via a Kotlin ArrayDeque, was configured to store the last five consecutive predictions, effectively granting 
 the system 500ms of temporal short-term memory. 
 To compare the original prediction values with the filtered ones, the system sends both values from both models to a database for future analysis.
 
@@ -519,7 +518,7 @@ for both the Cloud and Local classification models.
 \label{ssec:ml_training}
 
 To train models capable of recognizing dynamic biomechanical movements, the raw sensor data previously logged to InfluxDB was exported as CSV files and ingested into a pandas DataFrame. The initial dataset consisted of discrete kinematic and electromyography 
-measurements mapped to specific target labels (see \autoref{ssec:other_movements}).
+measurements mapped to specific target labels (see~\autoref{ssec:baskebtall_movements}).
 
 The first phase of preprocessing involved synchronizing the independent left and right insole data streams. Timestamps were parsed and rounded to the nearest 20ms. The dataset was then pivoted from a long format to a wide format, aligning the 15 features from the 
 left insole and the 15 features from the right insole into a singular 30 feature vector for every discrete timestamp.
@@ -568,7 +567,7 @@ allowing for a biomechanical assessment of whether the \gls{EMG} data provided a
 Furthermore, to evaluate the multi-class discriminative power of the \gls{RF} algorithm, the generation of Receiver Operating Characteristic curves was integrated into the testing pipeline. By binarizing the target labels in a 
 One-vs-Rest configuration, the trade-off between the True Positive Rate and False Positive Rate can be plotted for each discrete movement class (Idle, Walking, Running, Defensive Slide, Rebound).
 
-For the Edge-Tier TinyML model, the evaluation strategy required continuously logging the training history over the 40 epochs to monitor the network's mathematical convergence. Tracking these temporal learning curves (categorical cross-entropy 
+For the Edge-Tier TinyML model, the evaluation strategy required continuously logging the training history over the 50 epochs to monitor the network's mathematical convergence. Tracking these temporal learning curves (categorical cross-entropy 
 loss and classification accuracy) is critical for neural network architectures to ensure the lightweight model did not overfit the training data or memorize localized noise. 
 
 Finally, the pipeline was programmed to compute confusion matrices for both the Cloud-Tier and Edge-Tier models mapping the predicted classifications against the actual target labels on the isolated 20\% testing split.

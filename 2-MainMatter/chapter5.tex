@@ -35,7 +35,7 @@ socks, utilizing the existing infrastructure. With this configuration, the \gls{
 minimizes the mechanical strain exerted by the power cables on the USB ports, while keeping the \gls{EMG} leads in close proximity to the chosen muscle group.
 
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.5\linewidth]{deviceInPlace.jpg}
   \caption{An athlete wearing the prototype}
@@ -47,7 +47,7 @@ The muscle chosen to be measured was the Gastrocnemius Lateralis as it is one of
 The position for the \gls{EMG} sensors was chosen as recommended by the \gls{EU}'s SENIAM (Surface ElectroMyoGraphy for the Non-Invasive Assessment of Muscles) project (~\cite{emgPosition}) ensuring standardization and maximization of the 
 signal-to-noise ratio.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.5\linewidth]{emgPosition.jpg}
   \caption{Gastrocnemius Lateralis Positioning ~\cite{emgPosition}}
@@ -67,25 +67,24 @@ the training phase giving us clear insights into how each model converges, ident
 \subsection{Training Metrics and Performance Curves}    
 \label{ssec:training_metrics}
 
-
-
-For the TinyML model, the learning process is monitored iteratively across the training epochs.~\autoref{fig:tinyMLAccuracy} illustrates the model's accuracy progression, comparing the training dataset against the 
-unseen validation dataset. 
-As observed in the accuracy curve, the model learns rapidly during the initial epochs before stabilizing reaching an validation accuracy of approximately 94\%. The validation curve 
-remains close to the training line throughout the training epochs indicating that the model generalizes well to new data rather than simply memorizing the training samples.
-
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{TinyMLAccuracy.jpg}
+  \includegraphics[width=0.8\linewidth]{TinyMLAccuracy.jpg}
   \caption{TinyMLAccuracy}
   \label{fig:tinyMLAccuracy}
 \end{figure}
+
+For the TinyML model, the learning process is monitored iteratively across the training epochs.~\autoref{fig:tinyMLAccuracy} illustrates the model's accuracy progression, comparing the training dataset against the 
+unseen validation dataset. 
+
+As observed in the accuracy curve, the model learns rapidly during the initial epochs before stabilizing reaching an validation accuracy of approximately 94\%. The validation curve 
+remains close to the training line throughout the training epochs indicating that the model generalizes well to new data rather than simply memorizing the training samples.
 
 ~\autoref{fig:tinyMLLoss} further demonstrates that behaviour. The categorical cross-entropy loss curve shows a synchronized descent of both the training and validation loss curves confirming that the model is
 successfully minimizing its errors during the training and attributing high confidence to the correct movement.
 
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.9\linewidth]{TinyMLLoss.jpg}
   \caption{TinyMLLoss}
@@ -98,19 +97,19 @@ Precision-Recall curves.
 The Receiver Operating Characteristic curve (~\autoref{fig:RFROC}) evaluates the true positive rate against the false positive rate for each individual movement class. The Area Under the Curve scores approach 
 1.0 across all movements, demonstrating that the \gls{RF} algorithm is highly capable of distinguishing the mathematical boundaries between distinct biomechanical states.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\linewidth]{RFROC.jpg}
   \caption{RF ROC Curve}
   \label{fig:RFROC}
 \end{figure}
 
-The Precision-Recall curve (~\autoref{fig:RFPrecision}) shows the trade-off between precision and recall for different thresholds. This type of chart is specially crucial in in highly imbalanced sports datasets 
+The Precision-Recall curve (\autoref{fig:RFPrecision}) shows the trade-off between precision and recall for different thresholds. This type of chart is specially crucial in in highly imbalanced sports datasets 
 where the vast majority of movements recorded are Walking, Running or Defensive Sliding while movements like Rebounds, Shooting and Crossover happen in a split second. The resulting curve demonstrates that the \gls{RF} 
 model is able to detect all movements with high precision and low false positives.
 
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\linewidth]{RFPrecisionRecall.jpg}
   \caption{RF Precision Recall Curve}
@@ -140,7 +139,7 @@ alongside the \gls{IMU}. The graph also shows a preference for the left side sug
 To conduct an analysis of the models' predictive flaws, confusion matrices were generated for both the Edge and Cloud classifiers based on the offline test dataset.
 
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.7\linewidth]{tinyMLConfusionMatrix.jpg}
   \caption{TinyML Confusion Matrix}
@@ -148,7 +147,7 @@ To conduct an analysis of the models' predictive flaws, confusion matrices were 
 \end{figure}
 
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.7\linewidth]{RFConfusionMatrix.jpg}
   \caption{Random Forest Confusion Matrix}
@@ -156,7 +155,7 @@ To conduct an analysis of the models' predictive flaws, confusion matrices were 
 \end{figure}
 
 
-~\autoref{fig:tinyMLConfusionMatrix} and ~autoref{fig:RFConfusionMatrix} reveal strong diagonal density confirming high accuracy overall. However, looking at the errors reveal that most of the misclassification occurs between 
+~\autoref{fig:tinyMLConfusionMatrix} and ~\autoref{fig:RFConfusionMatrix} reveal strong diagonal density confirming high accuracy overall. However, looking at the errors reveal that most of the misclassification occurs between 
 movements that share similar profiles (for example the models sometimes confuse the movement Defensive Sliding with Running and vice-versa or Rebound with Idle). 
 
 
@@ -173,7 +172,7 @@ player also worked intensively until the fatigue warning triggered.
 The primary objective of this test was to compare the classification accuracy of the ultra-lightweight Edge model against the deeper Cloud model and the variation of smoothed predictions vs raw. In terms of latency, 
 the tinyML model responded instantly while the \gls{RF} model had a slight delay.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\linewidth]{testOverallAccuracyComparison.jpg}
   \caption{Overall Classification Accuracy: Local TinyML vs Cloud Random Forest (Raw and Smoothed)}
@@ -190,7 +189,7 @@ higher accuracy than its counterpart while the server's is worse by 0.3\%. This 
 In ~\autoref{fig:movement_accuracy}, we can see that overall, besides Defensive Sliding, the \gls{RF} model either outperformed the TinyML model or was nearly as accurate. The \gls{RF} model struggled to correctly 
 identify the movements Rebounding and Defensive Sliding but excelled at the Idle, Walking and Running movements. The improvement from the smoothing algorithm is also prevalent here in the majority of the movements.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.9\linewidth]{testMovementAccuracy.jpg}
   \caption{Classification Accuracy by Movement}
@@ -199,7 +198,7 @@ identify the movements Rebounding and Defensive Sliding but excelled at the Idle
 
 Continuing the system's assessment, the confusion matrices for both models were generated:
  
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=.7\linewidth]{testConfusionMatrixRFRaw.jpg}
   \caption{Confusion Matrix for the Random Forest Model before Smoothing}
@@ -209,7 +208,7 @@ Continuing the system's assessment, the confusion matrices for both models were 
 The \gls{RF}'s matrices (~\autoref{fig:confusion_matrix_RF_Raw},~\autoref{fig:confusion_matrix_RF_Smooth}) are very similar showing that when the athlete was Defensive Sliding, the model predicted the movement Running or Walking 
 while only predicting about 12\% of the time right. However, the model has a very high accuracy on the movements Walking, Idle and Running while Rebounding was mistaken with Walking or Running half the time.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=.7\linewidth]{testConfusionMatrixRFSmoothed.jpg}
   \caption{Confusion Matrix for the Random Forest Model after Smoothing}
@@ -220,14 +219,14 @@ while only predicting about 12\% of the time right. However, the model has a ver
 On the other hand, the TinyML model had a slight accuracy boost by the smoothing algorithm. Analysing ~\autoref{fig:confusion_matrix_TinyML_Raw} and in~\autoref{fig:confusion_matrix_TinyML_Smooth}, the edge model 
 also mistaken Running with Defensive Sliding and vice-versa as the \gls{RF} model did. Even so, the matrix's diagonal is pretty strong and the movements Walking and Idle and phenomenal having a near perfect accuracy.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=.7\linewidth]{testConfusionMatrixTinyMLRaw.jpg}
   \caption{Confusion Matrix for the Raw TinyML Model}
   \label{fig:confusion_matrix_TinyML_Raw}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.7\linewidth]{testConfusionMatrixTinyMLSmoothed.jpg}
   \caption{Confusion Matrix for the Smoothed TinyML Model}
@@ -279,6 +278,4 @@ transitional movements. This minor overlap injected small instances of mislabell
 Finally, the collection of physiological fatigue data presented a significant challenge. Safely and reliably inducing and capturing a pre-cramp state in a testing environment is inherently difficult. 
 As a result, gathering stable, sustained \gls{RMS} baseline values for the peak fatigue threshold was challenging, making the deterministic cramping algorithm highly sensitive and difficult to calibrate 
 with the current limited dataset.
-
-
 

@@ -20,7 +20,8 @@
 \label{cha:workProposal}
 
 This project begins with the prototype design and the development of the arduino's code and of an interface app. Afterwards, data from different movements is collected and the \gls{ML} 
-models are developed. The last goal is to implement a \gls{ML} model into a server connected via WiFi and a Tiny \gls{ML} model into the app giving real-time feedback and analysis of their movements.
+models are developed. The last goal is to implement a \gls{ML} model into a server connected via WiFi and a Tiny \gls{ML} model into the app giving real-time feedback and analysis of their movements and fatigue 
+monitoring.
 
 Basketball is one of the most popular sports worldwide and it is constantly becoming more complex and more competitive and so does the related technology alongside it. Gathering data from the players is crucial 
 to improve the efficiency of their practices and their game. As of today, coaches rely in video analysis to help their players with tactical movements and technical skills but this method has its 
@@ -90,14 +91,14 @@ width of 18mm and length of 45mm weighing only 5g~\cite{arduinoDoc}. The Arduino
 \subsubsection{BITalino Electromyography}
 \label{ssec:bitalinoEMG}
 
-The sensor has a gain of 1009 and an input of 2.0-3.5V making the output of 3.3V of the Arduino ideal for it. As seen in figure \ref{fig:emg}, The emg has an input channel for the electrode cables on the left side 
+The sensor has a gain of 1009 and an input of 2.0-3.5V making the output of 3.3V of the Arduino ideal for it. As seen in ~\autoref{fig:emg}, the emg has an input channel for the electrode cables on the left side 
 and 4 connection points on the right side:
 
 \begin{itemize}
   \item \gls{VOUT} - Connected through the white wire to the respective input pin of the Arduino
   \item \gls{VCC} - The red wire is connecting this point to the 3.3V pin.
   \item \gls{VCC}/2 - From the same pin that the \gls{VCC} point is connected to, we have a small voltage divider with an Ampop for stabilization to halve the tension (blue wire).
-  \item \gls{GND} - The black wire connect the Arduino's ground to this point.
+  \item \gls{GND} - The black wire connects the Arduino's ground to this point.
 \end{itemize}
 
 \begin{figure}[h]

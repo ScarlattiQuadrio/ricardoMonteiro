@@ -10,19 +10,38 @@
 
 
 
-Os dispositivos \textit{wearables} de desporto comuns dependem predominantemente de dados cinemáticos provenientes de Unidades de Medição Inercial (\glspl{IMU}), não contendo o contexto fisiológico muscular que ajuda
-a classificar movimentos atléticos complexos e de alta intensidade. Para colmatar esta limitação, esta dissertação apresenta o desenho, implementação e avaliação de um ecossistema de \textit{wearables} 
-multimodal concebido especificamente para a análise de basquetebol. A arquitetura de hardware desenvolvida funde a cinemática de \glspl{IMU} de 9 eixos com os dados de sensores de Eletromiografia (\gls{EMG}), 
-sendo transmitidos através de microcontroladores Arduino \gls{BLE} à frequência de 50Hz.
 
-Para processar estes dados de alta frequência, foi desenvolvida uma aplicação Android dedicada para atuar como um centro descentralizado de computação. O software sincroniza os fluxos de dados de ambos os sensores 
-numa janela deslizante de 300ms alimentando dois modelos de \gls{ML}: um classificador \textit{Random Forest} (\gls{RF}) sedeado num servidor para uma análise mais aprofundada, e uma rede neuronal TinyML quantizada, 
-executada localmente para inferência de latência ultrabaixa.
+Standard sports wearables rely predominantly on kinematic data from Inertial Measurement Units (Inertia Measurement Units (IMUs)), missing the physiological context of the
+muscles to classify complex, high-intensity athletic movements. Addressing this limitation, this dissertation presents the design, implementation, and evaluation of a multi-modal
+wearable ecosystem tailored for basketball analytics. The custom hardware architecture fuses 9-axis IMU kinematics with Electromyography (EMG) sensors'
+data transmitting via Arduino Bluetooth Low Energy (BLE) microcontrollers at 50Hz.
 
-A avaliação validou matematicamente a hipótese central da fusão de sensores. A análise de importância das características revelou que a \gls{VAR} e o valor \gls{RMS} da \gls{EMG} superaram a cinemática 
-padrão do acelerómetro como os principais contribuidores na distinção de movimentos semelhantes no basquetebol. Em última análise, a implementação bem-sucedida de \textit{Edge} \gls{ML} eliminou 
-totalmente a latência induzida pela rede, permitindo alertas instantâneos e ativos para a prevenção de cãimbras. Esta investigação demonstra que a harmonização entre sensores mecânicos, fisiologia elétrica e 
-\gls{ML} incorporada constitui uma abordagem eficaz na salvaguarda da saúde de atletas.
+To process this high-frequency data, a custom Android application was engineered to serve as a decentralized edge-computing hub. The software synchronizes the bilateral
+sensor streams into a 300ms sliding window and feeds a dual-tier machine learning pipeline: a cloud-based Random Forest (Random Forest (RF)) classifier for deep post session
+analysis, and a quantized TinyML neural network executing locally for ultra-low latency inference. Empirical evaluation mathematically validated the core sensor fusion hypothesis. Feature
+importance analysis revealed that localized EMG Variance (VAR) and Root Mean Square (RMS) outranked standard accelerometer kinematics as the primary contributors
+for differentiating similar basketball movements. 
+
+Ultimately, the successful deployment of Edge Machine Learning (ML) completely eliminated network-induced latency, enabling
+instantaneous, active injury prevention alerts. This research demonstrates that harmonizing mechanical sensors, electrical physiology, and embedded machine learning provides
+a good approach to safeguarding athlete health.
+
+
+
+
+%Os dispositivos \textit{wearables} de desporto comuns dependem predominantemente de dados cinemáticos provenientes de Unidades de Medição Inercial (\glspl{IMU}), não contendo o contexto fisiológico muscular que ajuda
+%a classificar movimentos atléticos complexos e de alta intensidade. Para colmatar esta limitação, esta dissertação apresenta o desenho, implementação e avaliação de um ecossistema de \textit{wearables} 
+%multimodal concebido especificamente para a análise de basquetebol. A arquitetura de hardware desenvolvida funde a cinemática de \glspl{IMU} de 9 eixos com os dados de sensores de Eletromiografia (\gls{EMG}), 
+%sendo transmitidos através de microcontroladores Arduino \gls{BLE} à frequência de 50Hz.
+
+%Para processar estes dados de alta frequência, foi desenvolvida uma aplicação Android dedicada para atuar como um centro descentralizado de computação. O software sincroniza os fluxos de dados de ambos os sensores 
+%numa janela deslizante de 300ms alimentando dois modelos de \gls{ML}: um classificador \textit{Random Forest} (\gls{RF}) sedeado num servidor para uma análise mais aprofundada, e uma rede neuronal TinyML quantizada, 
+%executada localmente para inferência de latência ultrabaixa.
+
+%A avaliação validou matematicamente a hipótese central da fusão de sensores. A análise de importância das características revelou que a \gls{VAR} e o valor \gls{RMS} da \gls{EMG} superaram a cinemática 
+%padrão do acelerómetro como os principais contribuidores na distinção de movimentos semelhantes no basquetebol. Em última análise, a implementação bem-sucedida de \textit{Edge} \gls{ML} eliminou 
+%totalmente a latência induzida pela rede, permitindo alertas instantâneos e ativos para a prevenção de cãimbras. Esta investigação demonstra que a harmonização entre sensores mecânicos, fisiologia elétrica e 
+%\gls{ML} incorporada constitui uma abordagem eficaz na salvaguarda da saúde de atletas.
 
 % Palavras-chave
 \keywords{
