@@ -246,9 +246,13 @@ doi = {10.3390/app10238691}
   keywords={Foot;Pressure sensors;Accelerometers;Gyroscopes;Force;Real-time systems},
   doi={10.1109/EMBC.2015.7319202}}
 
-@article{posDuringWalking,
-author = {Chumanov, Elizabeth and Remy, Christian and Thelen, Darryl},
-title = {Tracking the Position of Insole Pressure Sensors during Walking and Running}
+
+@inproceedings{posDuringWalking,
+  title={Tracking the position of insole pressure sensors during walking and running},
+  author={Chumanov, Elizabeth S and Remy, Christian D and Thelen, Darryl G},
+  booktitle={Proceedings of the 30th Annual Meeting of the American Society of Biomechanics},
+  year={2007},
+  organization={Citeseer}
 }
 
 @INPROCEEDINGS{snowboard,
@@ -258,7 +262,8 @@ title = {Tracking the Position of Insole Pressure Sensors during Walking and Run
   year={2010},
   pages={732-737},
   keywords={Textiles;Foot;Capacitive sensors;Pressure measurement;Capacitance},
-  doi={10.1109/ICSENS.2010.5690041}}
+  doi={10.1109/ICSENS.2010.5690041}
+}
 
   @INPROCEEDINGS{embedding,
   author={Hubl, M. and Pohl, O. and Noack, V. and Hahlweg, P. and Ehm, C. and Derleh, M. and Weiland, T. and Schick, E. and Müller, H-H. and Hampicke, D. and Gregorius, P. and Schwartzinger, T. and Jablonski, T. and Maurer, J.-P. and Hahn, R. and Ehrmann, O. and Lang, K.-D. and Shin, E. and Ngo, H.-D.},
@@ -276,7 +281,7 @@ author = {Tian, Yu and Zhang, Lei and Zhang, Chi and Bao, Bo and Li, Qingtong an
 year = {2023},
 month = {11},
 pages = {},
-title = {Deep‐learning enabled smart insole system aiming for multifunctional foot-healthcare applications},
+title = {Deep-learning enabled smart insole system aiming for multifunctional foot-healthcare applications},
 volume = {4},
 journal = {Exploration},
 doi = {10.1002/EXP.20230109}
@@ -298,14 +303,16 @@ abstract = {Summary
 Basketball, as one of the most popular sports in the world, has millions of followers and massive economic value. Basketball evolves so fast that it requires teams with smarter strategies, better skills, and stronger players. However, the competition strategies and training methods in basketball are still experience-based, lacking precise data to drive for more efficient training and strategies. On the other hand, flexible sensors, as a new class of sensors, have been a hotspot for scientific research and widely applied in various fields. Due to their excellent characteristics of flexibility, wearing comfort, convenience, and response speed, integrating flexible sensors into basketball has the potential to greatly promote all aspects of the sport. This paper aims to bring more fusion between basketball and flexible sensors. In this perspective, we first perform a review of the history of sensing technologies in the basketball sport and discuss mechanisms of flexible sensors applied on basketball players. Then specific scenarios for flexible sensors applied in basketball were elaborated on in detail. Finally, we envision the potential applications of flexible sensors in basketball and present our views on future development directions. We hope this paper can depict how flexible sensing technology is integrated into basketball systems and point out the future development of basketball with the help of flexible sensors.}
 }
 
-@misc{arduinoDoc,
+@online{arduinoDoc,
   title = {Arduino Nano 33 BLE Rev 2 Documentation},
-  URL = {https://docs.arduino.cc/hardware/nano-33-ble-rev2/}
+  URL = {https://docs.arduino.cc/hardware/nano-33-ble-rev2/},
+  urldate = {2026-02-01}
 }
 
-@misc{emgPosition,
+@online{emgPosition,
   title = {Seniam (Surface ElectroMyoGraphy for the Non-Invasive Assessment of Muscles) Project Website},
-  URL = {http://seniam.org/}
+  URL = {http://seniam.org/},
+  urldate = {2026-02-01}
 }
 
 @INPROCEEDINGS{RealTimeACLInjuryPrevention,
@@ -476,12 +483,17 @@ doi = {10.3390/s24123970}
 }
 
 @article{BiomedicalSignalProcessingAndControl,
-author = {Quesada, Lucas and Verdel, Dorian and Bruneau, Olivier and Berret, Bastien and Amorim, Michel-Ange and Vignais, Nicolas},
-year = {2024},
-month = {09},
-pages = {},
-title = {Emg Feature Extraction and Muscle Selection for Continuous Upper Limb Movement Regression},
-doi = {10.2139/ssrn.4953765}
+title = {EMG feature extraction and muscle selection for continuous upper limb movement regression},
+journal = {Biomedical Signal Processing and Control},
+volume = {103},
+pages = {107323},
+year = {2025},
+issn = {1746-8094},
+doi = {https://doi.org/10.1016/j.bspc.2024.107323},
+url = {https://www.sciencedirect.com/science/article/pii/S1746809424013818},
+author = {Lucas Quesada and Dorian Verdel and Olivier Bruneau and Bastien Berret and Michel-Ange Amorim and Nicolas Vignais},
+keywords = {Signal processing, Electromyography, Intent detection, Human-robot interaction},
+abstract = {Achieving a versatile control of exoskeletons or prostheses requires accurate, robust and fast predictions of upcoming human movements. Electromyographic (EMG) signals are increasingly being used for this purpose as they theoretically allow to estimate joint torques in advance due to the electromechanical delay. However, their performance in continuously predicting joint torques strongly depends on the location of the sensors and on the feature extracted from the signal, whose impact on the accuracy is little-known in this context. In the present paper, the influence of different EMG features and muscles on the performance to predict both multi- and single-joint torques have been analyzed, while moving in a parasagittal plane hindered by a viscous force field applied by an exoskeleton. The existence of an accuracy-latency tradeoff is first highlighted, whether with frequency or time-domain features, the latter providing the best tradeoff. Second, the impact of muscle selection on the quality of the joint torques prediction is illustrated. In particular, the anterior deltoid, the long triceps, the brachialis, and the brachioradialis muscles are shown to be the most important to record during movements in a parasagittal plane. The present results pave the path towards the design of reactive and accurate exoskeletons and prostheses controllers based on EMG signals}
 }
 
 @Article{EvaluationOfFeatureExtractionAndClassification,
@@ -632,7 +644,9 @@ journal = {Annals of Psychophysiology},
 doi = {10.29052/2412-3188.v10.i1.2022.08-11}
 }
 
-@manual{bitalino,
+@online{bitalino,
   author = {PLUX},
-  title = {BITalino - Electromyography (EMG) Sensor User Manual }
+  title = {BITalino - Electromyography (EMG) Sensor User Manual},
+  url = {https://support.pluxbiosignals.com/wp-content/uploads/2021/11/electromyography-emg-user-manual.pdf},
+  urldate = {2026-02-01}
 }

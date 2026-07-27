@@ -73,7 +73,7 @@ the training phase giving us clear insights into how each model converges, ident
   \label{fig:tinyMLAccuracy}
 \end{figure}
 
-For the TinyML model, the learning process is monitored iteratively across the training epochs.~\autoref{fig:tinyMLAccuracy} illustrates the model's accuracy progression, comparing the training dataset against the 
+For the Tiny\gls{ML} model, the learning process is monitored iteratively across the training epochs.~\autoref{fig:tinyMLAccuracy} illustrates the model's accuracy progression, comparing the training dataset against the 
 unseen validation dataset. 
 
 As observed in the accuracy curve, the model learns rapidly during the initial epochs before stabilizing reaching an validation accuracy of approximately 94\%. The validation curve 
@@ -90,7 +90,7 @@ successfully minimizing its errors during the training and attributing high conf
   \label{fig:tinyMLLoss}
 \end{figure}
 
-While the Neural Network was evaluated via epoch progression, the Cloud-based Random Forest model is evaluated using ensemble classification metrics, specifically the Receiver Operating Characteristic and 
+While the~\gls{NN} was evaluated via epoch progression, the Cloud-based~\gls{RF} model is evaluated using ensemble classification metrics, specifically the Receiver Operating Characteristic and 
 Precision-Recall curves.
 
 The Receiver Operating Characteristic curve (~\autoref{fig:RFROC}) evaluates the true positive rate against the false positive rate for each individual movement class. The Area Under the Curve scores approach 
@@ -169,7 +169,7 @@ player also worked intensively until the fatigue warning triggered.
 \label{ssec:overall_accuracy}
 
 The primary objective of this test was to compare the classification accuracy of the ultra-lightweight Edge model against the deeper Cloud model and the variation of smoothed predictions vs raw. In terms of latency, 
-the tinyML model responded instantly while the~\gls{RF} model had a slight delay.
+the tiny\gls{ML} model responded instantly while the~\gls{RF} model had a slight delay.
 
 \begin{figure}[htbp]
   \centering
@@ -178,14 +178,14 @@ the tinyML model responded instantly while the~\gls{RF} model had a slight delay
   \label{fig:overall_accuracy}
 \end{figure}
 
-As illustrated in ~\autoref{fig:overall_accuracy}, the localized TinyML model successfully outperformed the cloud-based Random Forest model, achieving an overall accuracy of 79.5\% compared to the server's 
+As illustrated in ~\autoref{fig:overall_accuracy}, the localized tiny\gls{ML} model successfully outperformed the cloud-based Random Forest model, achieving an overall accuracy of 79.5\% compared to the server's 
 71.2\%. Even tho the local model achieved better results, with a greater dataset the server model should outperform it, especially with more confusing movements. The smoothed version of the local model has a 6.4\% 
 higher accuracy than its counterpart while the server's is worse by 0.3\%. This shows that smoothing the predictions is a viable and worthwhile algorithm if the base model is consistent enough.
 
 \subsection{Real Test - Confusion Matrices and Error Analysis}
 \label{ssec:confusion_matrices_test}
 
-In ~\autoref{fig:movement_accuracy}, we can see that overall, besides Defensive Sliding, the~\gls{RF} model either outperformed the TinyML model or was nearly as accurate. The~\gls{RF} model struggled to correctly 
+In ~\autoref{fig:movement_accuracy}, we can see that overall, besides Defensive Sliding, the~\gls{RF} model either outperformed the tiny\gls{ML} model or was nearly as accurate. The~\gls{RF} model struggled to correctly 
 identify the movements Rebounding and Defensive Sliding but excelled at the Idle, Walking and Running movements. The improvement from the smoothing algorithm is also prevalent here in the majority of the movements.
 
 \begin{figure}[htbp]
@@ -215,7 +215,7 @@ while only predicting about 12\% of the time right. However, the model has a ver
 \end{figure}
 
 
-On the other hand, the TinyML model had a slight accuracy boost by the smoothing algorithm. Analysing ~\autoref{fig:confusion_matrix_TinyML_Raw} and in~\autoref{fig:confusion_matrix_TinyML_Smooth}, the edge model 
+On the other hand, the tiny\gls{ML} model had a slight accuracy boost by the smoothing algorithm. Analysing ~\autoref{fig:confusion_matrix_TinyML_Raw} and in~\autoref{fig:confusion_matrix_TinyML_Smooth}, the edge model 
 also mistaken Running with Defensive Sliding and vice-versa as the~\gls{RF} model did. Even so, the matrix's diagonal is pretty strong and the movements Walking and Idle and phenomenal having a near perfect accuracy.
 
 \begin{figure}[htbp]

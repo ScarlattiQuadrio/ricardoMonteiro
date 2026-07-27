@@ -21,7 +21,7 @@ in the field.
 \section{Wearables}
 \label{sec:wearables}
 A wearable is any smart device with sensors that can be worn, embedded in clothing, accessories or in the body or even adhered to or tattooed on the skin. There are many different 
-types of Wearables such as Smart Socks, Smart Insoles, Smartwatches, Smart Rings amongst others. These devices are able to measure many different types of data such as position, pressure, 
+types of wearables such as Smart Socks, Smart Insoles, Smartwatches, Smart Rings amongst others. These devices are able to measure many different types of data such as position, pressure, 
 brightness, velocity, heart rate and many others~\cite{reviewWearableTech}.
 
 \begin{figure}[h]
@@ -101,7 +101,7 @@ Wearable technology is rapidly evolving and it is the next big step for sports s
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\linewidth]{timeline.jpg}
+    \includegraphics[width=0.9\linewidth]{timeline.jpg}
     \caption{Evolution of Sensor Technology in Basketball (adapted from~\cite{perspective}).}
     \label{fig:sensorTimeline}
 \end{figure}
@@ -109,7 +109,7 @@ Wearable technology is rapidly evolving and it is the next big step for sports s
 Dave Brailsford popularized the concept "Marginal gains" which consists in improving every single detail, no matter how small in order to get better. The biggest obstacle in 
 this philosophy is quantifying and identifying what we can improve. The answer to this distress is Wearables~\cite{impactWearable}.
 
-For this purpose the technology used consists mostly of micro-electromechanical systems such as Inertial Measurement Units (\gls{IMU}), networked sensor suites and exoskeletons. 
+For this purpose the technology used consists mostly of micro-electromechanical systems such as \glspl{IMU}, networked sensor suites and exoskeletons. 
 Risk assessment shares some of its data with performance enhancement devices working with 
 pressure sensors and~\glspl{IMU} that host several sensors (e.g., accelerometers, gyroscopes, and magnetometers)~\cite{biomechanicalPerfomance}. 
 
@@ -222,33 +222,33 @@ play a critical role in balancing performance with power efficiency.
 For this project two kinds of protocols will be discussed: Bluetooth Low Energy and WiFi.
 
 
-\subsubsection{BLE - Bluetooth Low Energy}
+\subsubsection{\gls{BLE} - Bluetooth Low Energy}
 \label{sssec:bleT}
 
-BLE is a short-range communication technology known for its low power consumption. Classified as a Wireless Personal Area Network (WPAN), BLE is widely used in 
+\gls{BLE} is a short-range communication technology known for its low power consumption. Classified as a~\gls{WPAN},~\gls{BLE} is widely used in 
 various wearable applications, from diabetes monitoring devices to smartwatches.
 
-BLE's primary design objectives are to enable low-power communication, particularly for peripheral devices. It is optimized for affordability and simplicity, aligning well with many 
+\gls{BLE}'s primary design objectives are to enable low-power communication, particularly for peripheral devices. It is optimized for affordability and simplicity, aligning well with many 
 developer requirements and contributing to its swift adoption.
 
-The main difference between BLE and the classic Bluetooth is their transmission rates. BLE transmits at around 2000 Kbps while Bluetooth Classic transmits at around 2-3 Mbps making its energy consumption 
-around two times bigger than BLE. This is the reason BLE is the usual choice for IOT devices. Besides this difference BLE works the same way as Bluetooth Classic~\cite{masterInsole, bachelorInsole}.
+The main difference between~\gls{BLE} and the classic Bluetooth is their transmission rates.~\gls{BLE} transmits at around 2000 Kbps while Bluetooth Classic transmits at around 2-3 Mbps making its energy consumption 
+around two times bigger than~\gls{BLE}. This is the reason~\gls{BLE} is the usual choice for~\gls{IoT} devices. Besides this difference~\gls{BLE} works the same way as Bluetooth Classic~\cite{masterInsole, bachelorInsole}.
 
 \subsubsection{WiFI}
 \label{sssec:wifiT}
 
-WiFi is a widely used wireless Local Area Network (LAN) technology, primarily aimed at connecting mobile devices to the internet. Its broad adoption means it's available in most homes, businesses, and many public 
+WiFi is a widely used wireless~\gls{LAN} technology, primarily aimed at connecting mobile devices to the internet. Its broad adoption means it's available in most homes, businesses, and many public 
 spaces. WiFi uses variations of the IEEE 802.11 protocol depending on the generation, with the latest generation, WiFi 6 (802.11ax), approved in September 2024. Operating on the 2.4 GHz or 5 GHz 
 frequency bands, WiFi 6 also supports wider channels, optimized mainly for video streaming.
 
 WiFi delivers high data speeds and easy setup for access points, making it a mature and well-proven technology. However, its range is somewhat limited indoors due to high signal 
-absorption, though range improves in open, line-of-sight environments. Due to its relatively high power consumption, WiFi is not ideal for direct communication in IoT devices~\cite{masterInsole, bachelorInsole}.
+absorption, though range improves in open, line-of-sight environments. Due to its relatively high power consumption, WiFi is not ideal for direct communication in~\gls{IoT} devices~\cite{masterInsole, bachelorInsole}.
 
 
 \section{Movements}
 \label{sec:movements}
 
-Humanmovement forms the baseline for any activity recognition system. At its core, it relies on the repetitive and predictable patterns of 
+Human movement forms the baseline for any activity recognition system. At its core, it relies on the repetitive and predictable patterns of 
 standard walking and running. However, in the context of a high-intensity sport like basketball, it's necessary to understand its explosive, 
 multi-directional, and highly complex movements.
 
@@ -262,7 +262,7 @@ a foot and the ground until it reaches the ground again (see~\autoref{fig:gaitCy
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\linewidth]{gaitCycle.jpg}
-    \caption{The gait cycle of a leg with with a cycle time of 0.92s. 40 ms interval between lines~\cite{gaitBook}.}
+    \caption{The gait cycle of a leg with with a cycle time of 0.92 s. 40 ms interval between lines~\cite{gaitBook}.}
     \label{fig:gaitCycle}
 \end{figure}
 
@@ -348,10 +348,10 @@ different algorithms with different objectives. In this section some of them wil
 \subsection{Algorithms}
 \label{ssec:data_algorithm}
 
-\subsubsection{K-nearest-neighbours classification}
+\subsubsection{\glsfmtfull{KNN} classification}
 \label{sssec:k-nearest_neighbours}
 
-The K-nearest-neighbours is one of the simplest supervised machine learning algorithms. It's a classification algorithm which uses proximity to assigning each point to the class with 
+The~\glsxtrfull{KNN} is one of the simplest supervised machine learning algorithms. It's a classification algorithm which uses proximity to assigning each point to the class with 
 the most similar elements within the K-nearest-neighbours~\cite{bachelorInsole, porto}. 
 
 As an example observe~\autoref{fig:k-near}. If someone would have to assign a class (green triangles, blue squares or red circles) to the cross in the figure, they would 
@@ -367,10 +367,10 @@ In other words imagine a small circle with its center on the object that we want
 \end{figure}
 
  
-\subsubsection{Dynamic Time Warping}
+\subsubsection{\glsfmtfull{DTW}}
 \label{sssec:dynamic_time_warping}
 
-The dynamic Time Warping (DTW) algorithm transforms unsynchronized time series or time series with different lengths allowing a dynamic comparison between them. This algorithm calculates 
+The~\glsxtrfull{DTW} algorithm transforms unsynchronized time series or time series with different lengths allowing a dynamic comparison between them. This algorithm calculates 
 the best possible alignment between two different series dependent on time providing a measurement of how well aligned (or not) they are~\cite{bachelorInsole}.
 
 \subsubsection{Regression analysis}
@@ -393,10 +393,10 @@ An extended version of this equation with n predictor variables is:
 \end{equation}
 
 
-\subsubsection{Recursive Feature Elimination}
+\subsubsection{\glsfmtfull{RFE}}
 \label{sssec:recursive_feature_elimination}
 
-Recursive Feature Elimination (RFE) selects features by progressively narrowing down the set of available features. Each feature is assigned a weight, and those with the lowest absolute 
+\glsxtrfull{RFE} selects features by progressively narrowing down the set of available features. Each feature is assigned a weight, and those with the lowest absolute 
 weights are removed from the set. In each iteration, a single feature is removed, and this process continues on the reduced set until the target number of features is reached~\cite{porto}.
 
 
@@ -415,10 +415,10 @@ by projecting data onto the directions that best separate the classes. Its goal 
 scatter within each class~\cite{porto, ComprehensiveStudyOnEMG}.
 
 
-\subsubsection{Neural Network - NN}
+\subsubsection{\glsfmtfull{NN}}
 \label{sssec:neural_network}
 
-A~\gls{NN} is a~\gls{ML} model that imitates the structure and functions of biological neural networks. A~\gls{NN} utilizes many connected nodes called "artificial neurons" organized by 
+A~\glsxtrfull{NN} is a~\gls{ML} model that imitates the structure and functions of biological neural networks. A~\gls{NN} utilizes many connected nodes called "artificial neurons" organized by 
 layers where each node connects to others from the previous or the next layer (Figure~\autoref{fig:NNFigure}). Each of these connections have corresponding weights determined 
 trough the training algorithm. For this process the data has to be labelled.
 
@@ -431,28 +431,28 @@ trough the training algorithm. For this process the data has to be labelled.
 \end{figure}
 
 There are three types of layers: input, hidden and output. A NN must have at least one layer of each, though it may contain multiple hidden layers. When a network has two or more hidden 
-layers it is considered a Deep Neural Network (DNN). 
+layers it is considered a Deep~\gls{NN}. 
 This~\gls{ML} technique is highly effective for analysing large datasets with non-linear relationships. However, to achieve accurate and precise results it requires a substantial 
 amount of complete data, as missing entries can significantly affect performance. 
 Despite its effectiveness, one major limitation of neural networks is their lack of interpretability, making it difficult to clearly understand the underlying classification 
 boundaries~\cite{ComprehensiveStudyOnEMG}.
 
-\subsubsection{Convolutional Neural Network - CNN}
+\subsubsection{\glsfmtfull{CNN}}
 \label{sssec:convolutional_neural_network}
 
-A~\gls{CNN} is a sort of Deep NN designed to process spatial or temporal structures. These models, before the fully connected layers, use convolutional filters to 
+A~\glsxtrfull{CNN} is a sort of Deep~\gls{NN} designed to process spatial or temporal structures. These models, before the fully connected layers, use convolutional filters to 
 automatically extract local features, reducing the number of parameters compared to fully connected networks improving efficiency.
-CNNs perform well in large-scale classification tasks and require minimal manual feature engineering. However, they often need substantial computational resources and can be difficult 
+~\glspl{CNN} perform well in large-scale classification tasks and require minimal manual feature engineering. However, they often need substantial computational resources and can be difficult 
 to interpret. Despite these limitations, CNNs remain one of the most effective tools for pattern recognition in modern machine learning~\cite{Review_IRBM_EMG}.
 
 
-\subsubsection{Fuzzy Logic - FL} 
+\subsubsection{\glsfmtfull{FL}} 
 \label{sssec:fuzzy_logic}
 
-Fuzzy Logic is a form of multi-valued logic in which its values are real and range between 0 and 1. Providing a mathematical framework capable of incorporating and balancing both precision and significance in 
+\glsxtrfull{FL} is a form of multi-valued logic in which its values are real and range between 0 and 1. Providing a mathematical framework capable of incorporating and balancing both precision and significance in 
 decision-making processes.
 
-A FL system operates through two main processes: fuzzification and defuzzification.
+A~\gls{FL} system operates through two main processes: fuzzification and defuzzification.
 Fuzzification converts crisp input values into fuzzy values by assigning them degrees of membership within a fuzzy set, typically represented by an arbitrary curve that defines 
 the relationship between the input values and their corresponding membership levels. A fuzzy set $A$ can be expressed as:
 
@@ -465,15 +465,15 @@ where $A$ is the fuzzy set, $U$ is the universe of discourse containing the elem
 
 After fuzzification, the fuzzy sets are evaluated through a series of if-then rules using logical operators to produce an output. This output is then converted back into crisp 
 values through defuzzification, which can be performed using various methods such as the centroid or bisector approaches.
-The main advantage of FL lies in its flexibility and its ability to be easily modified or combined with other classification techniques. However, FL also presents limitations - 
+The main advantage of~\gls{FL} lies in its flexibility and its ability to be easily modified or combined with other classification techniques. However,~\gls{FL} also presents limitations - 
 its numerous localized parameters and training requirements can make system construction and tuning a time-consuming process~\cite{ComprehensiveStudyOnEMG}.
 
-\subsubsection{Neuro-Fuzzy Hybridization - NF} 
+\subsubsection{\glsfmtfull{NF}} 
 \label{sssec:neuro_fuzzy_hybridization}
 
-NF combines the principles of FL and NN creating an intelligent hybrid model that merges human-like reasoning with adaptive learning. Typically, a NF system is built upon a fuzzy 
-logic framework and trained using data-driven methods from NN theory. During training, it adjusts local parameters based on local data and represents knowledge as fuzzy rules, 
-allowing initialization with or without prior information. This hybrid approach leverages the strengths of both processes, interpretability from FL and learning ability from NN, 
+\gls{NF} combines the principles of~\gls{FL} and~\gls{NN} creating an intelligent hybrid model that merges human-like reasoning with adaptive learning. Typically, a~\gls{NF} system is built upon a fuzzy 
+logic framework and trained using data-driven methods from~\gls{NN} theory. During training, it adjusts local parameters based on local data and represents knowledge as fuzzy rules, 
+allowing initialization with or without prior information. This hybrid approach leverages the strengths of both processes, interpretability from~\gls{FL} and learning ability from~\gls{NN}, 
 while reducing their main drawbacks such as dependence on prior knowledge and high computational demands~\cite{ComprehensiveStudyOnEMG}.
 
 
@@ -488,12 +488,12 @@ The raw~\gls{EMG} signal is very noisy and very high frequency so it generates l
 processing or~\gls{ML} applications. Therefore, relevant features of the signal must be extracted to capture the essential characteristics of the muscle activity to reduce 
 computational load, improve robustness against noise and improve the performance of classification algorithms. 
 
-\subsubsection{Mean Absolute Value - MAV} 
+\subsubsection{\glsfmtfull{MAV}} 
 \label{sssec:mean_absolute_value}
 
-The Mean Absolute Value is one of the most common and simpler features extracted from~\gls{EMG} signals. It corresponds to the average of the absolute values of the signal over a 
+The~\glsxtrfull{MAV} is one of the most common and simpler features extracted from~\gls{EMG} signals. It corresponds to the average of the absolute values of the signal over a 
 specific period of time, providing a measurement of the muscle's electrical activity level. 
-Mathematically, MAV is calculated as:
+Mathematically,~\gls{MAV} is calculated as:
 
 \begin{equation}
   MAV = \frac{1}{N} \sum_{i = 1}^{N} \left\lvert x_i \right\rvert 
@@ -507,11 +507,11 @@ BiomedicalSignalProcessingAndControl, Review_IRBM_EMG, ReviewOfEMGSignalClassifi
 %\label{sssec:mean_absolute_value_slope}
 
 
-\subsubsection{Root Mean Square - RMS} 
+\subsubsection{\glsfmtfull{RMS}} 
 \label{sssec:root_mean_square}
 
-The Root Mean Square is another common feature in EMG analysis. As the name implies, it is the square root of the mean of the signal amplitude emphasizing larger signal amplitudes 
-than the MAV. It's defined as:
+The~\glsxtrfull{RMS} is another common feature in~\gls{EMG} analysis. As the name implies, it is the square root of the mean of the signal amplitude emphasizing larger signal amplitudes 
+than the~\gls{MAV}. It's defined as:
 
 \begin{equation}
   RMS = \sqrt{\frac{1}{N} \sum_{i = 1}^{N} x_i^2}
@@ -522,10 +522,10 @@ Where $N$ is the number os samples in the time frame and $x_i$ represents the~\g
 MeasuringSurfaceElectromyographyWithTextileElectrodes, Review_IRBM_EMG, ReviewOfEMGSignalClassification, Hybrid, EvaluationOfFeatureExtractionAndClassification, ComparativeStudyOfSEMGFeatureEvaluationMethods, 
 ResearchOnLowerLimbMotionRecognition}.
 
-\subsubsection{Variance - VAR} 
+\subsubsection{\glsfmtfull{VAR}} 
 \label{sssec:variance}
 
-The Variance of a signal measures how much it fluctuates around its mean, reflecting the degree of variability or dispersion in muscle activation. 
+The~\glsxtrfull{VAR} of a signal measures how much it fluctuates around its mean, reflecting the degree of variability or dispersion in muscle activation. 
 
 Mathematically it is expressed as:
 
@@ -540,22 +540,22 @@ It is a useful feature for pattern recognition and classification since it captu
 muscle activity~\cite{HandGestureRecognition, ComprehensiveStudyOnEMG, Review_IRBM_EMG, ComparativeStudyOfSEMGFeatureEvaluationMethods, EvaluationOfFeatureExtractionAndRecognition, 
 EvaluationOfFeatureExtractionAndClassification}.
 
-\subsubsection{Waveform Length - WL}
+\subsubsection{\glsfmtfull{WL}}
 \label{sssec:waveform_length}
 
-The Waveform Length represents the cumulative length of the signal waveform over a given time frame. It reflects both the signal's complexity and amplitude variation, capturing 
+The~\glsxtrfull{WL} represents the cumulative length of the signal waveform over a given time frame. It reflects both the signal's complexity and amplitude variation, capturing 
 information about the frequency and intensity of the muscle activity.
 
-The WL feature is calculated according to:
+The~\gls{WL} feature is calculated according to:
 
 \begin{equation}
   WL = \sum_{i = 1}^{N - 1} \lvert x_{i + 1} - x_i \rvert
   \label{eq:wlEQ}
 \end{equation}
 
-Where $x_i$ represents the $i$-th sample of the EMG signal, and $N$ is the total number of samples.
+Where $x_i$ represents the $i$-th sample of the~\gls{EMG} signal, and $N$ is the total number of samples.
 
-WL is a widely used time-domain feature for EMG-based solutions since it efficiently combines amplitude and frequency information~\cite{HandGestureRecognition, 
+\gls{WL} is a widely used time-domain feature for~\gls{EMG}-based solutions since it efficiently combines amplitude and frequency information~\cite{HandGestureRecognition, 
 ComprehensiveStudyOnEMG, BiomedicalSignalProcessingAndControl, Review_IRBM_EMG, ReviewOfEMGSignalClassification}.
 
 \subsubsection{Peak Frequency - PKF} 
@@ -571,7 +571,7 @@ The PKF is obtained by finding the frequency at which the power spectral density
 
 Where $P(f)$ is the power spectral density of the signal at frequency $f$.
 This feature provides valuable information about the dominant frequency of muscle activity, which is often related to the type and intensity of the contraction. Changes in PKF 
-can indicate muscle fatigue, as the dominant frequency tends to shift towards lower values when fatigue increases. Therefore, PKF is commonly used in EMG analysis to assess 
+can indicate muscle fatigue, as the dominant frequency tends to shift towards lower values when fatigue increases. Therefore, PKF is commonly used in~\gls{EMG} analysis to assess 
 muscle performance and fatigue levels~\cite{HandGestureRecognition, Review_IRBM_EMG}.
 
 \subsubsection{Median Frequency - MDF} 
@@ -608,20 +608,20 @@ ComprehensiveStudyOnEMG, Review_IRBM_EMG, ReviewOfEMGSignalClassification, Hybri
 %\subsubsection{Wavelet Packet Energy - WPE} % HandGestureRecognition
 %\label{sssec:wavelet_packet_energy}
 
-\subsubsection{Integrated EMG - IEMG}
+\subsubsection{Integrated~\gls{EMG} - IEMG}
 \label{sssec:integrated_emg}
 
 Integrated~\gls{EMG} is the sum of the rectified~\gls{EMG} signal over a time interval. This feature quantifies the muscle activation level providing information about the effort 
 and muscle intensity during a movement.
 
-Mathematically, the integrated EMG is defined by:
+Mathematically, the integrated~\gls{EMG} is defined by:
 
 \begin{equation}
   IEMG = \sum_{i = 1}^{N} \left\lvert x_i \right\rvert 
   \label{eq:iemgEQ}
 \end{equation}
 
-Where $x_i$ is the~\gls{EMG} signal amplitude at each sample, and $N$ is the total number of samples in the analyzed time period.
+Where $x_i$ is the~\gls{EMG} signal amplitude at each sample, and $N$ is the total number of samples in the analysed time period.
 IEMG is particularly useful for assessing the intensity of muscular activity and comparing activation levels across different tasks or conditions~\cite{ComprehensiveStudyOnEMG, 
 BiomedicalSignalProcessingAndControl, Review_IRBM_EMG}.
 
@@ -639,10 +639,10 @@ The equation below expresses the computation of SSI:
 Where $x_i$ represents the~\gls{EMG} signal amplitude at the $i^th$ sample and N is the total number of samples within the analysis window\cite{ComprehensiveStudyOnEMG, 
 BiomedicalSignalProcessingAndControl, Review_IRBM_EMG}.
 
-\subsubsection{Zero Crossing - ZC} 
+\subsubsection{\glsfmtfull{ZC}} 
 \label{sssec:zero_crossing}
 
-Zero Crossings is a feature that measures the amount of times that the~\gls{EMG} signal changes sign as expressed by the following expression:
+\glsxtrfull{ZC} is a feature that measures the amount of times that the~\gls{EMG} signal changes sign as expressed by the following expression:
 
 \begin{equation}
   ZC = \begin{cases}
@@ -664,15 +664,15 @@ Zero Crossings is a feature that measures the amount of times that the~\gls{EMG}
 Where $x_i$ is the~\gls{EMG} signal amplitude at each sample, $N$ is the total number of samples and $\epsilon$ is a small positive value used to avoid counting zero crossings 
 caused by minor fluctuations or noise\cite{Review_IRBM_EMG}.
 
-\subsubsection{Slope Sign Changes - SSC}
+\subsubsection{\glsfmtfull{SSC}}
 \label{sssec:slope_sign_changes}
 
-The Slope Sign Change feature measures the number of times the slope of the EMG signal changes sign within a given time window. It reflects the signal's frequency and 
+The~\glsxtrfull{SSC} feature measures the number of times the slope of the~\gls{EMG} signal changes sign within a given time window. It reflects the signal's frequency and 
 complexity, providing information about the motor unit firing pattern and the muscle's dynamic behaviour. A higher number of slope sign changes generally indicates a more complex or higher-frequency muscle activity.
 
 As with the ZC~(\autoref{sssec:zero_crossing}) feature, a small threshold is often used to minimize the effect of noise on the calculation. 
 
-Mathematically, the SSC can be expressed as:
+Mathematically, the~\gls{SSC} can be expressed as:
 
 \begin{equation}
   SSC = \sum_{i = 2}^{N - 1} f[(x_i - x_{i-1}) \cdot (x_i - x_{i+1})]
@@ -689,7 +689,7 @@ Where
   \label{eq:sscEQ2}
 \end{equation}
 
-Where, $x_i$ represents the EMG signal amplitude at sample $i$, and the $\epsilon$ is a small positive value used to reduce sensitivity to minor fluctuations or 
+Where, $x_i$ represents the~\gls{EMG} signal amplitude at sample $i$, and the $\epsilon$ is a small positive value used to reduce sensitivity to minor fluctuations or 
 electrical noise~\cite{Review_IRBM_EMG}.
 
 \subsubsection{Willison Amplitude - WAMP}
@@ -732,7 +732,7 @@ disrupt athletic performance and can precipitate further musculoskeletal injury.
 systemic factors such as dehydration or electrolyte imbalance, contemporary sports medicine increasingly supports 
 the "altered neuromuscular control" hypothesis. This theory posits that severe, localized muscle fatigue disrupts 
 the neural mechanisms regulating muscle spindle and Golgi tendon organ activity, leading to sustained, involuntary 
-motor unit firing. Whenever an EAMC happens, the EMG signal demonstrates an extreme and abnormal behaviour. The 
+motor unit firing. Whenever an~\gls{EAMC} happens, the~\gls{EMG} signal demonstrates an extreme and abnormal behaviour. The 
 focal point of the cramp is characterized by massive localized spikes in~\gls{sEMG} amplitude~\cite{PossibleMechanisms}. During the 
 cramping, the~\gls{RMS} and~\gls{MAV} features record very high values when compared to standard movements. 
 
@@ -750,7 +750,7 @@ fatigue indices, proving their efficiency in capturing impending muscle failure~
 Recent literature shows that 
 these involuntary contractions aren't spontaneous but rather have some distinct pre-cramp anomalies. For instance, 
 in pilot studies observing involuntary nocturnal leg cramps, researchers found that changes in muscle tension 
-patterns couldreliably predict the start of the clinical cramp. Specifically, sEMG amplitude was observed spiking 
+patterns could reliably predict the start of the clinical cramp. Specifically,~\gls{sEMG} amplitude was observed spiking 
 significantly, in some cases up to 40 seconds before the painful contraction physically manifested or triggered 
 any movement artifacts~\cite{ChangesInMuscleTension}.
 
@@ -758,8 +758,8 @@ any movement artifacts~\cite{ChangesInMuscleTension}.
 \label{ssec:sensor_fusion}
 
 
-Despite its proven efficacy, relying on isolated sEMG data presents critical limitations in dynamic athletic 
-environments. A high sEMG amplitude indicates elevated electrical demand, which could signify impending fatigue-induced 
+Despite its proven efficacy, relying on isolated~\gls{sEMG} data presents critical limitations in dynamic athletic 
+environments. A high~\gls{sEMG} amplitude indicates elevated electrical demand, which could signify impending fatigue-induced 
 failure, or it could simply reflect an athlete's intentional increase in mechanical output, such as executing a 
 jump or rapidly accelerating. To resolve this ambiguity, modern systems utilize sensor fusion, coupling~\gls{sEMG} 
 with the~\glspl{IMU} discussed previously. By correlating the electrical demand of the muscle (via~\gls{sEMG}) with 
@@ -787,8 +787,8 @@ In another study focusing on the integration of upper and lower limb kinematics,
 wearable system combining smart insoles with a Moto 360 smartwatch to optimize sports performance, specifically in 
 running. The methodology relied on extracting a robust set of 54 time- and frequency-domain features from the smartwatch's 
 triaxial accelerometer. To ensure computational efficiency for realtime edge application,~\gls{RFE} was employed to 
-isolate the top 10 most discriminative features, which predominantly included the~\gls{RMS}, StandardDeviation, and 
-\gls{ZC} Rate of the x-axis acceleration. These features were subsequently fed into a Multilayer Perceptron~\gls{NN}, 
+isolate the top 10 most discriminative features, which predominantly included the~\gls{RMS}, StandardDeviation, and
+~\gls{ZC} Rate of the x-axis acceleration. These features were subsequently fed into a Multilayer Perceptron~\gls{NN}, 
 achieving an impressive 95\% overall accuracy across five distinct physical activities, with running specifically 
 classified at a 90\% accuracy and 97\% precision. Beyond activity recognition, the system utilized the smartwatch's 
 photoplethysmography sensor to estimate Energy Expenditure and successfully demonstrated that arm acceleration 
@@ -820,10 +820,11 @@ Catarina Amaro et al. studied the differences in five different movements in bas
 study presented no significant changes in mean peak pressure between the two different times but it did specify that experienced players 
 had lower plantar pressure values in their movements and lower symmetry index. This means that there is room for improvement based on the 
 values read for the less experienced players. It was also mentioned that wear of the shoes may have influenced the slight changes observed 
-in the study.Each player wore their own shoes and this was pointed as a variable for the plantar pressure measured~\cite{coimbra}.
+in the study. Each player wore their own shoes and this was pointed as a variable for the plantar pressure measured~\cite{coimbra}.
 
+\newpage
 
-\subsection(Summary)
+\subsection{Summary}
 \label{ssec:rw_summary}
 
 \begin{table*}[ht]

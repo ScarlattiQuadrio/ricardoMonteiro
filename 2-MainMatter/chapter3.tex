@@ -36,7 +36,7 @@ at the end of games (fourth quarter), specially at the last minutes.
 \label{sec:project_description}
 
 In this project, for each foot, an Arduino and an~\gls{EMG} sensor will be used. The Arduinos have an integrated~\gls{IMU} each that capture acceleration and orientation and they can communicate through~\gls{BLE}.
-Besides the~\gls{IMU}, the~\gls{EMG} sensors will collect data from the muscles to provide further insight for the movement recognition and injury report~\autoref{fig:systemOverview}.
+Besides the~\gls{IMU}, the~\gls{EMG} sensors will collect data from the muscles to provide further insight for the movement recognition and injury report (see ~\autoref{fig:systemOverview}).
 
 \begin{figure}[h]
   \centering
@@ -86,11 +86,11 @@ pulse the current draw (see ~\autoref{fig:physicalSystemOverview}).
 \subsubsection{Arduino}
 \label{sssec:arduino}
 
-The Arduino's 33 nano~\gls{BLE} Rev 2 run at 3.3V and they feature a powerful processor,
+The Arduino's 33 nano~\gls{BLE} Rev 2 run at 3.3 V and they feature a powerful processor,
 the nRF52840 from Nordic Semiconductors, a 32-bit ARM® Cortex®-M4 CPU running
 at 64 MHz. Sensor wise, their~\gls{IMU} sensors are the BMI270 (3-axis accelerometer + 3-
 axis gyroscope) and the BMM150 (3-axis Magnetometer) sensors . It has a width of
-18mm and length of 45mm weighing only 5g and as its name mentions it also has~\gls{BLE}
+18 mm and length of 45 mm weighing only 5g and as its name mentions it also has~\gls{BLE}
 communication which is vital for this project~\cite{arduinoDoc}. The Arduino IDE will be used for the
 Arduinos' programming.
 The Arduino programming language is a modified C/C++ language that simplifies
@@ -101,7 +101,7 @@ eventually integrated in the main program and only a single program is needed.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.8\linewidth]{arduino-pinout.jpg}
+  \includegraphics[width=0.7\linewidth]{arduino-pinout.jpg}
   \caption{Arduino Nano~\gls{BLE} Rev 2 - Pinout~\cite{arduinoDoc}}
   \label{fig:arduinoPinout}
 \end{figure}
@@ -109,20 +109,20 @@ eventually integrated in the main program and only a single program is needed.
 \subsubsection{BITalino Electromyography}
 \label{sssec:bitalinoEMG}
 
-The sensor has a gain of 1009 and an input of 2.0-3.5V making the output of 3.3V of the Arduino ideal for it. As seen in~\autoref{fig:emg}, 
+The sensor has a gain of 1009 and an input of 2.0-3.5 V making the output of 3.3 V of the Arduino ideal for it. As seen in~\autoref{fig:emg}, 
 the~\gls{EMG} has an input channel for the electrode cables on the left side 
 and 4 connection points on the right side:
 
 \begin{itemize}
   \item~\gls{VOUT} - Connected through the white wire to the respective input pin of the Arduino
-  \item~\gls{VCC} - The red wire is connecting this point to the 3.3V pin.
+  \item~\gls{VCC} - The red wire is connecting this point to the 3.3 V pin.
   \item~\gls{VCC}/2 - From the same pin that the~\gls{VCC} point is connected to, we have a small voltage divider with an Ampop for stabilization to halve the tension (blue wire).
   \item~\gls{GND} - The black wire connects the Arduino's ground to this point.
 \end{itemize}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.4\linewidth]{emg.jpg}
+  \includegraphics[width=0.5\linewidth]{emg.jpg}
   \caption{BITalino~\gls{EMG} sensor~\cite{bitalino}}
   \label{fig:emg}
 \end{figure}
@@ -149,7 +149,7 @@ The analog sensor data are converted into digital values ranged between 0 and $2
   \label{eq:EMGconvertionEQmV}
 \end{equation}
 
-Where ADC is the digital value from the sensor,~\gls{VCC} is the 3.3V provided by the arduino, G is the sensor gain which is 1009 and~\gls{EMG}(V) and~\gls{EMG}(mV) is the signal in Volt and milliVolt respectively.
+Where ADC is the digital value from the sensor,~\gls{VCC} is the 3.3 V provided by the arduino, G is the sensor gain which is 1009 and~\gls{EMG} (V) and~\gls{EMG} (mV) is the signal in Volt and milliVolt respectively.
 
 \section{Data Acquisition}
 \label{sec:data_acquisition}
@@ -222,7 +222,7 @@ The microcontrollers operate in a non-blocking loop architecture designed to han
 
 \begin{itemize}
   \item High-Frequency~\gls{EMG} Readings (1000 Hz) - To obtain relevant features from the sensor it is read every 1 ms.
-  \item Kinematic (\gls{IMU}) \& Transmission (50 Hz) - Every 20 ms the~\gls{IMU} data is measured right before the ble communication since no calculations are done to that data.
+  \item Kinematic (\gls{IMU}) \& Transmission (50 Hz) - Every 20 ms the~\gls{IMU} data is measured right before the~\gls{BLE} communication since no calculations are done to that data.
 \end{itemize}
 
 The coordination of both timings is managed through a windowing approach. A sliding window of 20~\gls{EMG} samples is filled and once full (after 20 ms), the system triggers an event:
@@ -285,7 +285,7 @@ The system defines a unique service identified by a 128-bit UUID. Within this se
 \subsection{Payload Optimization}
 \label{ssec:arduino_payload}
 
- A standard 32-bit floating-point representation would require 60 bytes per sample, which is inefficient for BLE bandwidth so in order to reach the objective of 50 Hz transmission rate for the nine IMU axis and six EMG features the 
+ A standard 32-bit floating-point representation would require 60 bytes per sample, which is inefficient for~\gls{BLE} bandwidth so in order to reach the objective of 50 Hz transmission rate for the nine~\gls{IMU} axis and six~\gls{EMG} features the 
  payload has to be highly optimized. With this in mind, all the float sensor values were converted to 16 bit signed integers reducing the packets significantly while maintaining enough precision for analysis.
 
  Each sensor frame consists of:
@@ -302,7 +302,7 @@ The system defines a unique service identified by a 128-bit UUID. Within this se
   \label{eq:packetSize}
 \end{equation}
 
-Although the packet size has been reduced, transmitting an individual packet every 20 ms from two separate device still introduces a~\gls{BLE} protocol overload. To get around this problem, the packets are bundled in groups of 5 ($30 bytes\times5 packets=150 bytes$).
+Although the packet size has been reduced, transmitting an individual packet every 20 ms from two separate device still introduces a~\gls{BLE} protocol overload. To get around this problem, the packets are bundled in groups of five ($30 bytes\times5 packets=150 bytes$).
 This strategy effectively utilizes the large MTU (Maximum Transmission Unit) negotiated with the Android device, reducing the communication frequency to exactly once every 100 ms (for each device) reducing cpu usage and radio congestion. 
 To make the system even more robust, a FIFO (First In First Out) buffer with a capacity of 150 packets was implemented. Whenever the communication with the Android device fails, that data is then saved in the buffer and the device 
 tries to send it again later.
@@ -319,19 +319,19 @@ at the Android device, the sampling period remains consistent within the microco
 A dedicated Android application was developed in Kotlin, to serve as a bridge between the
 prototypes and the user/database. This programming language is used to interoperate
 fully with Java developed by JetBrains and since 2019 it has been the preferred language
-by Google for Android app development. The application handles the BLE connection
+by Google for Android app development. The application handles the~\gls{BLE} connection
 with the devices and provides a user interface for researchers, athletes and coaches to
 visualize the collected data and the model's predictions in real time.
 The following section provides a detailed description of the software architecture of
 the application. Each file is explained according to its function within the system, with
-emphasis on how data flows from the BLE layer to the machine learning classifier and
-finally to the user interface(~\autoref{fig:sequenceDiagram}). This breakdown clarifies the responsibilities of
+emphasis on how data flows from the~\gls{BLE} layer to the machine learning classifier and
+finally to the user interface(\autoref{fig:sequenceDiagram}). This breakdown clarifies the responsibilities of
 each component, highlights the interaction between modules, and demonstrates how the
 application was structured to ensure modularity, maintainability, and extensibility.
 This application follows a modular architecture separating responsibilities between
-the user interface, data handling, and Bluetooth communication. At its core, the pro-
-gram follow the MVVM (Model-View-ViewModel) design pattern, improving testability,
-maintainability and division of tasks (~\autoref{fig:appOverview}).
+the user interface, data handling, and Bluetooth communication. At its core, the program 
+follows the MVVM (Model-View-ViewModel) design pattern, improving testability,
+maintainability and division of tasks (\autoref{fig:appOverview}).
 The MainActivity.kt is the entry point of the application, initializing the navigation
 host and providing the top-level container for the user interface. From this activity, the
 navigation system manages the transitions between the windows (implemented as Jetpack
@@ -356,7 +356,7 @@ database.
 \subsection{User Interface}
 \label{ssec:android_interface}
 
-The application consists in 4 different screens that define the layout and interactive elements that the user sees. Each one of these windows has a corresponding ViewModel that acts as a connection point between the user interface 
+The application consists in four different screens that define the layout and interactive elements that the user sees. Each one of these windows has a corresponding ViewModel that acts as a connection point between the user interface 
 and the application logic. These ViewModels handle any calls made by the screens and any changes to relevant operations such as the bluetooth connection.
 
 At first, when the app is launched, some necessary permissions are checked, specifically the Bluetooth (\texttt{BLUETOOTH\_SCAN and BLUETOOTH\_CONNECT},~\autoref{fig:turnOnBluetooth}), 
@@ -422,12 +422,12 @@ The list of users is stored locally and is available in every session.
 \label{sssec:data_menu}
 
 When this menu is opened, the app tries to connect to both devices and when able, starts exchanging data. The data is then shown to the user. On the left the user can select an active user profile and a label for the current movement. On the right, 
-from top to bottom, the~\gls{ML} models' predictions are shown (\autoref{sec:ml_code}). Beneath the models' projections, there are 3 switches - one to start/stop the~\gls{ML} server connection and two others to start/stop sending the collected data
+from top to bottom, the~\gls{ML} models' predictions are shown (\autoref{sec:ml_code}). Beneath the models' projections, there are three switches - one to start/stop the~\gls{ML} server connection and two others to start/stop sending the collected data
 or the~\gls{ML} predictions to the InfluxDB database. At last there is a button that takes the application to the Calibration Menu (\autoref{sssec:calib_menu}).
 
 %falar do VariabResult
 
-\begin{figure}[h!]
+\begin{figure}[h]
   \centering
   \includegraphics[width=0.8\linewidth]{dataScreenWithCon.jpg}
   \caption{Data Menu when both prototypes are connected}
@@ -508,17 +508,17 @@ When all the calibration operations are finished, the save button turns green an
 \subsection{Arduino~\gls{BLE} Communication}
 \label{ssec:android_com_arduino}
 
-In Android~\gls{BLE}  data is handle asynchronously which means that the app receives callbacks which have to be handled. For the~\gls{BLE} communication Android provides a package with a layered architecture:
+In Android~\gls{BLE} data is handle asynchronously which means that the app receives callbacks which have to be handled. For the~\gls{BLE} communication Android provides a package with a layered architecture:
 
 \begin{itemize}
   \item BluetoothAdapter - Where every bluetooth connection starts. It allows scanning for nearby available devices and initiating connections.
   \item BluetoothDevice - Represents another~\gls{BLE}  device with one or more services.
   \item Bluetooth\gls{GATT} - It's the protocol for~\gls{BLE}  services and characteristics. It manages the connection lifecycle and provides callbacks for asynchronous communication.
   \item Bluetooth\gls{GATT} Service - Each service has a group of associated characteristics and a specific function (e.g., location service)
-  \item Bluetooth\gls{GATT} Characteristic - It's the smallest unit of data in~\gls{BLE} BLE and it can be read, written or subscribed to (to ge notified whenever it changes) depending on its attributes.
+  \item Bluetooth\gls{GATT} Characteristic - It's the smallest unit of data in~\gls{BLE} and it can be read, written or subscribed to (to ge notified whenever it changes) depending on its attributes.
 \end{itemize}
 
-Since the are two devices, each with its own uuid (see \autoref{sec:arduino_ble_com}), each device has its own manager that handle its callbacks (VariabBLEReceiveManager.kt) and these two managers are handled by the DualBLEReceiveManager 
+Since the are two devices, each with its own uuid (see~\autoref{sec:arduino_ble_com}), each device has its own manager that handle its callbacks (VariabBLEReceiveManager.kt) and these two managers are handled by the DualBLEReceiveManager 
 that coordinates them. 
 
 
@@ -528,7 +528,7 @@ that coordinates them.
 Each receive manager is responsible for managing the lifecycle of the corresponding~\gls{BLE} connection and handling every callback. Depending on the uuid of the connected device, the manager knows with which device it is working with 
 (if left or right). 
 
-First, using the BluetoothAdapter (see \autoref{ssec:android_com_arduino}), the manager searches for the respective device using its name and uuid and once discovered a~\gls{GATT} connection is tried. After establishing the connection, 
+First, using the BluetoothAdapter (see~\autoref{ssec:android_com_arduino}), the manager searches for the respective device using its name and uuid and once discovered a~\gls{GATT} connection is tried. After establishing the connection, 
 the manager finds the device's services. If a device disconnects the application cleans up its resources and starts trying to reconnect.
 
 In the first approach the system was designed with separate~\gls{GATT} characteristics for different sensor axes and~\gls{EMG} data. However, relying on multiple simultaneous asynchronous notifications caused the Android~\gls{BLE} stack to 
@@ -551,7 +551,7 @@ speed by representing the data points in a single string structure:
 
 \begin{itemize}
     \item Measurement - movement\_data
-    \item Tags - sensor(left or right) and userId
+    \item Tags - sensor (left or right) and userId
     \item Fields (data values) - accelerometer, gyroscope, magnetometer and~\gls{EMG} data
     \item Timestamp - Instant.now() (registers that precise moment)
 \end{itemize}
@@ -591,7 +591,7 @@ streams, the system is able to guarantee a low latency feedback for the user via
 \label{sssec:ml_data}
 
 To accurately identify every movement the user makes, the models require temporal context, making evaluating single 20 ms data points insufficient. To resolve this, a time-series sliding window algorithm was implemented. The Android application 
-synchronizes the~\gls{BLE} packets from the left and right insoles, combining their respective 15 features into a singular 30-feature vector per timestamp. These vectors are accumulated in a First-In-First-Out (FIFO) buffer to create a 
+synchronizes the~\gls{BLE} packets from the left and right insoles, combining their respective 15 features into a singular 30-feature vector per timestamp. These vectors are accumulated in a First-In-First-Out buffer to create a 
 continuous observation window of 300 ms that is then fed into the~\gls{ML} models.
 
 
@@ -700,7 +700,7 @@ allowing for a biomechanical assessment of whether the~\gls{EMG} data provided a
 Furthermore, to evaluate the multi-class discriminative power of the~\gls{RF} algorithm, the generation of Receiver Operating Characteristic curves was integrated into the testing pipeline. By binarizing the target labels in a 
 One-vs-Rest configuration, the trade-off between the True Positive Rate and False Positive Rate can be plotted for each discrete movement class (Idle, Walking, Running, Defensive Slide, Rebound).
 
-For the Edge-Tier TinyML model, the evaluation strategy required continuously logging the training history over the 50 epochs to monitor the network's mathematical convergence. Tracking these temporal learning curves (categorical cross-entropy 
+For the Edge-Tier Tiny\gls{ML} model, the evaluation strategy required continuously logging the training history over the 50 epochs to monitor the network's mathematical convergence. Tracking these temporal learning curves (categorical cross-entropy 
 loss and classification accuracy) is critical for neural network architectures to ensure the lightweight model did not overfit the training data or memorize localized noise. 
 
 Finally, the pipeline was programmed to compute confusion matrices for both the Cloud-Tier and Edge-Tier models mapping the predicted classifications against the actual target labels on the isolated 20\% testing split.

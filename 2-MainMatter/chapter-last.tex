@@ -25,18 +25,18 @@ and health.
 \section{Summary of Achievements}
 \label{sec:conclusion_achievements}
 
-The realization of this project required the end-to-end development of a comprehensive \gls{IoT} and \gls{ML} ecosystem. Rather than relying on off-the-shelf software or pre-existing tracking 
+The realization of this project required the end-to-end development of a comprehensive~\gls{IoT} and~\gls{ML} ecosystem. Rather than relying on off-the-shelf software or pre-existing tracking 
 platforms, the entire system architecture was engineered from the ground up. This monumental scope included programming the embedded C++ firmware for the Arduino microcontrollers to handle high-frequency sensor 
-polling and optimized \gls{BLE} transmission. To bridge the hardware to the cloud, a native Kotlin Android application was developed utilizing an MVVM architecture, serving as the central hub for real-time data 
+polling and optimized~\gls{BLE} transmission. To bridge the hardware to the cloud, a native Kotlin Android application was developed utilizing an MVVM architecture, serving as the central hub for real-time data 
 processing, user interface management, and InfluxDB database synchronization. Furthermore, the backend infrastructure was custom-built, featuring a Python Flask server deployed for cloud inference, alongside a 
 complete machine learning training pipeline developed in Google Colab to preprocess the time-series data and export the finalized classification models.
 
 Through this architecture, the core hypothesis of validating a multi sensor fusion system was definitively proven. The machine learning training pipeline demonstrated that
 the physiological data provides an important context for movement recognition. 
-Deploying these models into a live environment further validated the viability of decentralized sports analytics. By quantizing a custom TinyML neural network and embedding it directly into the Android application, 
+Deploying these models into a live environment further validated the viability of decentralized sports analytics. By quantizing a custom Tiny\gls{ML}~\gls{NN} and embedding it directly into the Android application, 
 the system achieved a robust Edge Computing architecture capable of recognizing basic basketball movements. 
 
-Finally, beyond passive activity tracking, the developed ecosystem successfully introduced an active, real-time injury prevention mechanism by fusing the smoothed TinyML kinematic predictions with the \gls{EMG} 
+Finally, beyond passive activity tracking, the developed ecosystem successfully introduced an active, real-time injury prevention mechanism by fusing the smoothed Tiny\gls{ML} kinematic predictions with the \gls{EMG} 
 features. This logic proved capable of identifying pre-cramp hypertensive muscle states during periods of rest, providing coaches and users with real-time warnings offering the option to rest and massage hte muscles 
 preventing cramping.
 
@@ -50,7 +50,7 @@ transition the system from a proof-of-concept to a robust helpful tool.
 \subsection{Hardware Evolution and Textile Integration}
 \label{sec:future_hardware} 
 The most immediate hardware improvement involves transitioning from the modular, externally strapped prototype to a fully integrated smart sock. By utilizing miniaturized flexible printed circuit boards and conductive 
-woven threads instead of traditional adhesive \gls{EMG} electrodes, the system would completely eliminate the mechanical obstacles caused by device shifting and cable strain while being as unobtrusive as possible. 
+woven threads instead of traditional adhesive~\gls{EMG} electrodes, the system would completely eliminate the mechanical obstacles caused by device shifting and cable strain while being as unobtrusive as possible. 
 Furthermore, integrating the power supply directly into the fabric would resolve the current ergonomic issue, ensuring maximum comfort and zero interference with the athlete's natural motions.
 
 \subsection{Dataset Expansion and Automated Labeling}
@@ -62,7 +62,7 @@ to a specific user's biomechanical signature. Additionally the data collection m
 \subsection{Clinical Validation of Fatigue Algorithms}
 \label{sec:future_cramp}
 Finally, the deterministic cramping prevention system requires rigorous clinical validation. Since safely and consistently inducing a pre-cramp state in a live basketball environment is practically difficult, 
-future data collection for this subsystem should be conducted in a controlled sports science laboratory to properly delimit the fatigue levels. By correlating the different \gls{EMG} features and with a better recognition 
+future data collection for this subsystem should be conducted in a controlled sports science laboratory to properly delimit the fatigue levels. By correlating the different~\gls{EMG} features and with a better recognition 
 system, the cramping prevention algorithm could be upgraded. Rather than relying on manually calibrated static thresholds, future iterations could employ dynamic, auto-calibrating 
 baselines that adapt to the athlete's specific physiological state in real-time before a game or practice while warming up.
 
