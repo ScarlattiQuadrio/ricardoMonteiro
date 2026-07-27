@@ -10,12 +10,17 @@
 \chapter{State Of The Art}
 \label{cha:soa}
 
-\glsresetall
-\newpage
+This chapter presents the State of The Art for current research for basketball activity recognition and fatigue monitoring systems. It 
+overviews the current state of wearables, mainly which sensors are usually used, some communication protocols and their constraints. It 
+also presents some types of data and algorithms relevant for this research. Finally it shows some previous work around this topic. This chapter 
+presents the state of the art in basketball activity recognition and fatigue monitoring systems. It provides an overview of current wearable 
+technologies, focusing on prevalent sensor types, communication protocols, and their inherent constraints. Additionally, it examines data 
+characteristics and algorithms relevant for this research, concluding with a comprehensive review of existing literature and related work 
+in the field.
 
 \section{Wearables}
 \label{sec:wearables}
-A Wearable is any smart device with sensors that can be worn, embedded in clothing, accessories or in the body or even adhered to or tattooed on the skin. There are many different 
+A wearable is any smart device with sensors that can be worn, embedded in clothing, accessories or in the body or even adhered to or tattooed on the skin. There are many different 
 types of Wearables such as Smart Socks, Smart Insoles, Smartwatches, Smart Rings amongst others. These devices are able to measure many different types of data such as position, pressure, 
 brightness, velocity, heart rate and many others~\cite{reviewWearableTech}.
 
@@ -35,6 +40,8 @@ it can collect. Portability, processing power, accessibility, battery life are s
 
 Wearables provide useful data for many applications. Their portability, affordability, easy connection to a mobile phone and non-prescription nature of these devices
  makes them an easy choice for several uses. Amongst others the main ones are Health, Activity Recognition and Sports and Tracking/Localization~\cite{wearablesAndIOT}. 
+
+
 
 \subsubsection{Health}
 \label{ssub:health}
@@ -71,15 +78,15 @@ and daily lifestyle enhancements.
 Wearables have revolutionized the entertainment industry by enabling highly immersive digital experiences. Beyond visual immersion, haptic feedback suits and smart gloves are increasingly popular, allowing users to 
 physically "feel" digital objects, environmental effects, and interactions within a game or simulation.
 
-The aforementioned VR and AR wearables are heavily utilized beyond entertainment for educational purposes. In medical schools, students use augmented reality headsets to visualize 3D human anatomy and perform simulated 
+The aforementioned~\gls{VR} and~\gls{AR} wearables are heavily utilized beyond entertainment for educational purposes. In medical schools, students use augmented reality headsets to visualize 3D human anatomy and perform simulated 
 surgeries. In industrial settings, smart glasses provide workers with hands-free, real-time schematics and remote guidance while performing complex maintenance on machinery, significantly reducing human error and 
 training time.
 
 In the defence and security sectors, wearables are critical tools for situational awareness and personnel safety. Body-worn cameras are now standard equipment for law enforcement, providing accountability and real-time 
-video streaming to command centers. Additionally, advanced tactical vests equipped with embedded physiological sensors and GPS trackers allow commanders to monitor the stress levels, vital signs, and exact locations 
+video streaming to command centers. Additionally, advanced tactical vests equipped with embedded physiological sensors and~\gls{GPS} trackers allow commanders to monitor the stress levels, vital signs, and exact locations 
 of soldiers or first responders in hazardous environments.
 
-Finally, wearables have become deeply integrated into everyday convenience and fashion. Smart rings and NFC-enabled wristbands facilitate secure, contactless payments and access control (such as unlocking smart doors 
+Finally, wearables have become deeply integrated into everyday convenience and fashion. Smart rings and~\gls{NFC}-enabled wristbands facilitate secure, contactless payments and access control (such as unlocking smart doors 
 or vehicles).
 
 \subsection{Wearables in Basketball}
@@ -89,13 +96,13 @@ Basketball was created in 1891 by a Canadian physical education professor named 
 
 Sensors initially became part of the game through the ball manufacturing process in the 1950s to improve safety and standardization of its pressure. In the 1980s the players started 
 using blood oxygen and heart rate monitors in their training to improve strength and conditioning. The development of image sensors led to the recording and live broadcasting of basketball 
-games in the 1990s and the 2000s. Displacement and acceleration sensors starting being used in the 2010s to monitor the players' shooting form and other movements. As mentioned in~\autoref{sec:wearables}, 
-wearable technology is rapidly evolving and it is the next big step for sports statistics and performance improvement~\cite{perspective}.
+games in the 1990s and the 2000s. Displacement and acceleration sensors starting being used in the 2010s to monitor the players' shooting form and other movements. 
+Wearable technology is rapidly evolving and it is the next big step for sports statistics and performance improvement~\cite{perspective}.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\linewidth]{timeline.jpg}
-    \caption{~\cite[Timeline of sensing technology intertwined with basketball sport]{perspective}.}
+    \caption{Evolution of Sensor Technology in Basketball (adapted from~\cite{perspective}).}
     \label{fig:sensorTimeline}
 \end{figure}
 
@@ -104,35 +111,38 @@ this philosophy is quantifying and identifying what we can improve. The answer t
 
 For this purpose the technology used consists mostly of micro-electromechanical systems such as Inertial Measurement Units (\gls{IMU}), networked sensor suites and exoskeletons. 
 Risk assessment shares some of its data with performance enhancement devices working with 
-pressure sensors and \glspl{IMU} that host several sensors (e.g., accelerometers, gyroscopes, and magnetometers)~\cite{biomechanicalPerfomance}. 
+pressure sensors and~\glspl{IMU} that host several sensors (e.g., accelerometers, gyroscopes, and magnetometers)~\cite{biomechanicalPerfomance}. 
+
+
+
 
 
 \section{Movement Recognition Sensors}
 \label{sec:movement_recognition_wearablesT}
 
 There are many different technologies capable of capturing similar data through different mechanisms. % devInsole
-For acquiring movement related data the usual methods are through an \gls{IMU}, image capture or some sort of pressure sensors.
+For acquiring movement related data the usual methods are through an~\gls{IMU}, image capture or some sort of pressure sensors.
 
-Another way to collect information about player movements is through the muscles, for example, with an \gls{EMG} sensor.
+Another way to collect information about player movements is through the muscles, for example, with an~\gls{EMG} sensor.
 
 
 \subsection{\gls{IMU} - Inertial Measurement Units}
 \label{ssec:imu_STA}
 
-An \gls{IMU} is a sensor system design to capture motion and orientation usually consisting of an accelerometer, a gyroscope and sometimes a magnetometer. These components allow the measurement of acceleration, angular rate and 
+An~\gls{IMU} is a sensor system design to capture motion and orientation usually consisting of an accelerometer, a gyroscope and sometimes a magnetometer. These components allow the measurement of acceleration, angular rate and 
 magnetic field respectively. When combined, they provide a good estimation of position, orientation and movement patterns. However these approximations suffer from drift over time, meaning that small errors accumulate 
-and lead towards increasingly inaccurate readings. Due to its low cost, compact size, high sample rate and versatility, \glspl{IMU} are especially valuable for wearable devices for activity/movement recognition practices.
+and lead towards increasingly inaccurate readings. Due to its low cost, compact size, high sample rate and versatility,~\glspl{IMU} are especially valuable for wearable devices for activity/movement recognition practices.
 
 \subsection{\gls{EMG} - Electromyography}
 \label{ssec:emg_STA}
 
 \gls{EMG} is a technique for evaluating and measure electrical activity generated by muscles. With the generated data researchers and practitioners can assess the muscles contribution to different movements, evaluate neuromuscular 
 coordination and identify abnormal patterns that may indicate fatigue, compensation or injury risk.
-There are two main types of \gls{EMG}:
+There are two main types of~\gls{EMG}:
 
 \begin{itemize}
-  \item Needle \gls{EMG} - A technique commonly used in neurology that where fine-wire electrodes are inserted into the muscle tissue leading to very precise recordings but is very invasive.
-  \item Surface \gls{EMG} - A non-invasive technique where the electrodes are placed over the skin.
+  \item Needle~\gls{EMG} - A technique commonly used in neurology that where fine-wire electrodes are inserted into the muscle tissue leading to very precise recordings but is very invasive.
+  \item Surface~\gls{EMG} - A non-invasive technique where the electrodes are placed over the skin.
 \end{itemize}
 
 
@@ -177,8 +187,8 @@ flexibility and data accessibility are particularly valuable in basketball train
 whether in an indoor or outdoor court.
 %Muscle Sensors
 
-\section{Restraints}
-\label{sec:restraints}
+\subsection{Restraints}
+\label{ssec:restraints}
 
 Wearables have to be light and comfortable since they should be unnoticeable and not disturb the user's activities. This means that these gadgets have low processing capacities 
 and their sensors monitor the data at lower frequencies then non wearable devices. Due to their size they often use miniature sensors that can be sensitive to placement and alignment. 
@@ -189,7 +199,7 @@ Wearables are often exposed to a wide range of environmental conditions, includi
 under such conditions is a challenge, as components like sensors and circuits need to be robust enough to withstand daily use and environmental exposure.
 
 Due to their lack of memory and processing power, the data collected from the devices has to be sent to another device for storage or further processing. The main communication protocols 
-with low energy consumption are \gls{BLE} and WiFi for close data transmission. These methods can be impacted by limited range, interference, and connectivity issues, 
+with low energy consumption are~\gls{BLE} and WiFi for close data transmission. These methods can be impacted by limited range, interference, and connectivity issues, 
 especially in crowded or signal-dense environments, which can disrupt real-time data streaming.
 
 Since these devices are quite small, one of their main restraints is the battery life. With every action taken by the device, whether it's collecting data with a sensor, processing that data or sending it 
@@ -202,8 +212,8 @@ Due to the lack of privacy of the athlete's data and since wearable technology c
 devices~\cite{NBPAWearables, hawksWear}.
 
 
-\section{Communication Protocols} %dá para aumentar
-\label{sec:communication_protocols}
+\subsection{Communication Protocols} %dá para aumentar
+\label{ssec:communication_protocols}
 
 Wearable technology relies heavily on efficient communication protocols to ensure seamless data exchange between devices, applications, and networks. These protocols define the rules 
 for data transmission, enabling wearables to monitor health, track activity, and connect with other devices in real time. Given the constraints of wearables, communication protocols 
@@ -212,8 +222,8 @@ play a critical role in balancing performance with power efficiency.
 For this project two kinds of protocols will be discussed: Bluetooth Low Energy and WiFi.
 
 
-\subsection{BLE - Bluetooth Low Energy}
-\label{ssec:bleT}
+\subsubsection{BLE - Bluetooth Low Energy}
+\label{sssec:bleT}
 
 BLE is a short-range communication technology known for its low power consumption. Classified as a Wireless Personal Area Network (WPAN), BLE is widely used in 
 various wearable applications, from diabetes monitoring devices to smartwatches.
@@ -224,8 +234,8 @@ developer requirements and contributing to its swift adoption.
 The main difference between BLE and the classic Bluetooth is their transmission rates. BLE transmits at around 2000 Kbps while Bluetooth Classic transmits at around 2-3 Mbps making its energy consumption 
 around two times bigger than BLE. This is the reason BLE is the usual choice for IOT devices. Besides this difference BLE works the same way as Bluetooth Classic~\cite{masterInsole, bachelorInsole}.
 
-\subsection{WiFI}
-\label{ssec:wifiT}
+\subsubsection{WiFI}
+\label{sssec:wifiT}
 
 WiFi is a widely used wireless Local Area Network (LAN) technology, primarily aimed at connecting mobile devices to the internet. Its broad adoption means it's available in most homes, businesses, and many public 
 spaces. WiFi uses variations of the IEEE 802.11 protocol depending on the generation, with the latest generation, WiFi 6 (802.11ax), approved in September 2024. Operating on the 2.4 GHz or 5 GHz 
@@ -234,8 +244,16 @@ frequency bands, WiFi 6 also supports wider channels, optimized mainly for video
 WiFi delivers high data speeds and easy setup for access points, making it a mature and well-proven technology. However, its range is somewhat limited indoors due to high signal 
 absorption, though range improves in open, line-of-sight environments. Due to its relatively high power consumption, WiFi is not ideal for direct communication in IoT devices~\cite{masterInsole, bachelorInsole}.
 
-\section{Gait Cycle}
-\label{sec:gait_cycleT}
+
+\section{Movements}
+\label{sec:movements}
+
+Humanmovement forms the baseline for any activity recognition system. At its core, it relies on the repetitive and predictable patterns of 
+standard walking and running. However, in the context of a high-intensity sport like basketball, it's necessary to understand its explosive, 
+multi-directional, and highly complex movements.
+
+\subsection{Gait Cycle}
+\label{ssec:gait_cycleT}
 
 The Gait Cycle is the sequence of movements that one leg takes in each step when walking or running. It is the whole moving process from the first point of contact between 
 a foot and the ground until it reaches the ground again (see~\autoref{fig:gaitCycle})~\cite{masterInsole, freewalker}.
@@ -317,99 +335,15 @@ but they are essential for injury prevention and for the performance enhancement
   \item Failed Landing (Incomplete layup) - Any type of fall characterized by the sudden abnormal muscle activity and high acceleration and velocities.
 \end{itemize}
 
-\section{Related Work}
-\label{sec:related_work}
-
-There are many studies on the topic of measuring plantar pressure through an insole. Most of them mostly study the gait cycle while running or walking with similar objectives. 
-Baitong Wang et al.~\cite{freewalker} developed an insole with 8 pressure sensors and motion track sensors and with this system managed to clearly identify gait with only the pressure 
-sensors.
-
-Elizabeth S. Chumanov et al.~\cite{posDuringWalking} tracked the global position of the pressure on the soles of the feet throughout steps in walking and running. This data can be used 
-for improvement in foot-floor contact models used to simulate human locomotion and in least squares inverse dynamics.
-
-
-For sports like basketball, the available motion recognition research was done through video recording or smart wearable devices such has wristbands. There is very few studies on the 
-use of insoles for this purpose. 
-
-Thomas Holleczek et al.~\cite{snowboard} design a pair of smart socks with three pressure sensors each for the use case of snowboard. Even tho it isn't a sport as dynamic and unpredictable 
-as basketball, it still is very relevant for this project. They worked on activity recognition focusing on recognizing if the user was riding backside or riding frontside (with his 
-back to the bottom of the hill or the top respectively). It is pointed that the recognizability of three basic standing postures was explored and that they were distinguished with perfect 
-accuracy mentioning that it can be interesting for gait analysis.
-
-
-Qing F. Zhou et al.~\cite{basketballMotions} utilized insoles with a motion sensor with the purpose of getting a high accuracy for recognizing three basketball motions: 
-Dribbling, jumping and turning around. For this data processing the K-means algorithm was utilized. 
-Two years later they continued their work and managed to identify five new different 
-footwork movements. In this version a multiple sensor system was proposed and three different classification methods were discussed~\cite{basketballFootwork}:
-K-Nearest neighbours (KNN), Support vector machine (SVM) and Convolutional Neural Networks (CNN).
-
-
-Catarina Amaro et al.~\cite{coimbra} studied the differences in five different movements in basketball between two different moments in a season. The study presented no significant 
-changes in mean peak pressure between the two different times but it did specify that experienced players had lower plantar pressure values in their movements and lower symmetry index. 
-This means that there is room for improvement based on the values read for the less experienced players. It was also mentioned that wear of the shoes may have influenced the slight changes 
-observed in the study. Each player wore their own shoes and this was pointed as a variable for the plantar pressure measured.
-
-
-\section{Relevant data for analysis}
-\label{sec:relevant_data_for_analysis}
-
-Wearable devices capture large volumes of raw data, often gathering detailed metrics like pressure distribution, movement patterns, and force dynamics. However, to extract meaningful 
-insights, this raw data must first be transformed into a more organized, manageable format suited for analysis. Preprocessing includes filtering out noise, aligning data with relevant 
-time frames, and structuring it into clear categories or features, which simplifies identifying trends and patterns. By converting this data into a cleaner, standardized format, we can 
-more effectively apply analysis techniques, uncovering insights into biomechanics, performance, and even long-term health outcomes.
-
-%\subsection{Center of Mass (COM) and Center of Force (COF)}
-%\label{ssec:com_and_cof}
-
-%The COM is the average position of a any mass, which means that if you were to balance the system at this point, it would be stable and balanced. The exact location of the COM in a 
-%human body varies depending on posture, position, and body type but is generally around the pelvis when standing upright. For a group of identities it can be calculated by the following 
-%equation\cite{masterInsole}:
-
-%\[ COM = \frac{m_1 \cdot x_1 + m_2 \cdot x_2 + m_x \cdot x_x}{m_total} \]
-
-%The center of force (COF) is the point where the total force exerted on a surface, such as the ground or a support, is concentrated. In biomechanics, especially in gait and balance 
-%studies, the COF reflects the point where all pressure forces on the foot combine during contact with the ground. Unlike the center of mass (COM), which relates to the body's weight 
-%distribution, the COF is influenced by how the body applies force through specific contact points (like the heels or balls of the feet) while standing, walking, or running.
-%For example, when a person shifts weight from one foot to the other, the COF moves in response to this change in pressure. During a step, the COF generally shifts from the heel at 
-%initial contact toward the toes before push-off, tracking the path of weight transfer. 
-
-
-\subsection{Average Pressure}
-\label{ssec:average_pressure}
-
-Foot therapists currently rely on average pressure to determine if a support sole is effective and where additional relief might be needed. This average provides an interpretable view 
-of pressure distribution during the gait cycle. However, averaging all values across all frames would dilute important information because of the many zero values present throughout 
-the cycle. To avoid this, only non-zero values are averaged for each sensor. Yet, this approach introduces another challenge: a cell with few non-zero readings could appear similar to 
-one with many readings. To improve clarity, cells are excluded from analysis if they don't exceed a minimum threshold of non-zero measurements for that sensor\cite{masterInsole}.
-
-
-\subsection{Peak Pressure (PP), Pressure Time Integral (PTI) and Mean Peak Pressure (mPP)}
-\label{ssec:pp_pti_mPP}
-
-When assessing plantar pressure, the primary parameters of interest are peak pressure (the highest recorded plantar pressure), pressure time integral (typically defined as the 
-area beneath the peak pressure-time curve), and mean peak pressure (mPP). However, studies have shown that mPP and PTI are closely related, making it unnecessary to measure both.
-
-When there are differences in these measurements between the feet, it can mean that there is an inadequate distribution of forces and it can lead to injury. So a symmetry index defined by 
-the next equation that compares the plantar pressure on both feet will be calculated.
-
-\begin{equation}
-  SI = \frac{2 \cdot \left\lvert R - L\right\rvert }{(R + L)} \times 100
-  \label{eq:SIEQ}
-\end{equation}
-
-
-If SI is zero then the feet are doing equal work, if it's under 10\% it is acceptable, otherwise it means the movement is causing more distress in one leg than the other leading to a 
-loss of bone mass density in the respective leg and joints~\cite{coimbra}.
+%\section{Relevant Data for Analysis}
 
 
 \section{Data Analysis}
-\label{sec:data_analysis}
+\label{sec:data_for_analysis}
 
-%Modificar para os algoritmos usados
-%Justificar a escolha
-
-By leveraging advanced data analysis techniques, such as machine learning algorithms and statistical modelling, pressure insole data can reveal subtle patterns and correlations that 
-inform training adjustments, injury risk, and performance improvements. There are many different algorithms with different objectives. In this section some of them will be explained:
+By leveraging advanced data analysis techniques, such as machine learning algorithms and statistical modelling, pressure insole data can 
+reveal subtle patterns and correlations that inform training adjustments, injury risk, and performance improvements. There are many 
+different algorithms with different objectives. In this section some of them will be explained:
 
 \subsection{Algorithms}
 \label{ssec:data_algorithm}
@@ -420,7 +354,7 @@ inform training adjustments, injury risk, and performance improvements. There ar
 The K-nearest-neighbours is one of the simplest supervised machine learning algorithms. It's a classification algorithm which uses proximity to assigning each point to the class with 
 the most similar elements within the K-nearest-neighbours~\cite{bachelorInsole, porto}. 
 
-As an example observe ~\autoref{fig:k-near}. If someone would have to assign a class (green triangles, blue squares or red circles) to the cross in the figure, they would 
+As an example observe~\autoref{fig:k-near}. If someone would have to assign a class (green triangles, blue squares or red circles) to the cross in the figure, they would 
 probably say it belongs to the green triangles since they are the closest objects. But if instead someone had to assign a class for the star, it would be a much harder task to the 
 a naked eye. In this case two factors make that decision: Which are the closest objects (depending on the weight k) and how many of each class are there in that group~\cite{bachelorInsole}. 
 In other words imagine a small circle with its center on the object that we want to classify and if it isn't touching other know objects imagine it growing until it does.
@@ -484,8 +418,8 @@ scatter within each class~\cite{porto, ComprehensiveStudyOnEMG}.
 \subsubsection{Neural Network - NN}
 \label{sssec:neural_network}
 
-A \gls{NN} is a \gls{ML} model that imitates the structure and functions of biological neural networks. A \gls{NN} utilizes many connected nodes called "artificial neurons" organized by 
-layers where each node connects to others from the previous or the next layer (Figure \autoref{fig:NNFigure}). Each of these connections have corresponding weights determined 
+A~\gls{NN} is a~\gls{ML} model that imitates the structure and functions of biological neural networks. A~\gls{NN} utilizes many connected nodes called "artificial neurons" organized by 
+layers where each node connects to others from the previous or the next layer (Figure~\autoref{fig:NNFigure}). Each of these connections have corresponding weights determined 
 trough the training algorithm. For this process the data has to be labelled.
 
 
@@ -498,7 +432,7 @@ trough the training algorithm. For this process the data has to be labelled.
 
 There are three types of layers: input, hidden and output. A NN must have at least one layer of each, though it may contain multiple hidden layers. When a network has two or more hidden 
 layers it is considered a Deep Neural Network (DNN). 
-This \gls{ML} technique is highly effective for analysing large datasets with non-linear relationships. However, to achieve accurate and precise results it requires a substantial 
+This~\gls{ML} technique is highly effective for analysing large datasets with non-linear relationships. However, to achieve accurate and precise results it requires a substantial 
 amount of complete data, as missing entries can significantly affect performance. 
 Despite its effectiveness, one major limitation of neural networks is their lack of interpretability, making it difficult to clearly understand the underlying classification 
 boundaries~\cite{ComprehensiveStudyOnEMG}.
@@ -506,7 +440,7 @@ boundaries~\cite{ComprehensiveStudyOnEMG}.
 \subsubsection{Convolutional Neural Network - CNN}
 \label{sssec:convolutional_neural_network}
 
-A Convolutional Neural Network is a sort of Deep NN designed to process spatial or temporal structures. These models, before the fully connected layers, use convolutional filters to 
+A~\gls{CNN} is a sort of Deep NN designed to process spatial or temporal structures. These models, before the fully connected layers, use convolutional filters to 
 automatically extract local features, reducing the number of parameters compared to fully connected networks improving efficiency.
 CNNs perform well in large-scale classification tasks and require minimal manual feature engineering. However, they often need substantial computational resources and can be difficult 
 to interpret. Despite these limitations, CNNs remain one of the most effective tools for pattern recognition in modern machine learning~\cite{Review_IRBM_EMG}.
@@ -550,14 +484,14 @@ while reducing their main drawbacks such as dependence on prior knowledge and hi
 
 \subsection{EMG Features}
 \label{ssec:emg_features}
-The raw \gls{EMG} signal is very noisy and very high frequency so it generates large volumes of data making it very demanding for direct analysis making it inadequate for real-time 
-processing or \gls{ML} applications. Therefore, relevant features of the signal must be extracted to capture the essential characteristics of the muscle activity to reduce 
+The raw~\gls{EMG} signal is very noisy and very high frequency so it generates large volumes of data making it very demanding for direct analysis making it inadequate for real-time 
+processing or~\gls{ML} applications. Therefore, relevant features of the signal must be extracted to capture the essential characteristics of the muscle activity to reduce 
 computational load, improve robustness against noise and improve the performance of classification algorithms. 
 
 \subsubsection{Mean Absolute Value - MAV} 
 \label{sssec:mean_absolute_value}
 
-The Mean Absolute Value is one of the most common and simpler features extracted from \gls{EMG} signals. It corresponds to the average of the absolute values of the signal over a 
+The Mean Absolute Value is one of the most common and simpler features extracted from~\gls{EMG} signals. It corresponds to the average of the absolute values of the signal over a 
 specific period of time, providing a measurement of the muscle's electrical activity level. 
 Mathematically, MAV is calculated as:
 
@@ -566,7 +500,7 @@ Mathematically, MAV is calculated as:
   \label{eq:mavEQ}
 \end{equation}
 
-where $N$ is the number os samples in the time frame and $x_i$ is the \gls{EMG} signal at sample $i$~\cite{HandGestureRecognition, ComprehensiveStudyOnEMG, 
+where $N$ is the number os samples in the time frame and $x_i$ is the~\gls{EMG} signal at sample $i$~\cite{HandGestureRecognition, ComprehensiveStudyOnEMG, 
 BiomedicalSignalProcessingAndControl, Review_IRBM_EMG, ReviewOfEMGSignalClassification, Hybrid, ComparativeStudyOfSEMGFeatureEvaluationMethods, EvaluationOfFeatureExtractionAndClassification}.
 
 %\subsubsection{Mean Absolute Value Slope - MAVS} % ComprehensiveStudyOnEMG
@@ -584,7 +518,7 @@ than the MAV. It's defined as:
   \label{eq:rmsEQ}
 \end{equation}
 
-Where $N$ is the number os samples in the time frame and $x_i$ represents the \gls{EMG} signal at each sample~\cite{HandGestureRecognition, BiomedicalSignalProcessingAndControl, 
+Where $N$ is the number os samples in the time frame and $x_i$ represents the~\gls{EMG} signal at each sample~\cite{HandGestureRecognition, BiomedicalSignalProcessingAndControl, 
 MeasuringSurfaceElectromyographyWithTextileElectrodes, Review_IRBM_EMG, ReviewOfEMGSignalClassification, Hybrid, EvaluationOfFeatureExtractionAndClassification, ComparativeStudyOfSEMGFeatureEvaluationMethods, 
 ResearchOnLowerLimbMotionRecognition}.
 
@@ -677,7 +611,7 @@ ComprehensiveStudyOnEMG, Review_IRBM_EMG, ReviewOfEMGSignalClassification, Hybri
 \subsubsection{Integrated EMG - IEMG}
 \label{sssec:integrated_emg}
 
-Integrated \gls{EMG} is the sum of the rectified \gls{EMG} signal over a time interval. This feature quantifies the muscle activation level providing information about the effort 
+Integrated~\gls{EMG} is the sum of the rectified~\gls{EMG} signal over a time interval. This feature quantifies the muscle activation level providing information about the effort 
 and muscle intensity during a movement.
 
 Mathematically, the integrated EMG is defined by:
@@ -687,14 +621,14 @@ Mathematically, the integrated EMG is defined by:
   \label{eq:iemgEQ}
 \end{equation}
 
-Where $x_i$ is the \gls{EMG} signal amplitude at each sample, and $N$ is the total number of samples in the analyzed time period.
+Where $x_i$ is the~\gls{EMG} signal amplitude at each sample, and $N$ is the total number of samples in the analyzed time period.
 IEMG is particularly useful for assessing the intensity of muscular activity and comparing activation levels across different tasks or conditions~\cite{ComprehensiveStudyOnEMG, 
 BiomedicalSignalProcessingAndControl, Review_IRBM_EMG}.
 
 \subsubsection{Simple Square Integral - SSI} 
 \label{sssec:simple_square_integral}
 
-The Simple Square Integral is a feature that expresses the energy of the \gls{EMG} signal. 
+The Simple Square Integral is a feature that expresses the energy of the~\gls{EMG} signal. 
 The equation below expresses the computation of SSI:
 
 \begin{equation}
@@ -702,18 +636,18 @@ The equation below expresses the computation of SSI:
   \label{eq:ssiEQ}
 \end{equation}
 
-Where $x_i$ represents the \gls{EMG} signal amplitude at the $i^th$ sample and N is the total number of samples within the analysis window\cite{ComprehensiveStudyOnEMG, 
+Where $x_i$ represents the~\gls{EMG} signal amplitude at the $i^th$ sample and N is the total number of samples within the analysis window\cite{ComprehensiveStudyOnEMG, 
 BiomedicalSignalProcessingAndControl, Review_IRBM_EMG}.
 
 \subsubsection{Zero Crossing - ZC} 
 \label{sssec:zero_crossing}
 
-Zero Crossings is a feature that measures the amount of times that the \gls{EMG} signal changes sign as expressed by the following expression:
+Zero Crossings is a feature that measures the amount of times that the~\gls{EMG} signal changes sign as expressed by the following expression:
 
 \begin{equation}
   ZC = \begin{cases}
     \sum_{n = 2}^{N} sgn(x_i \cdot x_{i-1})
-    (x_i - x_{i-1}) \geq \epsilon 
+    (x_i - x_{i-1})~\geq \epsilon 
   \end{cases}
   \label{eq:zcEQ}
 \end{equation}
@@ -727,7 +661,7 @@ Zero Crossings is a feature that measures the amount of times that the \gls{EMG}
   \label{eq:zcEQ2}
 \end{equation}
 
-Where $x_i$ is the \gls{EMG} signal amplitude at each sample, $N$ is the total number of samples and $\epsilon$ is a small positive value used to avoid counting zero crossings 
+Where $x_i$ is the~\gls{EMG} signal amplitude at each sample, $N$ is the total number of samples and $\epsilon$ is a small positive value used to avoid counting zero crossings 
 caused by minor fluctuations or noise\cite{Review_IRBM_EMG}.
 
 \subsubsection{Slope Sign Changes - SSC}
@@ -749,7 +683,7 @@ Where
 
 \begin{equation}
   f(x) = \begin{cases}
-    1 & \text{if } x \geq \epsilon \\
+    1 & \text{if } x~\geq \epsilon \\
     0 & \text{otherwise}
   \end{cases}
   \label{eq:sscEQ2}
@@ -776,54 +710,212 @@ Where
 
 \begin{equation}
   f(x) = \begin{cases}
-    1 & \text{if } x \geq \epsilon \\
+    1 & \text{if } x~\geq \epsilon \\
     0 & \text{otherwise}
   \end{cases}
   \label{eq:wampEQ2}
 \end{equation}
 
-\section{Injury prevention and Fatigue Monitoring}
-\label{sec:injury_prevention}
+\section{Related Work}
+\label{sec:related_work}
 
-As established in ~\autoref{cha:introduction}, the pursuit of "marginal gains" in high-intensity team sports like basketball requires the continuous development on the mitigation of related 
-injuries. This research has increasingly shifted from reactive treatments to proactive, data-driven prevention strategies. Historically, the monitoring of localized muscle fatigue during athletic performance has 
-relied on subjective athlete feedback or post-event analysis, both of which lack the temporal resolution required for real-time injury prevention. However, recent advancements in wearable biosensors and microcomputing 
-have enabled the continuous, objective monitoring of neuromuscular and kinematic parameters during dynamic athletic movements.
-
-Current research emphasizes that acute muscular failure is rarely an instantaneous event but rather precedented by a quantifiable period of continuous, localized muscular fatigue and deteriorating neuromuscular 
-efficiency. The best and most common approaches for detecting this fatigue utilize surface Electromyography (\gls{sEMG}) to track its temporal evolution. Physiological changes, such as the accumulation of metabolic 
-byproducts slow down muscle fibre conduction velocity, fundamentally altering the \gls{sEMG} signal~\cite{TheUseOfSEMG}. Time-domain features are highly effective markers for this phenomenon. As muscles fatigue, amplitude-based 
-features such as \gls{RMS} and \gls{MAV} typically exhibit an upward trend as the central nervous system increases motor unit recruitment and synchronization to maintain mechanical force. On the other hand, features 
-that act as proxies for frequency, such as \gls{ZC} and \gls{SSC} decrease as action potentials slow down. Research has successfully utilized these specific time-domain features to construct objective fatigue indices, 
-proving their efficiency in capturing impending muscle failure~\cite{ProposedFatigueIndex}.
-
-However, relying on isolated \gls{sEMG} data presents critical limitations in dynamic athletic environments. A high \gls{sEMG} amplitude indicates elevated electrical demand, which could signify impending fatigue-induced failure, or it could simply 
-reflect an athlete's intentional increase in mechanical output, such as executing a jump or rapidly accelerating. To resolve this ambiguity, modern systems utilize sensor fusion, coupling \gls{sEMG} with the Inertial Measurement Units (IMUs) 
-discussed previously. By correlating the electrical demand of the muscle (via \gls{sEMG}) with the actual mechanical output or kinematic stability (via IMU), researchers can accurately map true neuromuscular efficiency. Recent studies confirm 
-that multimodal fatigue detection systems using both kinematic and neuromuscular signals provide highly robust continuous fatigue classification, achieving accuracies above 95\% even in the presence of complex, continuous movements~\cite{DataDrivenApproachForUpper, MultimodalFatigueDetectionSystem}. 
-
-Edge computing and machine learning algorithms, such as \glspl{RF} and Decision Trees, these multimodal wearable systems represent the cutting edge of real-time monitoring~\cite{MachineLearningBasedClassification}. By 
-identifying the precise moment neuromuscular efficiency begins to decline, these unobtrusive systems provide the foundational architecture necessary to predict and prevent specific, acute fatigue-related conditions.
+For sports like basketball, the available motion recognition research is mainly through video recording or smart wearable devices such as 
+wristbands. There are many studies on the topic of measuring plantar pressure through an insole. Most of them mostly study the gait cycle 
+while running or walking with similar objectives.
 
 \subsection{Muscle Cramps and Pre-Cramp Anomalies}
-\label{ssec:cramping}
+\label{ssec:cramps}
 
-Cramping that occurs in sports or conditioning is clinically called as an Exercise-Associated Muscle Cramp (EAMC). This is a sudden, involuntary, and painful contraction of skeletal muscle during or immediately following 
-physical activity. EAMCs severely disrupt athletic performance and can precipitate further musculoskeletal injury. While historically attributed to systemic factors such as dehydration or electrolyte imbalance, contemporary sports medicine 
-increasingly supports the "altered neuromuscular control" hypothesis. This theory posits that severe, localized muscle fatigue disrupts the neural mechanisms regulating muscle spindle and Golgi tendon organ activity, leading to sustained, 
-involuntary motor unit firing.
+Cramping occurring in sports or conditioning is clinically called an~\gls{EAMC}. This is a sudden, involuntary, 
+and painful contraction of skeletal muscle during or immediately following physical activity.~\glspl{EAMC} severely 
+disrupt athletic performance and can precipitate further musculoskeletal injury. While historically attributed to 
+systemic factors such as dehydration or electrolyte imbalance, contemporary sports medicine increasingly supports 
+the "altered neuromuscular control" hypothesis. This theory posits that severe, localized muscle fatigue disrupts 
+the neural mechanisms regulating muscle spindle and Golgi tendon organ activity, leading to sustained, involuntary 
+motor unit firing. Whenever an EAMC happens, the EMG signal demonstrates an extreme and abnormal behaviour. The 
+focal point of the cramp is characterized by massive localized spikes in~\gls{sEMG} amplitude~\cite{PossibleMechanisms}. During the 
+cramping, the~\gls{RMS} and~\gls{MAV} features record very high values when compared to standard movements. 
 
-Whenever an EAMC happens, the \gls{EMG} signal demonstrates an extreme and abnormal behaviour. The focal point of the cramp is characterized by massive localized spikes in \gls{sEMG} amplitude~\cite{PossibleMechanisms}. During the cramping, 
-the \gls{RMS} and \gls{MAV} features record very high values when compared to standard movements.
+Current research emphasizes that acute muscular failure is rarely an instantaneous event but rather precedented by 
+a quantifiable period of continuous, localized muscular fatigue and deteriorating neuromuscular efficiency. The 
+best and most common approaches for detecting this fatigue utilize~\gls{sEMG} to track its temporal evolution. 
+Physiological changes, such as the accumulation of metabolic byproducts slow down muscle fibre conduction velocity, 
+fundamentally altering the~\gls{sEMG} signal~\cite{TheUseOfSEMG}. Time-domain features are highly effective markers for this 
+phenomenon. As muscles fatigue, amplitude-based features such as RMS and MAV typically exhibit an upward trend as 
+the central nervous system increases motor unit recruitment and synchronization to maintain mechanical force. On 
+the other hand, features that act as proxies for frequency, such as~\gls{ZC} and~\gls{SSC} decrease as action 
+potentials slow down. Research has successfully utilized these specific time-domain features to construct objective 
+fatigue indices, proving their efficiency in capturing impending muscle failure~\cite{ProposedFatigueIndex}. 
 
-Recent literature shows that these involuntary contractions aren't spontaneous but rather have some distinct pre-cramp anomalies.  For instance, in pilot studies observing involuntary nocturnal leg cramps, researchers 
-found that changes in muscle tension patterns could reliably predict the start of the clinical cramp. Specifically, \gls{sEMG} amplitude was observed spiking significantly, Ii some cases up to 40 seconds before the 
-painful contraction physically manifested or triggered any movement artifacts~\cite{ChangesInMuscleTension}.
+Recent literature shows that 
+these involuntary contractions aren't spontaneous but rather have some distinct pre-cramp anomalies. For instance, 
+in pilot studies observing involuntary nocturnal leg cramps, researchers found that changes in muscle tension 
+patterns couldreliably predict the start of the clinical cramp. Specifically, sEMG amplitude was observed spiking 
+significantly, in some cases up to 40 seconds before the painful contraction physically manifested or triggered 
+any movement artifacts~\cite{ChangesInMuscleTension}.
 
-This window of anomalies represents a crucial opportunity for injury prevention systems. By establishing a baseline of the normal activity of an athlete and identifying the rise in amplitude (\gls{RMS}) and \gls{MAV} and the drop in \gls{ZC} 
-and \gls{SSC}, a threshold can be outlined, representing severe fatigue, to predict future cramping. If an abrupt, localized spike in \gls{sEMG} amplitude occurs without a corresponding increase in mechanical output (as verified by kinematic IMU 
-data), it strongly indicates the altered neuromuscular control that immediately precedes an EAMC.
+\subsection{Sensor Fusion}
+\label{ssec:sensor_fusion}
+
+
+Despite its proven efficacy, relying on isolated sEMG data presents critical limitations in dynamic athletic 
+environments. A high sEMG amplitude indicates elevated electrical demand, which could signify impending fatigue-induced 
+failure, or it could simply reflect an athlete's intentional increase in mechanical output, such as executing a 
+jump or rapidly accelerating. To resolve this ambiguity, modern systems utilize sensor fusion, coupling~\gls{sEMG} 
+with the~\glspl{IMU} discussed previously. By correlating the electrical demand of the muscle (via~\gls{sEMG}) with 
+the actual mechanical output or kinematic stability (via~\gls{IMU}), researchers can accurately map true neuromuscular
+efficiency. Recent studies confirm that multimodal fatigue detection systems using both kinematic and neuromuscular 
+signals provide highly robust continuous fatigue classification, achieving accuracies above 95\% even in the presence 
+of complex, continuous movements~\cite{DataDrivenApproachForUpper, MultimodalFatigueDetectionSystem}. 
+
+Edge computing and machine learning algorithms, such as~\glspl{RF} and Decision Trees, represent the cutting edge 
+of real-time monitoring~\cite{MachineLearningBasedClassification}. By identifying the precise moment neuromuscular efficiency begins to decline, these 
+unobtrusive systems provide the foundational architecture necessary to predict and prevent specific, acute fatigue-related 
+conditions. 
+
+Qingsong Ai et al. developed a lower limb motion recognition system that successfully classified five distinct 
+movements by fusing~\gls{EMG} and accelerometer signals. To handle the kinematic data, the researchers applied a 
+curve fitting method based on median filtering to remove noise, and subsequently utilized~\gls{DTW} to extract 
+sequential distance features. Simultaneously, the~\gls{sEMG} signals were processed using a power spectral correlation 
+coefficient method for accurate movement onset detection, followed by the extraction of both time-domain features 
+and wavelet transform coefficients. By inputting these fused multimodal features into a~\gls{SVM} classifier 
+optimized via grid search, the system achieved an average recognition accuracy of 98.1\%. Ultimately, this research 
+proved that combining neuromuscular data with kinematic accelerometer features significantly outperforms classification 
+models that rely on either signal modality in isolation~\cite{ResearchOnLowerLimbMotionRecognition}. 
+
+In another study focusing on the integration of upper and lower limb kinematics, Bárbara Cardoso explored a multimodal 
+wearable system combining smart insoles with a Moto 360 smartwatch to optimize sports performance, specifically in 
+running. The methodology relied on extracting a robust set of 54 time- and frequency-domain features from the smartwatch's 
+triaxial accelerometer. To ensure computational efficiency for realtime edge application,~\gls{RFE} was employed to 
+isolate the top 10 most discriminative features, which predominantly included the~\gls{RMS}, StandardDeviation, and 
+\gls{ZC} Rate of the x-axis acceleration. These features were subsequently fed into a Multilayer Perceptron~\gls{NN}, 
+achieving an impressive 95\% overall accuracy across five distinct physical activities, with running specifically 
+classified at a 90\% accuracy and 97\% precision. Beyond activity recognition, the system utilized the smartwatch's 
+photoplethysmography sensor to estimate Energy Expenditure and successfully demonstrated that arm acceleration 
+amplitude varies in indirect proportion to foot ground contact time, establishing a clear biomechanical link 
+between wrist-worn sensor data and lower-limb running dynamics~\cite{porto}.
+
+\subsection{Insole and Pressure Sensors}
+\label{ssec:insole_preassure}
+
+Baitong Wang et al. developed an insole with 8 pressure sensors and motion track sensors and with this system managed to clearly identify 
+gait with only the pressure sensors~\cite{freewalker}.
+
+Elizabeth S. Chumanov et al. tracked the global position of the pressure on the soles of the feet throughout steps in walking and running. 
+This data can be used for improvement in foot-floor contact models used to simulate human locomotion and in least squares inverse dynamics
+~\cite{posDuringWalking}. 
+
+Thomas Holleczek et al. design a pair of smart socks with three pressure sensors each for the use case of snowboard. Even tho it isn't a 
+sport as dynamic and unpredictable as basketball, it still is very relevant for this project. They worked on activity recognition focusing 
+on recognizing if the user was riding backside or riding frontside (with his back to the bottom of the hill or the top respectively). It is 
+pointed that the recognizability of three basic standing postures was explored and that they were distinguished with perfect accuracy 
+mentioning that it can be interesting for gait analysis~\cite{snowboard}. 
+
+Qing F. Zhou et al. utilized insoles with a motion sensor with the purpose of getting a high accuracy for recognizing three basketball 
+motions: Dribbling, jumping and turning around. For this data processing the K-means algorithm was utilized~\cite{basketballMotions}. Two years later they 
+continued their work and managed to identify five new different foot work movements. In this version a multiple sensor system was proposed 
+and three different classification methods were discussed:~\gls{KNN},~\gls{SVM} and~\gls{CNN}~\cite{basketballFootwork}. 
+
+Catarina Amaro et al. studied the differences in five different movements in basketball between two different moments in a season. The 
+study presented no significant changes in mean peak pressure between the two different times but it did specify that experienced players 
+had lower plantar pressure values in their movements and lower symmetry index. This means that there is room for improvement based on the 
+values read for the less experienced players. It was also mentioned that wear of the shoes may have influenced the slight changes observed 
+in the study.Each player wore their own shoes and this was pointed as a variable for the plantar pressure measured~\cite{coimbra}.
+
+
+\subsection(Summary)
+\label{ssec:rw_summary}
+
+\begin{table*}[ht]
+\centering
+\caption{Summary of Related Work in Activity Recognition, Sensor Fusion, and Fatigue Monitoring.}
+\label{tab:related_work}
+\renewcommand{\arraystretch}{1.2}
+\footnotesize
+\begin{tabularx}{\textwidth}{|p{2cm}|p{2cm}|p{2cm}|p{2cm}|X|}
+\hline
+\textbf{Reference} &
+\textbf{Sensors / Modality} &
+\textbf{Application / Focus} &
+\textbf{Methods / Algorithms} &
+\textbf{Key Results} \\
+\hline
+
+Ai et al.~\cite{ResearchOnLowerLimbMotionRecognition} &
+sEMG + Accelerometer &
+Lower limb motion recognition (5 movements) &
+\gls{DTW},~\gls{SVM} (grid search optimization) &
+Achieved 98.1\% accuracy. Proved sensor fusion significantly outperforms isolated sensors. \\
+\hline
+
+Cardoso~\cite{porto} &
+Smartwatch (\gls{IMU}, Photoplethysmography) + Smart Insoles &
+Running / Sports performance optimization &
+\gls{RFE}, Multilayer Perceptron~\gls{NN} &
+95\% overall activity recognition accuracy; established biomechanical link between arm acceleration and ground contact. \\
+\hline
+
+Wang et al.~\cite{freewalker} &
+8 Pressure Sensors + Motion Trackers &
+Gait identification &
+-- &
+Successfully identified gait patterns relying solely on plantar pressure data. \\
+\hline
+
+Chumanov et al.~\cite{posDuringWalking} &
+Plantar Pressure Sensors &
+Walking and running gait analysis &
+Least squares inverse dynamics &
+Tracked global pressure positions to improve simulated human locomotion and foot-floor contact models. \\
+\hline
+
+Holleczek et al.~\cite{snowboard} &
+Smart Socks (3 Pressure Sensors) &
+Snowboard activity recognition &
+-- &
+Achieved perfect accuracy in distinguishing three basic standing postures; highlighted potential for gait analysis. \\
+\hline
+
+Zhou et al.~\cite{basketballMotions} &
+Smart Insoles + Motion Sensor &
+Basketball motion recognition (3 movements) &
+K-means Clustering &
+High accuracy achieved for recognizing dribbling, jumping, and turning around. \\
+\hline
+
+Zhou et al.~\cite{basketballFootwork} &
+Multiple Sensors (Insoles) &
+Basketball footwork recognition (5 movements) &
+\gls{KNN},~\gls{SVM},~\gls{CNN} &
+Successfully classified complex footwork by comparing traditional~\gls{ML} against deep learning. \\
+\hline
+
+Amaro et al.~\cite{coimbra} &
+Plantar Pressure Sensors &
+Plantar pressure in basketball (5 movements) &
+Symmetry Index Analysis &
+Found that more experienced players exhibit lower plantar pressure values and a lower symmetry index. \\
+\hline
+
+Qassim et al.~\cite{ProposedFatigueIndex} &
+Isolated sEMG &
+Muscle fatigue detection &
+Time-domain analysis (\gls{RMS},~\gls{MAV},~\gls{ZC},~\gls{SSC}) &
+Demonstrated that amplitude features increase and frequency features decrease, efficiently capturing impending muscle failure. \\
+\hline
+
+Chaney et al.~\cite{ChangesInMuscleTension} &
+Isolated~\gls{sEMG} &
+\gls{EAMC} (cramp) prediction &
+Muscle tension pattern observation &
+Identified that~\gls{sEMG} amplitude spikes up to 40 seconds before clinical cramps, revealing a window for proactive prevention. \\
+\hline
+
+\end{tabularx}
+\end{table*}
+
 
 
 
 % \printbibliography[heading=subbibliography, segment=\therefsegment, title={\bibname\ for chapter~\thechapter}]
+

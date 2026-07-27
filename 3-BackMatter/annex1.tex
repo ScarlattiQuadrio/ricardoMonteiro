@@ -9,7 +9,117 @@
 \typeout{NT FILE annex1.tex}%
 
 
-\chapter{Annex 1 Lorem Ipsum}
-\label{ann:lorem_ipsum1}
+\chapter{Annex 1 Arduino Code}
+\label{ann:arduino_code}
 
-\lipsum[1-5]
+%\lipsum[1-5]
+\begin{algorithm}
+\caption{Wearable Sensor Data Acquisition and BLE Transmission}
+\label{alg:data_acq}
+\begin{algorithmic}[1]
+\State \textbf{Inputs:} Raw analog EMG signal, IMU data (Accel, Gyro, Mag)
+\State \textbf{Outputs:} BLE Notifications containing \texttt{DataBundle} packets
+\State \textbf{Parameters:} $F_s = 1000$ Hz, Window Size $= 200$, Shift Size $= 20$
+\vspace{0.2cm}
+
+\Procedure{InitializeSystem}{}
+    \State Initialize IMU and BLE Hardware
+    \State Configure BLE Services, Characteristics, and Callbacks
+    \State Begin BLE Advertising
+    \State \texttt{DeviceState} $\gets$ \texttt{SENDING\_DATA}
+\EndProcedure
+\vspace{0.2cm}
+
+\Procedure{MainLoop}{}
+    \While{True}
+        \If{BLE Central is connected}
+            \State \textbf{switch} \texttt{DeviceState} \textbf{do}
+            \State \quad \textbf{case} \texttt{SENDING\_DATA}: \Call{ProcessSensorData}{}
+            \State \quad \textbf{case} \texttt{CALIB\_GYRO\_COLLECTING}: \Call{PerformGyroCalibration}{}
+            \State \quad \textbf{case} \texttt{CALIB\_MAG\_COLLECTING}: \Call{PerformMagCalibration}{}
+            \State \quad \textbf{case} \texttt{WAITING}: Idle and wait for BLE commands
+        \Else
+            \State \texttt{DeviceState} $\gets$ \texttt{SENDING\_DATA}
+        \EndIf
+    \EndWhile
+\EndProcedure
+\vspace{0.2cm}
+
+\Procedure{ProcessSensorData}{}
+    \If{1 millisecond has elapsed}
+        \State $rawEMG \gets$ Read Analog Pin
+        \State $emg\_mV \gets$ Convert $rawEMG$ to millivolts
+        \State $filteredEMG \gets$ Apply High-Pass Filter($emg\_mV$)
+        \State Append $filteredEMG$ to $TempBuffer$
+        
+        \If{Length($TempBuffer$) $\geq 20$}
+            \State Shift $MainEMGBuffer$ left by 20 samples
+            \State Append $TempBuffer$ to end of $MainEMGBuffer$
+            \State Clear $TempBuffer$
+            \State $WindowReadyFlag \gets$ \textbf{true}
+        \EndIf
+    \EndIf
+
+    \If{$WindowReadyFlag$ is \textbf{true}}
+        \State $IMU\_Raw \gets$ Read Acceleration, Gyroscope, Magnetic Field
+        \State $IMU\_Calib \gets$ Apply Offsets and Scaling to $IMU\_Raw$
+        \State $Features \gets$ \Call{ComputeEMGFeatures}{$MainEMGBuffer$}
+        \State $NewPacket \gets$ Create \texttt{SensorPacket}($IMU\_Calib$, $Features$)
+        \State Enqueue $NewPacket$ into $PacketQueue$
+        \State $WindowReadyFlag \gets$ \textbf{false}
+    \EndIf
+
+    \While{Length($PacketQueue$) $\geq 5$}
+        \State $Bundle \gets$ Dequeue 5 packets from $PacketQueue$
+        \State Transmit $Bundle$ via BLE Notification
+    \EndWhile
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{Feature Extraction and BLE Calibration Command Processing}
+\label{alg:feat_calib}
+\begin{algorithmic}[1]
+\Function{ComputeEMGFeatures}{$Buffer$}
+    \State Initialize $sum \gets 0$, $sumSquares \gets 0$, $ZC\_count \gets 0$, $SSC\_count \gets 0$
+    
+    \For{$i \gets 0$ \textbf{to} Length($Buffer$) - 1}
+        \State $x \gets Buffer[i]$
+        \State $sum \gets sum + x$
+        \State $sumSquares \gets sumSquares + (x \times x)$
+        
+        \If{$i > 0$}
+            \State Update Waveform Length (WL)
+            \State Detect Zero Crossings (ZC) based on threshold
+        \EndIf
+        
+        \If{$i > 1$}
+            \State Detect Slope Sign Changes (SSC) based on threshold
+        \EndIf
+    \EndFor
+    
+    \State Calculate RMS, Mean Absolute Value (MAV), and Variance (VAR)
+    \State \textbf{return} \texttt{EMGFeatures}(RMS, WL, ZC, MAV, SSC, VAR)
+\EndFunction
+\vspace{0.2cm}
+
+\Procedure{OnBLECommandReceived}{$CommandString$}
+    \State Parse $CommandString$
+    \If{$CommandString ==$ \texttt{"START\_GYRO\_CALIB"}}
+        \State Reset Gyro accumulators
+        \State \texttt{DeviceState} $\gets$ \texttt{CALIB\_GYRO\_COLLECTING}
+    \ElsIf{$CommandString ==$ \texttt{"START\_MAG\_CALIB"}}
+        \State Reset Magnetometer min/max bounds
+        \State \texttt{DeviceState} $\gets$ \texttt{CALIB\_MAG\_COLLECTING}
+    \ElsIf{$CommandString ==$ \texttt{"STOP\_MAG\_CALIB"}}
+        \State Calculate Magnetometer Offsets and Scales
+        \State Transmit new calibration values via BLE
+        \State \texttt{DeviceState} $\gets$ \texttt{WAITING}
+    \ElsIf{$CommandString$ includes specific calibration parameters}
+        \State Update local Offset and Scale variables
+    \EndIf
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}

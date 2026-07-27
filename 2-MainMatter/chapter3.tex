@@ -16,11 +16,11 @@
 
 %Proposta de trabalho
 
-\chapter{Work Proposal}
-\label{cha:workProposal}
+\chapter{Work Proposal and Implementation}
+\label{cha:workProposalAndImplementation}
 
-This project begins with the prototype design and the development of the arduino's code and of an interface app. Afterwards, data from different movements is collected and the \gls{ML} 
-models are developed. The last goal is to implement a \gls{ML} model into a server connected via WiFi and a Tiny \gls{ML} model into the app giving real-time feedback and analysis of their movements and fatigue 
+This project begins with the prototype design and the development of the arduino's code and of an interface app. Afterwards, data from different movements is collected and the~\gls{ML} 
+models are developed. The last goal is to implement a~\gls{ML} model into a server connected via WiFi and a Tiny\gls{ML} model into the app giving real-time feedback and analysis of their movements and fatigue 
 monitoring.
 
 Basketball is one of the most popular sports worldwide and it is constantly becoming more complex and more competitive and so does the related technology alongside it. Gathering data from the players is crucial 
@@ -31,13 +31,12 @@ continuously and with the right design, be unnoticeable for the user and other p
 For basketball in particular, the movements consist in a lot of short sprints, quick changes of pace and direction, lateral movement and high jumps (vertical and horizontal) and its high tense moments are more common 
 at the end of games (fourth quarter), specially at the last minutes.
 
-\newpage
 
 \section{Project Description}
 \label{sec:project_description}
 
-In this project, for each foot, an Arduino and an \gls{EMG} sensor will be used. The Arduinos have an integrated \gls{IMU} each that capture acceleration and orientation and they can communicate through \gls{BLE}.
-Besides the \gls{IMU}, the \gls{EMG} sensors will collect data from the muscles to provide further insight for the movement recognition and injury report.
+In this project, for each foot, an Arduino and an~\gls{EMG} sensor will be used. The Arduinos have an integrated~\gls{IMU} each that capture acceleration and orientation and they can communicate through~\gls{BLE}.
+Besides the~\gls{IMU}, the~\gls{EMG} sensors will collect data from the muscles to provide further insight for the movement recognition and injury report~\autoref{fig:systemOverview}.
 
 \begin{figure}[h]
   \centering
@@ -47,10 +46,13 @@ Besides the \gls{IMU}, the \gls{EMG} sensors will collect data from the muscles 
 \end{figure}
 
 \subsection{Prototype}
-\label{sec:prototype}
+\label{ssec:prototype}
 
-The Arduino chosen was the Nano 33 \gls{BLE} Rev 2 for its size, 9 axis \gls{IMU}, \gls{BLE} connection and versatility. The choice for the \gls{EMG} sensor was the BITalino Electromyography designed for surface \gls{EMG}. This 
-sensors were soldered to the Arduinos for power and communication.
+Two prototypes were developed composed by an Arduino 33 nano~\gls{BLE} Rev 2, an~\gls{EMG}
+sensor and a small power bank to provide power (see~\autoref{fig:prototypePic}). Standard power banks have a
+modern system to idle if not enough power is drawn. Since the Arduinos don't break that
+threshold, to keep the power banks active, a keep-alive circuit was utilized to periodically
+pulse the current draw (see ~\autoref{fig:physicalSystemOverview}).
 
 \begin{figure}[ht]
     \centering
@@ -64,7 +66,7 @@ sensors were soldered to the Arduinos for power and communication.
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{deviceBottom.jpg}
-        \caption{Bottom side - \gls{EMG} sensor}
+        \caption{Bottom side -~\gls{EMG} sensor}
         \label{fig:portoBot}
     \end{subfigure}
   
@@ -72,71 +74,88 @@ sensors were soldered to the Arduinos for power and communication.
     \label{fig:prototypePic}
 \end{figure}
 
-\newpage
 
-\subsubsection{Arduino Specifications}
-\label{ssec:arduinoSpecs}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\linewidth]{physicalSystemOverview.jpg}
+  \caption{Physical System Overview}
+  \label{fig:physicalSystemOverview}
+\end{figure}
 
-This Arduino runs at 3.3V and the \gls{IMU} sensors are the BMI270 (3-axis accelerometer + 3-axis gyroscope) and the BMM150 (3-axis Magnetometer) sensors. It has a 
-width of 18mm and length of 45mm weighing only 5g~\cite{arduinoDoc}. The Arduino IDE will be used for the Arduinos' programming.
 
+\subsubsection{Arduino}
+\label{sssec:arduino}
+
+The Arduino's 33 nano~\gls{BLE} Rev 2 run at 3.3V and they feature a powerful processor,
+the nRF52840 from Nordic Semiconductors, a 32-bit ARM® Cortex®-M4 CPU running
+at 64 MHz. Sensor wise, their~\gls{IMU} sensors are the BMI270 (3-axis accelerometer + 3-
+axis gyroscope) and the BMM150 (3-axis Magnetometer) sensors . It has a width of
+18mm and length of 45mm weighing only 5g and as its name mentions it also has~\gls{BLE}
+communication which is vital for this project~\cite{arduinoDoc}. The Arduino IDE will be used for the
+Arduinos' programming.
+The Arduino programming language is a modified C/C++ language that simplifies
+the board coding that is run on the Arduino's IDE. Initially there were two code files
+for the Arduinos, one for the sensors calibration (specifically the magnetometer and the
+gyroscope) and the other one is run for reading and sending the data. The calibration was
+eventually integrated in the main program and only a single program is needed.
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.8\linewidth]{arduino-pinout.jpg}
-  \caption{Arduino Nano \gls{BLE} Rev 2 - Pinout~\cite{arduinoDoc}}
+  \caption{Arduino Nano~\gls{BLE} Rev 2 - Pinout~\cite{arduinoDoc}}
   \label{fig:arduinoPinout}
 \end{figure}
 
 \subsubsection{BITalino Electromyography}
-\label{ssec:bitalinoEMG}
+\label{sssec:bitalinoEMG}
 
-The sensor has a gain of 1009 and an input of 2.0-3.5V making the output of 3.3V of the Arduino ideal for it. As seen in ~\autoref{fig:emg}, the emg has an input channel for the electrode cables on the left side 
+The sensor has a gain of 1009 and an input of 2.0-3.5V making the output of 3.3V of the Arduino ideal for it. As seen in~\autoref{fig:emg}, 
+the~\gls{EMG} has an input channel for the electrode cables on the left side 
 and 4 connection points on the right side:
 
 \begin{itemize}
-  \item \gls{VOUT} - Connected through the white wire to the respective input pin of the Arduino
-  \item \gls{VCC} - The red wire is connecting this point to the 3.3V pin.
-  \item \gls{VCC}/2 - From the same pin that the \gls{VCC} point is connected to, we have a small voltage divider with an Ampop for stabilization to halve the tension (blue wire).
-  \item \gls{GND} - The black wire connects the Arduino's ground to this point.
+  \item~\gls{VOUT} - Connected through the white wire to the respective input pin of the Arduino
+  \item~\gls{VCC} - The red wire is connecting this point to the 3.3V pin.
+  \item~\gls{VCC}/2 - From the same pin that the~\gls{VCC} point is connected to, we have a small voltage divider with an Ampop for stabilization to halve the tension (blue wire).
+  \item~\gls{GND} - The black wire connects the Arduino's ground to this point.
 \end{itemize}
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.4\linewidth]{emg.jpg}
-  \caption{BITalino \gls{EMG} sensor~\cite{bitalino}}
+  \caption{BITalino~\gls{EMG} sensor~\cite{bitalino}}
   \label{fig:emg}
 \end{figure}
 
- A circuit was designed to obtain a stable reference for the \gls{EMG} sensor, implemented using a resistive divider followed by an operational amplifier. As shown in figure~\autoref{fig:divisorTensao}, two identical resistors are 
+ A circuit was designed to obtain a stable reference for the~\gls{EMG} sensor, implemented using a resistive divider followed by an operational amplifier. As shown in figure~\autoref{fig:divisorTensao}, two identical resistors are 
  connected between the 3.3V supply from the arduino and ground resulting on the node in the middle settling at half the voltage. The op-amp's purpose is to stabilize the circuit by lowering the impedance at the output.
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.8\linewidth]{divisorTensao.jpg}
-  \caption{Halving the \gls{VCC}}
+  \caption{Halving the~\gls{VCC}}
   \label{fig:divisorTensao}
 \end{figure}
 
 The analog sensor data are converted into digital values ranged between 0 and $2^10 - 1$ and for practical reasons we need to convert it back to voltage as show in the following expression:
 
 \begin{equation}
-  \gls{EMG}(V) = \frac{(\frac{ADC}{2^10}-\frac{1}{2}*VCC)}{G}
+ ~\gls{EMG}(V) = \frac{(\frac{ADC}{2^10}-\frac{1}{2}*VCC)}{G}
   \label{eq:EMGconvertionEQ}
 \end{equation}
 
 \begin{equation}
-  \gls{EMG}(mV) = \gls{EMG}(V) * 1000
+ ~\gls{EMG}(mV) =~\gls{EMG}(V) * 1000
   \label{eq:EMGconvertionEQmV}
 \end{equation}
 
-Where ADC is the digital value from the sensor, VCC is the 3.3V provided by the arduino, G is the sensor gain which is 1009 and EMG(V) and EMG(mV) is the signal in Volt and millivolt respectively.
+Where ADC is the digital value from the sensor,~\gls{VCC} is the 3.3V provided by the arduino, G is the sensor gain which is 1009 and~\gls{EMG}(V) and~\gls{EMG}(mV) is the signal in Volt and milliVolt respectively.
 
-\subsection{Data Acquisition}
+\section{Data Acquisition}
 \label{sec:data_acquisition}
 
-A fundamental step in this project is the acquisition of reliable and representative data, as the performance of subsequent analysis methods directly depend on the data quality. The \gls{EMG} sensors will be attached to the 
-Gastrocnemius Lateralis (see ~\ref{fig:emgPosition}) to capture the muscle activation patterns in basketball movements.
+A fundamental step in this project is the acquisition of reliable and representative data, as the performance of subsequent analysis methods directly depend on the data quality. The~\gls{EMG} sensors will be attached to the 
+Gastrocnemius Lateralis (see~\ref{fig:emgPosition}) to capture the muscle activation patterns in basketball movements.
 
 This process will be carried out under a controlled environment ensuring that the movements being made are correctly categorized. This labeling of activities is essential for the machine learning algorithm.
 For a richer dataset the players will be asked to do the movements with different directions, intensities, speed and other variations that can be applied depending on the motion.
@@ -147,21 +166,542 @@ information as possible, thereby improving the robustness of later processing an
 %Falta imagem do dispositivo colocado
 
 
-\subsection{Data Processing}
-\label{sec:data_processing}
+\subsection{Calibration}
+\label{ssec:calibration}
 
-First the arduino converts the digital value of the \gls{EMG} to mV and afterwards it calculates six different features before sending them to the app: 
+To ensure accurate and reliable measurements, the magnetometer and the gyroscope undergo a calibration process. Since the magnetometer's values depend heavily on the surrounding environment, a calibration routine must be executed 
+before using the device. During this process, the program records the magnetometer's minimum and maximum values while the device is moved following a continuous motion resembling an infinity 
+symbol ($\infty$) and rotated around its axis until the user decides it's enough.
+
+The offset for each axis is then determined by the following equation:
+
+\begin{equation}
+  offset = minValue + (maxValue - minValue) / 2
+  \label{eq:offsetEQ}
+\end{equation}
+
+And the scale is calculated through the next equation:
+
+\begin{equation}
+  scale = (maxValue - minValue) / 2
+  \label{eq:scaleEQ}
+\end{equation}
+
+In these expressions the minValue and the maxValue correspond to the lowest and highest recorded values for each axis. The corrected measurements for each axis can then be expressed as:
+
+\begin{equation}
+  value = (rawValue - offset) / scale
+  \label{eq:magnetometerValueEQ}
+\end{equation}
+
+The gyroscope also requires calibration to eliminate zero-rate bias (drift) that occurs even when the sensor is stationary. This process consists on leaving the device completely still for 5 seconds while the raw angular velocity 
+is measured and stored. At the end, the average of these readings for each axis is the offset used in the main program:
+
+\begin{equation}
+  value = rawValue - offset
+  \label{eq:gyroscopeValueEQ}
+\end{equation}
+
+After connecting both devices, in the Data Menu (\autoref{sssec:data_menu}), there is a button that takes us to the Calibration Screen (\autoref{sssec:calib_menu}) where the user can proceed with that process. This should 
+always be done before collecting data in a new location or time. In case of a disconnection, when the device reconnects, the app automatically loads the last saves calibration values.
+When the arduino receives the calibration command (either gyroscope or magnetometer), it starts the respective operation until, in the magnetometer's case, the user ends it or, in the gyroscope case, it finishes automatically. Afterwards 
+the values are set as offsets and they're sent to the app where they are saved for later upload.
+
+
+\subsection{Sensors' Data Readings And Feature Calculations}
+\label{ssec:arduino_sensors_data_read}
+
+To achieve consistent gait analysis and movement recognition, the system requires a high frequency of~\gls{EMG} and~\gls{IMU} data collection. However~\gls{BLE} has strict restrictions on the packet output frequency specially since we're 
+dealing with two devices at high frequencies (they may collide with each other).
+
+\subsubsection{Sampling and Windowing}
+\label{sssec:sampling_windowing}
+
+Raw~\gls{EMG} signals contain significant noise and offset so, before feature extraction, a High-Pass Filter is applied with a cut-off frequency of approximately 20 Hz ($\alpha$ =0.888). The~\gls{IMU} data is fed to the~\gls{ML} trainings raw.
+The microcontrollers operate in a non-blocking loop architecture designed to handle both the~\gls{EMG} and~\gls{IMU} acquisitions and different rates:
 
 \begin{itemize}
-  \item Root Mean Square - \gls{RMS}
-  \item Mean Absolute Value - \gls{MAV}
-  \item Waveform Length - \gls{WL}
-  \item Zero Crossing - \gls{ZC}
-  \item Slope Sign Changes - \gls{SSC}
-  \item Variance - \gls{VAR}
+  \item High-Frequency~\gls{EMG} Readings (1000 Hz) - To obtain relevant features from the sensor it is read every 1 ms.
+  \item Kinematic (\gls{IMU}) \& Transmission (50 Hz) - Every 20 ms the~\gls{IMU} data is measured right before the ble communication since no calculations are done to that data.
 \end{itemize}
 
+The coordination of both timings is managed through a windowing approach. A sliding window of 20~\gls{EMG} samples is filled and once full (after 20 ms), the system triggers an event:
 
-Following the feature calculations, the arduinos send the data to the android device that forwards it to the database where it gets stored and to the server that predicts which movement 
-the user is doing. With the stored data, two \gls{ML} models are trained and then used for basketball movements recognition.
+\begin{enumerate}
+  \item The~\gls{IMU} sensors are read.
+  \item The time-domain features are calculated from the last 200~\gls{EMG} samples (see \autoref{sssec:emg_features_calculation})
+  \item All the data is bundled in a packet and waits to be sent (see \autoref{ssec:arduino_payload})
+\end{enumerate}
+
+
+\subsubsection{\gls{EMG} Features Calculation}
+\label{sssec:emg_features_calculation}
+
+As mentioned before,~\gls{EMG} signals are non-stationary and contain significant noise making them unsuitable for direct raw transmission via~\gls{BLE} due to bandwidth constraints. Furthermore, many studies indicate that raw~\gls{EMG} 
+underperforms on a~\gls{ML} classifier environment when compared against~\gls{EMG} features.
+The microcontroller extracts time-domain features since they are computationally more efficient than the frequency-domain-features that have the heavy processing load of the Fast Fourier Transforms (FFT).
+Each calculation processes a window of 200 samples (200 ms) resulting in six measurements:
+
+\begin{enumerate}
+  \item~\gls{RMS} \autoref{sssec:root_mean_square}
+  \item~\gls{MAV} \autoref{sssec:mean_absolute_value}
+  \item~\gls{VAR} \autoref{sssec:variance}
+  \item~\gls{ZC} \autoref{sssec:zero_crossing}
+  \item~\gls{SSC} \autoref{sssec:slope_sign_changes}
+  \item~\gls{WL} \autoref{sssec:waveform_length}
+\end{enumerate}
+
+%Talvez um examplo de um sinal emg e o significado de cada feature
+
+\section{Bluetooth Low Energy Communication}
+\label{sec:arduino_ble_com}
+
+For the Bluetooth connection we first have to assign a name to the device and a unique address for its service and characteristics. In this project three characteristic are used.
+Then the service is advertised to nearby devices and, when there's a connection, the last saved calibration values are uploaded, the sensors' data collection is started and the characteristic is updated.%falta número da secção
+
+\subsection{GATT Service}
+\label{ssec:arduino_gatt}
+
+The system defines a unique service identified by a 128-bit UUID. Within this service, three specific Characteristics are utilized to handle data streaming and bi-directional control command flow.
+
+\begin{table}[ht]
+  \centering
+  \caption{Bluetooth Characteristic Configuration}
+  \label{tab:gatt_config}
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}{|m{3.2cm}||m{2.8cm}|m{2.2cm}|m{5cm}|}
+    \hline
+    \multicolumn{4}{|c|}{\textbf{Characteristic Configuration}} \\
+    \hline
+    Characteristic Names&Properties&UUID Prefix&Function\\
+    \hline
+    Data Stream& READ \& \newline NOTIFY&1b4867e2&The android app listens to this characteristic and is notified whenever the devices upload data\\
+    Calibration \newline Command& WRITE&1b4867e3&When the user starts calibrating the android app sends commands via this characteristic\\
+    Calibration Data& READ \& \newline NOTIFY&1b4867e4&Here the devices upload the progress of the calibrations and the final results\\
+    \hline
+  \end{tabular}
+\end{table}
+
+\subsection{Payload Optimization}
+\label{ssec:arduino_payload}
+
+ A standard 32-bit floating-point representation would require 60 bytes per sample, which is inefficient for BLE bandwidth so in order to reach the objective of 50 Hz transmission rate for the nine IMU axis and six EMG features the 
+ payload has to be highly optimized. With this in mind, all the float sensor values were converted to 16 bit signed integers reducing the packets significantly while maintaining enough precision for analysis.
+
+ Each sensor frame consists of:
+
+\begin{enumerate}
+  \item Accelerometer Data (6 bytes): X, Y, Z ($\times100$ scaling)
+  \item Gyroscope Data (6 bytes): X, Y, Z ($\times100$ scaling)
+  \item Magnetometer Data (6 bytes): X, Y, Z ($\times100$ scaling)
+  \item~\gls{EMG} Features (12 bytes):~\gls{RMS},~\gls{WL},~\gls{ZC},~\gls{MAV},~\gls{SSC},~\gls{VAR} (Mixed scaling: $\times10000, \times10000  or \times10$)
+\end{enumerate}
+
+\begin{equation}
+  Total Size = 18 (\gls{IMU}) + 12 (\gls{EMG}) = 30 Bytes
+  \label{eq:packetSize}
+\end{equation}
+
+Although the packet size has been reduced, transmitting an individual packet every 20 ms from two separate device still introduces a~\gls{BLE} protocol overload. To get around this problem, the packets are bundled in groups of 5 ($30 bytes\times5 packets=150 bytes$).
+This strategy effectively utilizes the large MTU (Maximum Transmission Unit) negotiated with the Android device, reducing the communication frequency to exactly once every 100 ms (for each device) reducing cpu usage and radio congestion. 
+To make the system even more robust, a FIFO (First In First Out) buffer with a capacity of 150 packets was implemented. Whenever the communication with the Android device fails, that data is then saved in the buffer and the device 
+tries to send it again later.
+One other challenge introduced by the~\gls{BLE} transmission and buffering implemented is the blocking nature of the communication operations. Pushing a 150 Byte bundle to the Bluetooth stack will momentarily block the main processing loop. 
+While the microprocessor waits for the radio to finish, it will miss some of the 1 ms window defined for the~\gls{EMG} sampling leading to gaps in the timeline. To circumvent this, the system tracks the elapsed time strictly via a 
+microsecond hardware timer. Immediately before constructing and transmitting the next~\gls{BLE} bundle, the firmware compares the current time against the scheduled~\gls{EMG} sampling interval. If the previous transmission caused a delay, 
+the system enters a rapid catch-up loop, executing the analog read and filtering functions multiple times sequentially until the "time debt" is cleared ensuring that while the transmission may introduce some jitter in the packet arrival time 
+at the Android device, the sampling period remains consistent within the microcontroller's memory, preserving the temporal integrity required for accurate frequency-domain features.
+
+
+\section{Android Application}
+\label{sec:android_app}
+
+A dedicated Android application was developed in Kotlin, to serve as a bridge between the
+prototypes and the user/database. This programming language is used to interoperate
+fully with Java developed by JetBrains and since 2019 it has been the preferred language
+by Google for Android app development. The application handles the BLE connection
+with the devices and provides a user interface for researchers, athletes and coaches to
+visualize the collected data and the model's predictions in real time.
+The following section provides a detailed description of the software architecture of
+the application. Each file is explained according to its function within the system, with
+emphasis on how data flows from the BLE layer to the machine learning classifier and
+finally to the user interface(~\autoref{fig:sequenceDiagram}). This breakdown clarifies the responsibilities of
+each component, highlights the interaction between modules, and demonstrates how the
+application was structured to ensure modularity, maintainability, and extensibility.
+This application follows a modular architecture separating responsibilities between
+the user interface, data handling, and Bluetooth communication. At its core, the pro-
+gram follow the MVVM (Model-View-ViewModel) design pattern, improving testability,
+maintainability and division of tasks (~\autoref{fig:appOverview}).
+The MainActivity.kt is the entry point of the application, initializing the navigation
+host and providing the top-level container for the user interface. From this activity, the
+navigation system manages the transitions between the windows (implemented as Jetpack
+Compose composables), each of which corresponds to a specific functionality of the
+program. The Android application serves as bridge between the devices, the user and the
+database.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1\linewidth]{sequenceDiagram.jpg}
+  \caption{Sequence Diagram of the Android App}
+  \label{fig:sequenceDiagram}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1\linewidth]{appOverview.jpg}
+  \caption{Android Application Overview}
+  \label{fig:appOverview}
+\end{figure}
+
+\subsection{User Interface}
+\label{ssec:android_interface}
+
+The application consists in 4 different screens that define the layout and interactive elements that the user sees. Each one of these windows has a corresponding ViewModel that acts as a connection point between the user interface 
+and the application logic. These ViewModels handle any calls made by the screens and any changes to relevant operations such as the bluetooth connection.
+
+At first, when the app is launched, some necessary permissions are checked, specifically the Bluetooth (\texttt{BLUETOOTH\_SCAN and BLUETOOTH\_CONNECT},~\autoref{fig:turnOnBluetooth}), 
+the location (\texttt{ACCESS\_FINE\_LOCATION and ACCESS\_COARSE\_LOCATION}) and the internet access permissions. Even though the app doesn't use the user's location, its permission is required for~\gls{BLE} in Android 12 and higher. 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{bleTurnOn.jpg}
+  \caption{Request message to turn on Bluetooth}
+  \label{fig:turnOnBluetooth}
+\end{figure}
+
+\subsubsection{Start Menu}
+\label{sssec:start_menu}
+
+%falar de cada viewmodel
+This is the first menu shown to the user and it has the simple task of guiding the user through the application's functions. It has one button that takes us to the profile menu (\autoref{sssec:profile_menu}) and another that takes us to 
+data menu (\autoref{sssec:data_menu}).
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{startScreen.jpg}
+  \caption{Start Menu}
+  \label{fig:startScreen}
+\end{figure}
+
+\subsubsection{Profile Menu}
+\label{sssec:profile_menu}
+
+In this menu every saved user profile is listed and the user is able to create new profiles and delete existing ones. When creating a profile the app generates a unique id and the user is asked for a name and height (\autoref{fig:newUserWindow}). 
+The list of users is stored locally and is available in every session.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.30\linewidth]{newUserWindowOnly.jpg}
+  \caption{New User Window}
+  \label{fig:newUserWindow}
+\end{figure}
+
+
+    %\begin{figure}[ht]
+%    \centering
+%    \begin{subfigure}[b]{0.5\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{usersScreen.jpg}
+%        \caption{Profiles' Menu}
+%        \label{fig:usersScreen}
+%    \end{subfigure}
+%    \hfill 
+%    \begin{subfigure}[b]{0.35\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{newUserWindowOnly.jpg}
+%        \caption{New User Window}
+%        \label{fig:newUserWindow}
+%    \end{subfigure}
+%    
+%    \caption{Profile's Menu and User Creation}
+%    \label{fig:dataScreens}
+%%\end{figure}
+
+
+\subsubsection{Data Menu}
+\label{sssec:data_menu}
+
+When this menu is opened, the app tries to connect to both devices and when able, starts exchanging data. The data is then shown to the user. On the left the user can select an active user profile and a label for the current movement. On the right, 
+from top to bottom, the~\gls{ML} models' predictions are shown (\autoref{sec:ml_code}). Beneath the models' projections, there are 3 switches - one to start/stop the~\gls{ML} server connection and two others to start/stop sending the collected data
+or the~\gls{ML} predictions to the InfluxDB database. At last there is a button that takes the application to the Calibration Menu (\autoref{sssec:calib_menu}).
+
+%falar do VariabResult
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{dataScreenWithCon.jpg}
+  \caption{Data Menu when both prototypes are connected}
+  \label{fig:dataScreenWithCon}
+\end{figure}
+
+%\begin{figure}[ht]
+%    \centering
+%    \begin{subfigure}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{dataScreenNoCon.jpg}
+%        \caption{Without devices' connections}
+%        \label{fig:dataScreenNoC}
+%    \end{subfigure}
+%    \hfill 
+%    \begin{subfigure}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{dataScreenWithCon.jpg}
+%        \caption{When both devices are connected}
+%        \label{fig:dataScreenWithCon}
+%    \end{subfigure}
+    
+%    \caption{Data Menu}
+%    \label{fig:dataScreen}
+%\end{figure}
+
+
+\subsubsection{Calibration Menu}
+\label{sssec:calib_menu}
+
+This window provides a dedicated interface for managing the sensor calibration routines which are critical for ensuring the accuracy of the~\gls{IMU}. As mentioned in the Arduino section (\autoref{ssec:calibration}), due to the inherent hardware 
+drift and environmental magnetic interference, the gyroscope and magnetometer have to be recalibrated periodically for better and more accurate results.
+In this page the user can trigger the calibration methods that send specific commands to the devices with the instructions needed. For the gyroscope, the firmware executes a static calibration by averaging 1000 samples to compute and nullify 
+the offset. For the magnetometer, the system performs a dynamic hard-iron calibration, recording the maximum and minimum magnetic field intensities during a multi-axis rotation to calculate precise spatial offsets and scaling factors.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{calibScreen.jpg}
+  \caption{Calibration Menu}
+  \label{fig:calibMenu}
+\end{figure}
+
+The gyroscope calibration for both devices is done at the same time while the magnetometers' are executed one at a time. For each operation the app has a respective button and while ongoing calibration, the app displays some real-time progress 
+to the user that are sent via a dedicated~\gls{BLE} characteristic.
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{calibScreenIMUsmall.jpg}
+  \caption{Left Gyroscope Calibration in Progress}
+  \label{fig:calibMenuIMU}
+\end{figure}
+
+
+%\begin{figure}[ht]
+%    \centering
+%    \begin{subfigure}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{calibScreenIMU.jpg}
+%        \caption{Gyroscope Calibration in Progress}
+%        \label{fig:calibMenuIMU}
+%    \end{subfigure}
+%    \hfill 
+%    \begin{subfigure}[b]{0.45\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{calibScreenFinished.jpg}
+%        \caption{Calibration Finished}
+%        \label{fig:calibMenuFinished}
+%    \end{subfigure}
+%    
+%    \caption{Calibration Menu}
+%    \label{fig:calibMenu2}
+%\end{figure}
+
+When all the calibration operations are finished, the save button turns green and the values are saved to be uploaded when the devices reconnect.
+
+
+\subsection{Arduino~\gls{BLE} Communication}
+\label{ssec:android_com_arduino}
+
+In Android~\gls{BLE}  data is handle asynchronously which means that the app receives callbacks which have to be handled. For the~\gls{BLE} communication Android provides a package with a layered architecture:
+
+\begin{itemize}
+  \item BluetoothAdapter - Where every bluetooth connection starts. It allows scanning for nearby available devices and initiating connections.
+  \item BluetoothDevice - Represents another~\gls{BLE}  device with one or more services.
+  \item Bluetooth\gls{GATT} - It's the protocol for~\gls{BLE}  services and characteristics. It manages the connection lifecycle and provides callbacks for asynchronous communication.
+  \item Bluetooth\gls{GATT} Service - Each service has a group of associated characteristics and a specific function (e.g., location service)
+  \item Bluetooth\gls{GATT} Characteristic - It's the smallest unit of data in~\gls{BLE} BLE and it can be read, written or subscribed to (to ge notified whenever it changes) depending on its attributes.
+\end{itemize}
+
+Since the are two devices, each with its own uuid (see \autoref{sec:arduino_ble_com}), each device has its own manager that handle its callbacks (VariabBLEReceiveManager.kt) and these two managers are handled by the DualBLEReceiveManager 
+that coordinates them. 
+
+
+\subsubsection{Receive Managers}
+\label{sssec:manager}
+
+Each receive manager is responsible for managing the lifecycle of the corresponding~\gls{BLE} connection and handling every callback. Depending on the uuid of the connected device, the manager knows with which device it is working with 
+(if left or right). 
+
+First, using the BluetoothAdapter (see \autoref{ssec:android_com_arduino}), the manager searches for the respective device using its name and uuid and once discovered a~\gls{GATT} connection is tried. After establishing the connection, 
+the manager finds the device's services. If a device disconnects the application cleans up its resources and starts trying to reconnect.
+
+In the first approach the system was designed with separate~\gls{GATT} characteristics for different sensor axes and~\gls{EMG} data. However, relying on multiple simultaneous asynchronous notifications caused the Android~\gls{BLE} stack to 
+frequently drop packets and ignore callbacks. To resolve this without resorting to an inefficient sequential polling queue, the system was optimized by bundling all sensor data into a single 150 byte payload transmitted via a single 
+characteristic.
+
+The managers subscribe to the data characteristic of the respective device and rely on the onCharacteristicChanged callback. This allows the microcontrollers to asynchronously push data bundles at 10 Hz. Upon receiving the payload, the 
+managers decode the byte arrays into their respective float and integer values. If the data upload switch is active, this payload is appended with the active userId, the selected movement label, and a timestamp, and is immediately sent 
+to the database. And if the predictions switch is active, the payload is switched for the four~\gls{ML} predictions and the data is sent to another database for further inquiring.
+
+\subsection{Communication with InfluxDB}
+\label{ssec:android_com_data_base}
+
+As mentioned before the application uses InfluxDB as its database. The interface between the application and the database is implemented in two files, one containing the function that sends data and the other one has the sensitive 
+client/database info (token, database url and organization and bucket name). This is a coroutine-based execution meaning that it will never stop or delay the main user interface thread and that it can be run multiple times in parallel 
+without affecting the application performance.
+
+Since InfluxDB organizes data using measurements, tags, fields, and timestamps, the application must first parse the incoming~\gls{BLE} payloads into the InfluxDB Line Protocol. This is a text-based format that optimizes ingestion 
+speed by representing the data points in a single string structure:
+
+\begin{itemize}
+    \item Measurement - movement\_data
+    \item Tags - sensor(left or right) and userId
+    \item Fields (data values) - accelerometer, gyroscope, magnetometer and~\gls{EMG} data
+    \item Timestamp - Instant.now() (registers that precise moment)
+\end{itemize}
+
+Once formatted, the data is transmitted to the cloud via an asynchronous HTTP POST request to the InfluxDB API, ensuring any network timeouts or errors are caught and handled without freezing the application's user interface.
+
+\subsection{User Database}
+\label{ssec:android_users}
+
+To track the origin of the physiological signals, the Android application has a robust local profiling system. Before data collection begins, the user should identify the active subject (otherwise the app send a null for the id to the database). 
+This is managed locally on the Android device using the Android Room Persistence Library, which provides an abstraction layer over an SQLite database to allow fluent database access while harnessing the full power of native~\gls{SQL}.
+
+\subsubsection{User Data Model and Data Access Object}
+\label{sssec:android_users_model}
+
+The database system is defined by a data entity (user.kt) that represents a subject. Each subject is assigned an auto-generated primary key (id), a name, and height in centimetres. 
+Interactions with the database are strictly mediated through a Data Access Object (DAO). The UserDao defines the~\gls{SQL} operations required to insert, delete, and retrieve subject profiles. To maintain a fluid user interface and prevent 
+blocking the application's main thread during disk I/O operations, all database queries are executed asynchronously using Kotlin Coroutines (suspend functions).
+
+\subsubsection{Repository Pattern and Reactive State}
+\label{sssec:android_users_repository}
+
+To separate the data persistence logic from the User Interface, the architecture employs the Repository Pattern (UserRepository.kt). The repository acts as the single source for user data across the entire application.
+It abstracts the DAO layer, providing clean functions for the application's ViewModels to fetch lists of available users or create new ones while maintaining recollection of the active user.
+
+The active user's ID is exposed to the rest of the application as a reactive StateFlow and is sent along side the sensors' data to the database. This modern reactive programming paradigm ensures that whenever the active user changes in the 
+User Menu, any observing component in the application (such as the~\gls{BLE} transmission service) is instantly and automatically updated with the new context.
+
+\subsection{Machine Learning Predictions}
+\label{ssec:ml_pred}
+
+The system was implemented with a double~\gls{ML} architecture. This approach utilizes both local computing (executed directly on the Android device) and cloud computing (executed on a remote server). By running two models simultaneously on the exact same data 
+streams, the system is able to guarantee a low latency feedback for the user via the mobile application, while continuously logging a potentially more robust cloud prediction for comparative analysis.
+
+
+\subsubsection{Data Processing}
+\label{sssec:ml_data}
+
+To accurately identify every movement the user makes, the models require temporal context, making evaluating single 20 ms data points insufficient. To resolve this, a time-series sliding window algorithm was implemented. The Android application 
+synchronizes the~\gls{BLE} packets from the left and right insoles, combining their respective 15 features into a singular 30-feature vector per timestamp. These vectors are accumulated in a First-In-First-Out (FIFO) buffer to create a 
+continuous observation window of 300 ms that is then fed into the~\gls{ML} models.
+
+
+The 300 ms window size was specifically selected to capture the concentrated kinematic signature of transient, explosive basketball movements, effectively preventing the "label dilution" that could occur in larger windows. Furthermore, a step 
+size of 100 ms was applied, resulting in a 66\% window overlap. This configuration compresses the classification rate to a highly efficient 10 Hz, maintaining the illusion of instantaneous real-time feedback while preserving smartphone battery 
+life and avoiding network congestion.
+
+Once the 15-frame buffer is filled, the local Edge inference is managed by the MovementClassifier class within the Android application. Since the TensorFlow Lite model resides directly in the application's assets directory, it 
+requires no internet connection to function. The model processes the flattened feature array and yields a probability distribution across the target classification labels. An argmax function is applied to the output tensor to extract the 
+highest confidence prediction. This prediction is immediately pushed to a Kotlin StateFlow, triggering a quick update to the Jetpack Compose User Interface, ensuring the athlete receives uninterrupted feedback even in environments with 
+degraded network connectivity.
+
+
+
+\subsubsection{Communication with the Cloud server}
+\label{sssec:com_ml_server}
+
+To facilitate the dual-tier prediction, the Android application securely transmits the buffered sensor data to the Flask server using the Retrofit network library. When the 15-frame buffer is filled, the data is serialized into a JSON payload and transmitted via 
+an asynchronous HTTP POST request to the /predict endpoint.
+
+To guarantee that network latency does not block the main thread or interrupt the continuous~\gls{BLE} data ingestion, the API call is offloaded to a background thread utilizing Kotlin Coroutines (Dispatchers.IO). Upon receiving a successful HTTP 200 OK 
+response from the server, the application deserializes the cloud-computed prediction.
+
+Finally, to enable rigorous post-session analysis, the application utilizes the InfluxDB-Client-Kotlin library to asynchronously log both the Tiny\gls{ML} local prediction and the~\gls{RF} cloud prediction to an InfluxDB database. These predictions are uploaded
+tagged with a timestamp and User ID. %As this measurement shares the exact time-series axis as the raw \texttt{imu\_data} measurement, the system allows for the seamless, synchronized overlay 
+%of machine learning classifications directly on top of the raw biomechanical waveforms in data visualization platforms like Grafana.
+
+\subsubsection{Temporal Smoothing and Output Stabilization}
+\label{sssec:temporal_smoothing}
+
+During the first live test, a susceptibility to "prediction flickering" was noticed. Since the classifiers evaluate discrete 300 ms data windows, anomalies such as an irregular movement or sensor noise could cause 
+isolated 100 ms frames to be misclassified. To mitigate this instability, a post-processing Temporal Smoothing algorithm was developed within the Android application. This algorithm functions as a 
+digital low-pass filter utilizing a majority voting logic. A continuous sliding window, implemented via a Kotlin ArrayDeque, was configured to store the last five consecutive predictions, effectively granting 
+the system 500 ms of temporal short-term memory. 
+To compare the original prediction values with the filtered ones, the system sends both values from both models to a database for future analysis.
+
+
+\subsection{Cramping Prevention and Fatigue Monitoring} 
+\label{ssec:cramping_prevention}
+
+Besides movement classification, the Android app also has a real-time fatigue monitoring system to prevent cramping. This is achieved through an algorithm that fuses the predictions from the Tiny\gls{ML} model with the~\gls{RMS}~\gls{EMG} feature.
+This script is located within the processLocalPrediction function of the VariabViewModel and it analyses the 300 ms observation window raising a flag if the~\gls{RMS} value breaches a pre-defined threshold for either leg while idling or walking 
+(not enough data was collected to monitor all movements). Since the~\gls{EMG} signal varies significantly based on an athlete's muscle density, skin impedance, electrode placement, and baseline fitness, this threshold isn't universal. A calibration 
+should be conducted for every athlete. 
+Since a simple flag could keep firing every processed window, a counter tied to the flag is utilized to send a message to the application when a threshold is hit. This tracker resets whenever the~\gls{RMS} signal drops bellow the defined threshold 
+or the movement changes (from Idle or Walking). When 10 consecutive flags are raised (corresponding to one second), the application sends a notification to the screen notifying the user of the athletes' fatigue and that he should rest. This 
+also helps to prevent false positives and filters out sudden stops that might spike the~\gls{RMS} values.
+
+
+\section{Machine Learning Code}
+\label{sec:ml_code}
+
+The development, training, and exportation of the machine learning models were conducted using Python within a Google Colab environment. This section details the data preprocessing pipeline, the time-series windowing algorithm, and the specific architectures used 
+for both the Cloud and Local classification models.
+
+\subsection{Models' Training}
+\label{ssec:ml_training}
+
+To train models capable of recognizing dynamic biomechanical movements, the raw sensor data previously logged to InfluxDB was exported as CSV files and ingested into a pandas DataFrame. The initial dataset consisted of discrete kinematic and electromyography 
+measurements mapped to specific target labels (see~\autoref{ssec:baskebtall_movements}).
+
+The first phase of preprocessing involved synchronizing the independent left and right insole data streams. Timestamps were parsed and rounded to the nearest 20 ms. The dataset was then pivoted from a long format to a wide format, aligning the 15 features from the 
+left insole and the 15 features from the right insole into a singular 30 feature vector for every discrete timestamp.
+
+Since transient basketball movements cannot be accurately classified from a single 20 ms static frame, the synchronized data was subjected to a sliding window transformation. The algorithm grouped the continuous data into windows of 300 ms. To ensure the models were 
+trained on contiguous sequences without mixing different movement classes, the grouping was strictly partitioned by userId and movement label. 
+
+Using a step size of 100 ms, overlapping windows were generated. Each $15 \times 30$ matrix was then flattened into a 1-dimensional array of 450 features. This flattened array served as the input vector ($X$) for both models, with the corresponding movement acting 
+as the target label. To ensure a robust evaluation, the generated windows were divided using an 80/20 train-test split, employing stratification to maintain proportional class distributions across both sets.
+
+\subsection{Random Forest}
+\label{ssec:ml_rf}
+
+For the Cloud-Tier classification, a~\gls{RF} algorithm was implemented using the scikit-learn library.~\gls{RF} was selected due to its ensemble learning architecture, which constructs a multitude of decision trees during training and outputs the mode 
+of the classes for classification. This approach is highly resistant to overfitting and performs exceptionally well on high-dimensional tabular data, such as the 450-feature vectors generated by the sliding window.
+
+The model was instantiated with n\_estimators = 100 (utilizing 100 individual decision trees) and a max\_depth = 15 to prevent the trees from memorizing localized noise in the training data. The model was fitted on the 80\% training split and evaluated against 
+the 20\% testing split. Following successful validation, the trained model pipeline was serialized and exported as a .pkl file using the joblib library. This serialized file was subsequently deployed to the Python Flask backend on Render.com, allowing the server 
+to reconstruct the exact model state for real-time identification.
+
+\subsection{Tiny\gls{ML}}
+\label{ssec:ml_tml}
+
+To facilitate ultra-low latency inference directly on the Android edge device, a Tiny\gls{ML} approach was employed - developing a lightweight~\gls{NN} using the TensorFlow and Keras libraries.
+
+Given the strict computational constraints of mobile devices, the network architecture was aggressively optimized. The input layer was designed to dynamically accept the 450-feature flattened array. This was followed by two dense hidden layers consisting of 32 
+and 16 neurons, respectively, both utilizing the Rectified Linear Unit activation function to introduce non-linearity. The final output layer consisted of neurons corresponding to the total number of target classes, utilizing a softmax activation 
+function to output a normalized probability distribution.
+
+The model was compiled using the Adam optimizer and sparse categorical cross-entropy as the loss function, circumventing the need to manually one-hot encode the target labels. The network was trained over 40 epochs with a batch size of 32. Once validated against 
+the testing split, the Keras model was passed through the TFLiteConverter. Default optimizations were applied to quantize the model weights and reduce the overall memory footprint. The resulting binary file (tinyml\_model.tflite) was exported and embedded directly 
+into the Android application's asset directory, granting the mobile device autonomous classification capabilities without relying on external APIs.
+
+
+
+\subsection{Model Evaluation}
+\label{ssec:ml_evaluation}
+
+To rigorously validate the performance and relevance of the trained models, a comprehensive evaluation protocol was established. Going beyond standard accuracy scores, these chosen metrics were designed to provide insight into the models' 
+decision-making processes, sensor reliance, and generalized robustness across the different target classes.
+
+For the Cloud-Tier~\gls{RF} model, a feature importance analysis was configured to quantify the contribution of each sensor. Since the sliding window technique flattened the data into a high-dimensional 450-feature array, the 
+protocol dictated that Gini importance scores extracted from the decision trees be aggregated across the 15 time-frames back to their 30 base sensor components. This aggregation is designed to produce a definitive ranking of the sensors, 
+allowing for a biomechanical assessment of whether the~\gls{EMG} data provided a significant classification interest or if it is insignificant.
+
+Furthermore, to evaluate the multi-class discriminative power of the~\gls{RF} algorithm, the generation of Receiver Operating Characteristic curves was integrated into the testing pipeline. By binarizing the target labels in a 
+One-vs-Rest configuration, the trade-off between the True Positive Rate and False Positive Rate can be plotted for each discrete movement class (Idle, Walking, Running, Defensive Slide, Rebound).
+
+For the Edge-Tier TinyML model, the evaluation strategy required continuously logging the training history over the 50 epochs to monitor the network's mathematical convergence. Tracking these temporal learning curves (categorical cross-entropy 
+loss and classification accuracy) is critical for neural network architectures to ensure the lightweight model did not overfit the training data or memorize localized noise. 
+
+Finally, the pipeline was programmed to compute confusion matrices for both the Cloud-Tier and Edge-Tier models mapping the predicted classifications against the actual target labels on the isolated 20\% testing split.
 

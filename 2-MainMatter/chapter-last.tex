@@ -15,7 +15,7 @@
 \label{cha:conclusion}
 
 With the ongoing development of wearable technology, particularly smart insoles and socks, there has been a significant advancement in basketball motion recognition and 
-injury prevention. Even tho wearables have several restraints, this technology is the most appropriate for basketball motion recognition and injury prevention as its biggest step 
+injury prevention. Even though wearables have several restraints, this technology is the most appropriate for basketball motion recognition and injury prevention as its biggest step 
 back is the prohibition in official matches.
 
 The primary objective of this dissertation was to design, implement, and evaluate a  wearable system capable of high-frequency basketball movement classification and real-time fatigue monitoring. This research demonstrated 
@@ -31,8 +31,8 @@ polling and optimized \gls{BLE} transmission. To bridge the hardware to the clou
 processing, user interface management, and InfluxDB database synchronization. Furthermore, the backend infrastructure was custom-built, featuring a Python Flask server deployed for cloud inference, alongside a 
 complete machine learning training pipeline developed in Google Colab to preprocess the time-series data and export the finalized classification models.
 
-Through this architecture, the core hypothesis of validating a multi sensor fusion system was definitively proven. The machine learning training pipeline demonstrated that combining mechanical and physiological 
-data results in a better contextual awareness.
+Through this architecture, the core hypothesis of validating a multi sensor fusion system was definitively proven. The machine learning training pipeline demonstrated that
+the physiological data provides an important context for movement recognition. 
 Deploying these models into a live environment further validated the viability of decentralized sports analytics. By quantizing a custom TinyML neural network and embedding it directly into the Android application, 
 the system achieved a robust Edge Computing architecture capable of recognizing basic basketball movements. 
 
@@ -68,7 +68,8 @@ baselines that adapt to the athlete's specific physiological state in real-time 
 
 
 \section{Final Remarks}
-The transition from passive data logging to active, real-time physiological monitoring represents the next critical evolution in sports science technology. The prototype developed in this study serves as a 
+\label{sec:final_remarks}
+The transition from passive data logging to active real-time physiological monitoring represents the next critical evolution in sports science technology. The prototype developed in this study serves as a 
  proof-of-concept for this shift. While challenges regarding hardware ergonomics and individualized calibration remain, the underlying software architecture, specifically the dual-tier inference pipeline 
  establishes a robust foundation for future iterations.
 

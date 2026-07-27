@@ -3,571 +3,278 @@
 %% chapter4.tex
 %% NOVA thesis document file
 %%
-%% Chapter with Implementation
+%% Chapter with Validation and Testing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\typeout{NT FILE chapter4.tex}%
+\typeout{NT FILE chapter4.tex}
 
-\chapter{Implementation}
-\label{cha:implementation}
+\chapter{Validation and Testing}
+\label{cha:validationTesting}
 
-%This section is split into different sections explaining the project's developed software.
-\newpage
+In this chapter the validation and testing procedures conducted to evaluate the proposed wearable monitoring system and the~\gls{ML} models. This evaluation is divided into three sections addressing the full~\gls{IoT} system.
+Starting with the hardware, we examine the position of the prototypes, and how they are attached, and the anatomical placement of the~\gls{EMG} electrodes on the Gastrocnemius Lateralis. Secondly, an in-depth statistical analysis of the trained 
+\gls{ML} models is conducted. In this section, by leveraging classification metrics, confusion matrices, and feature importance distributions, both developed~\gls{ML} models' performances are compared against each other and evaluated. Here, 
+we also determine the efficacy of fusing~\gls{IMU} kinematics with~\gls{EMG} neuromuscular data for basketball movements classification. In the final section, the system's performance is reviewed by assessing both models' latency and the resilience 
+to asynchronous~\gls{BLE} transmissions.
 
-\section{Prototype Hardware}
-\label{sec:prototypeHardware}
 
-Two prototypes were developed composed by an Arduino 33 nano \gls{BLE} Rev 2, an \gls{EMG} sensor and a small power bank to provide power (see \ref{sec:prototype}).
-Standard power banks have a modern system to idle if not enough power is drawn. Since the Arduinos don't break that threshold, to keep the power banks active, a keep-alive circuit was utilized to periodically pulse 
-the current draw.
+\section{Data Collection}
+\label{sec:data_collection}
 
-\begin{figure}[h]
+The data sets used to train and test the models were collected from several volunteer athletes. They were asked to do each of the five movements - Idle, Walking, Running, Defensive Slide and Rebounding - 5-10 minutes
+each. The cramping prevention system was only tested on one player that pushed his muscles to near involuntary contractions.
+
+
+\subsection{Prototype Placement and Configuration}
+\label{ssec:prototype_placement}
+
+The prototypes were mounted directly in the athletes' footwear to approximate the ideal positioning (on the bottom of the feet as an insole or a sock). The devices were secured using the shoe laces and the powerbank was secured in the users 
+socks, utilizing the existing infrastructure. With this configuration, the~\gls{IMU} accurately captures the kinematics of the foot, such as accelerations and rotational velocities during the athletes' movements. Furthermore, this setup 
+minimizes the mechanical strain exerted by the power cables on the USB ports, while keeping the~\gls{EMG} leads in close proximity to the chosen muscle group.
+
+
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{physicalSystemOverview.jpg}
-  \caption{Physical System Overview}
-  \label{fig:physicalSystemOverview}
+  \includegraphics[width=0.5\linewidth]{deviceInPlace.jpg}
+  \caption{An athlete wearing the prototype}
+  \label{fig:protoInPlace}  
 \end{figure}
 
 
-\subsection{Arduino}
-\label{ssec:arduino}
+The muscle chosen to be measured was the Gastrocnemius Lateralis as it is one of the most important muscles for explosive jumping motion.
+The position for the~\gls{EMG} sensors was chosen as recommended by the~\gls{EU}'s SENIAM (Surface ElectroMyoGraphy for the Non-Invasive Assessment of Muscles) project (~\cite{emgPosition}) ensuring standardization and maximization of the 
+signal-to-noise ratio.
 
-As mentioned in the introduction of this chapter, the Arduinos used are two Arduino 33 nano \gls{BLE} Rev 2 which is a 3.3V board of only 45x18mm of area. It features a powerful processor, the nRF52840 from Nordic Semiconductors, a 32-bit 
-ARM® Cortex®-M4 CPU running at 64 MHz. In terms of sensors, the Arduino has a 9 axis \gls{IMU} meaning it includes an accelerometer, a gyroscope, and a magnetometer with 3-axis resolution each. As its name mentions it also has \gls{BLE} 
-communication which is vital for this project~\cite{arduinoDoc}.
-
-
-\section{Arduino Code}
-\label{sec:arduinoCode}
-
-The Arduino programming language is a modified C/C++ language that simplifies the board coding that is run on the Arduino's IDE.
-Initially there were two code files for the Arduinos, one for the sensors calibration (specifically the magnetometer) and the other one is run for reading and sending the data. The calibration 
-was eventually integrated in the main program and only a single program is needed.
-
-
-\subsection{Calibration}
-\label{ssec:calibration}
-
-To ensure accurate and reliable measurements, the magnetometer and the gyroscope undergo a calibration process. Since the magnetometer's values depend heavily on the surrounding environment, a calibration routine must be executed 
-before using the device. During this process, the program records the magnetometer's minimum and maximum values while the device is moved following a continuous motion resembling an infinity 
-symbol ($\infty$) and rotated around its axis until the user decides it's enough.
-
-The offset for each axis is then determined by the following equation:
-
-\begin{equation}
-  offset = minValue + (maxValue - minValue) / 2
-  \label{eq:offsetEQ}
-\end{equation}
-
-And the scale is calculated through the next equation:
-
-\begin{equation}
-  scale = (maxValue - minValue) / 2
-  \label{eq:scaleEQ}
-\end{equation}
-
-In these expressions the minValue and the maxValue correspond to the lowest and highest recorded values for each axis. The corrected measurements for each axis can then be expressed as:
-
-\begin{equation}
-  value = (rawValue - offset) / scale
-  \label{eq:magnetometerValueEQ}
-\end{equation}
-
-The gyroscope also requires calibration to eliminate zero-rate bias (drift) that occurs even when the sensor is stationary. This process consists on leaving the device completely still for 5 seconds while the raw angular velocity 
-is measured and stored. At the end, the average of these readings for each axis is the offset used in the main program:
-
-\begin{equation}
-  value = rawValue - offset
-  \label{eq:gyroscopeValueEQ}
-\end{equation}
-
-After connecting both devices, in the Data Menu (\autoref{sssec:data_menu}), there is a button that takes us to the Calibration Screen (\autoref{sssec:calib_menu}) where the user can proceed with that process. This should 
-always be done before collecting data in a new location or time. In case of a disconnection, when the device reconnects, the app automatically loads the last saves calibration values.
-When the arduino receives the calibration command (either gyroscope or magnetometer), it starts the respective operation until, in the magnetometer's case, the user ends it or, in the gyroscope case, it finishes automatically. Afterwards 
-the values are set as offsets and they're sent to the app where they are saved for later upload.
-
-
-\subsection{Sensors' Data Readings And Feature Calculations}
-\label{ssec:arduino_sensors_data_read}
-
-To achieve consistent gait analysis and movement recognition, the system requires a high frequency of \gls{EMG} and \gls{IMU} data collection. However \gls{BLE} has strict restrictions on the packet output frequency specially since we're 
-dealing with two devices at high frequencies (they may collide with each other).
-
-\subsubsection{Sampling and Windowing}
-\label{sssec:sampling_windowing}
-
-Raw \gls{EMG} signals contain significant noise and offset so, before feature extraction, a High-Pass Filter is applied with a cut-off frequency of approximately 20 Hz ($\alpha$ =0.888). The \gls{IMU} data is fed to the \gls{ML} trainings raw.
-The microcontrollers operate in a non-blocking loop architecture designed to handle both the \gls{EMG} and \gls{IMU} acquisitions and different rates:
-
-\begin{itemize}
-  \item High-Frequency \gls{EMG} Readings (1000 Hz) - To obtain relevant features from the sensor it is read every 1 ms.
-  \item Kinematic (\gls{IMU}) \& Transmission (50 Hz) - Every 20 ms the \gls{IMU} data is measured right before the ble communication since no calculations are done to that data.
-\end{itemize}
-
-The coordination of both timings is managed through a windowing approach. A sliding window of 20 \gls{EMG} samples is filled and once full (after 20 ms), the system triggers an event:
-
-\begin{enumerate}
-  \item The \gls{IMU} sensors are read.
-  \item The time-domain features are calculated from the last 200 \gls{EMG} samples (see \autoref{sssec:emg_features_calculation})
-  \item All the data is bundled in a packet and waits to be sent (see \autoref{sssec:arduino_payload})
-\end{enumerate}
-
-
-\subsubsection{\gls{EMG} Features Calculation}
-\label{sssec:emg_features_calculation}
-
-As mentioned before, \gls{EMG} signals are non-stationary and contain significant noise making them unsuitable for direct raw transmission via \gls{BLE} due to bandwidth constraints. Furthermore, many studies indicate that raw \gls{EMG} 
-underperforms on a \gls{ML} classifier environment when compared against \gls{EMG} features.
-The microcontroller extracts time-domain features since they are computationally more efficient than the frequency-domain-features that have the heavy processing load of the Fast Fourier Transforms (FFT).
-Each calculation processes a window of 200 samples (200 ms) resulting in six measurements:
-
-\begin{enumerate}
-  \item \gls{RMS} \autoref{sssec:root_mean_square}
-  \item \gls{MAV} \autoref{sssec:mean_absolute_value}
-  \item \gls{VAR} \autoref{sssec:variance}
-  \item \gls{ZC} \autoref{sssec:zero_crossing}
-  \item \gls{SSC} \autoref{sssec:slope_sign_changes}
-  \item \gls{WL} \autoref{sssec:waveform_length}
-\end{enumerate}
-
-%Talvez um examplo de um sinal emg e o significado de cada feature
-
-\subsection{Bluetooth Low Energy}
-\label{ssec:arduino_ble}
-
-For the Bluetooth connection we first have to assign a name to the device and a unique address for its service and characteristics. In this project three characteristic are used.
-Then the service is advertised to nearby devices and, when there's a connection, the last saved calibration values are uploaded, the sensors' data collection is started and the characteristic is updated.%falta número da secção
-
-\subsubsection{GATT Service}
-\label{sssec:arduino_gatt}
-
-The system defines a unique service identified by a 128-bit UUID. Within this service, three specific Characteristics are utilized to handle data streaming and bi-directional control command flow.
-
-\begin{table}[ht]
+\begin{figure}[htbp]
   \centering
-  \caption{Bluetooth Characteristic Configuration}
-  \label{tab:gatt_config}
-  \renewcommand{\arraystretch}{1.5}
-  \begin{tabular}{|m{3.2cm}||m{2.8cm}|m{2.2cm}|m{5cm}|}
-    \hline
-    \multicolumn{4}{|c|}{\textbf{Characteristic Configuration}} \\
-    \hline
-    Characteristic Names&Properties&UUID Prefix&Function\\
-    \hline
-    Data Stream& READ \& \newline NOTIFY&1b4867e2&The android app listens to this characteristic and is notified whenever the devices upload data\\
-    Calibration \newline Command& WRITE&1b4867e3&When the user starts calibrating the android app sends commands via this characteristic\\
-    Calibration Data& READ \& \newline NOTIFY&1b4867e4&Here the devices upload the progress of the calibrations and the final results\\
-    \hline
-  \end{tabular}
-\end{table}
-
-\subsubsection{Payload Optimization}
-\label{sssec:arduino_payload}
-
- A standard 32-bit floating-point representation would require 60 bytes per sample, which is inefficient for BLE bandwidth so in order to reach the objective of 50 Hz transmission rate for the nine IMU axis and six EMG features the 
- payload has to be highly optimized. With this in mind, all the float sensor values were converted to 16 bit signed integers reducing the packets significantly while maintaining enough precision for analysis.
-
- Each sensor frame consists of:
-
-\begin{enumerate}
-  \item Accelerometer Data (6 bytes): X, Y, Z ($\times100$ scaling)
-  \item Gyroscope Data (6 bytes): X, Y, Z ($\times100$ scaling)
-  \item Magnetometer Data (6 bytes): X, Y, Z ($\times100$ scaling)
-  \item \gls{EMG} Features (12 bytes): gls{RMS}, gls{WL}, gls{ZC}, gls{MAV}, gls{SSC}, gls{VAR} (Mixed scaling: $\times10000, \times10000  or \times10$)
-\end{enumerate}
-
-\begin{equation}
-  Total Size = 18 (\gls{IMU}) + 12 (\gls{EMG}) = 30 Bytes
-  \label{eq:packetSize}
-\end{equation}
-
-Although the packet size has been reduced, transmitting an individual packet every 20 ms from two separate device still introduces a \gls{BLE} protocol overload. To get around this problem, the packets are bundled in groups of 5 ($30 bytes\times5 packets=150 bytes$).
-This strategy effectively utilizes the large MTU (Maximum Transmission Unit) negotiated with the Android device, reducing the communication frequency to exactly once every 100 ms (for each device) reducing cpu usage and radio congestion. 
-To make the system even more robust, a FIFO (First In First Out) buffer with a capacity of 150 packets was implemented. Whenever the communication with the Android device fails, that data is then saved in the buffer and the device 
-tries to send it again later.
-One other challenge introduced by the \gls{BLE} transmission and buffering implemented is the blocking nature of the communication operations. Pushing a 150 Byte bundle to the Bluetooth stack will momentarily block the main processing loop. 
-While the microprocessor waits for the radio to finish, it will miss some of the 1 ms window defined for the \gls{EMG} sampling leading to gaps in the timeline. To circumvent this, the system tracks the elapsed time strictly via a 
-microsecond hardware timer. Immediately before constructing and transmitting the next \gls{BLE} bundle, the firmware compares the current time against the scheduled \gls{EMG} sampling interval. If the previous transmission caused a delay, 
-the system enters a rapid catch-up loop, executing the analog read and filtering functions multiple times sequentially until the "time debt" is cleared ensuring that while the transmission may introduce some jitter in the packet arrival time 
-at the Android device, the sampling period remains consistent within the microcontroller's memory, preserving the temporal integrity required for accurate frequency-domain features.
-
-
-\section{Android Application}
-\label{sec:android_app}
-
-
-As mentioned in the Work Proposal (\autoref{cha:workProposal}), a dedicated Android application was developed in Kotlin, to serve as a bridge between the prototypes and the user/database. This programming 
-language is used to interoperate fully with Java developed by JetBrains and since 2019 it has been the preferred language by Google for Android app development.
-The application handles the \gls{BLE} connection with the devices and provides a user interface for researchers, athletes and coaches to visualize the collected data and the model's predictions in real time.
-
-The following section provides a detailed description of the software architecture of the application. Each file is explained according to its function within the system, with emphasis on how data flows from the BLE layer to the 
-machine learning classifier and finally to the user interface. This breakdown clarifies the responsibilities of each component, highlights the interaction between modules, and demonstrates how the application was structured to 
-ensure modularity, maintainability, and extensibility.
-
-This application follows a modular architecture separating responsibilities between the user interface, data handling, and Bluetooth communication. At its core, the program follow the MVVM (Model-View-ViewModel) design pattern, improving 
-testability, maintainability and division of tasks.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=1\linewidth]{appOverview.jpg}
-  \caption{Android Application Overview}
-  \label{fig:appOverview}
+  \includegraphics[width=0.5\linewidth]{emgPosition.jpg}
+  \caption{Gastrocnemius Lateralis Positioning ~\cite{emgPosition}}
+  \label{fig:emgPosition}
 \end{figure}
 
-The MainActivity.kt is the entry point of the application, initializing the navigation host and providing the top-level container for the user interface. From this activity, the navigation system manages the transitions between the 
-windows (implemented as Jetpack Compose composables), each of which corresponds to a specific functionality of the program.
-The Android application serves as bridge between the devices, the user and the database. 
+%\subsection{Collecting Data and Testing}
+%\label{ssec:prototype_placement}
+
+\section{Machine Learning Model Evaluation}
+\label{sec:ml_evaluation}
+
+This section goes over an evaluation of the two~\gls{ML} models trained for this study. To effectively assess their performance, stability, and learning behaviour, we will examine the graphics generated throughout 
+the training phase giving us clear insights into how each model converges, identifying potential issues like under or overfitting, and ultimately compare their suitability for the objectives of this project.
 
 
-\subsection{User Interface}
-\label{ssec:android_interface}
+\subsection{Training Metrics and Performance Curves}    
+\label{ssec:training_metrics}
 
-The application consists in 4 different screens that define the layout and interactive elements that the user sees. Each one of these windows has a corresponding ViewModel that acts as a connection point between the user interface 
-and the application logic. These ViewModels handle any calls made by the screens and any changes to relevant operations such as the bluetooth connection.
-
-At first, when the app is launched, some necessary permissions are checked, specifically the Bluetooth (\texttt{BLUETOOTH\_SCAN and BLUETOOTH\_CONNECT}), 
-the location (\texttt{ACCESS\_FINE\_LOCATION and ACCESS\_COARSE\_LOCATION}) and the internet access permissions. Even though the app doesn't use the user's location, its permission is required for \gls{BLE} in Android 12 and higher. 
-
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.8\linewidth]{bleTurnOn.jpg}
-  \caption{Request message to turn on Bluetooth}
-  \label{fig:turnOnBluetooth}
+  \includegraphics[width=0.8\linewidth]{TinyMLAccuracy.jpg}
+  \caption{TinyMLAccuracy}
+  \label{fig:tinyMLAccuracy}
 \end{figure}
 
-\subsubsection{Start Menu}
-\label{sssec:start_menu}
+For the TinyML model, the learning process is monitored iteratively across the training epochs.~\autoref{fig:tinyMLAccuracy} illustrates the model's accuracy progression, comparing the training dataset against the 
+unseen validation dataset. 
 
-%falar de cada viewmodel
-This is the first menu shown to the user and it has the simple task of guiding the user through the application's functions. It has one button that takes us to the profile menu (\autoref{sssec:profile_menu}) and another that takes us to 
-data menu (\autoref{sssec:data_menu}).
+As observed in the accuracy curve, the model learns rapidly during the initial epochs before stabilizing reaching an validation accuracy of approximately 94\%. The validation curve 
+remains close to the training line throughout the training epochs indicating that the model generalizes well to new data rather than simply memorizing the training samples.
 
-\begin{figure}[h]
+~\autoref{fig:tinyMLLoss} further demonstrates that behaviour. The categorical cross-entropy loss curve shows a synchronized descent of both the training and validation loss curves confirming that the model is
+successfully minimizing its errors during the training and attributing high confidence to the correct movement.
+
+
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.8\linewidth]{startScreen.jpg}
-  \caption{Start Menu}
-  \label{fig:startScreen}
+  \includegraphics[width=0.9\linewidth]{TinyMLLoss.jpg}
+  \caption{TinyMLLoss}
+  \label{fig:tinyMLLoss}
 \end{figure}
 
-\subsubsection{Profile Menu}
-\label{sssec:profile_menu}
+While the Neural Network was evaluated via epoch progression, the Cloud-based Random Forest model is evaluated using ensemble classification metrics, specifically the Receiver Operating Characteristic and 
+Precision-Recall curves.
 
-In this menu every saved user profile is listed and the user is able to create new profiles and delete existing ones. When creating a profile the app generates a unique id and the user is asked for a name and height (\autoref{fig:newUserWindow}). 
-The list of users is stored locally and is available in every session.
+The Receiver Operating Characteristic curve (~\autoref{fig:RFROC}) evaluates the true positive rate against the false positive rate for each individual movement class. The Area Under the Curve scores approach 
+1.0 across all movements, demonstrating that the~\gls{RF} algorithm is highly capable of distinguishing the mathematical boundaries between distinct biomechanical states.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.30\linewidth]{newUserWindowOnly.jpg}
-  \caption{New User Window}
-  \label{fig:newUserWindow}
+  \includegraphics[width=0.8\linewidth]{RFROC.jpg}
+  \caption{RF ROC Curve}
+  \label{fig:RFROC}
+\end{figure}
+
+The Precision-Recall curve (\autoref{fig:RFPrecision}) shows the trade-off between precision and recall for different thresholds. This type of chart is specially crucial in in highly imbalanced sports datasets 
+where the vast majority of movements recorded are Walking, Running or Defensive Sliding while movements like Rebounds, Shooting and Crossover happen in a split second. The resulting curve demonstrates that the~\gls{RF} 
+model is able to detect all movements with high precision and low false positives.
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{RFPrecisionRecall.jpg}
+  \caption{RF Precision Recall Curve}
+  \label{fig:RFPrecision}
 \end{figure}
 
 
-    %\begin{figure}[ht]
-%    \centering
-%    \begin{subfigure}[b]{0.5\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{usersScreen.jpg}
-%        \caption{Profiles' Menu}
-%        \label{fig:usersScreen}
-%    \end{subfigure}
-%    \hfill 
-%    \begin{subfigure}[b]{0.35\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{newUserWindowOnly.jpg}
-%        \caption{New User Window}
-%        \label{fig:newUserWindow}
-%    \end{subfigure}
-%    
-%    \caption{Profile's Menu and User Creation}
-%    \label{fig:dataScreens}
-%%\end{figure}
+\subsection{Feature Importance and Sensor Fusion}
+\label{ssec:feature_importance}
 
-
-\subsubsection{Data Menu}
-\label{sssec:data_menu}
-
-When this menu is opened, the app tries to connect to both devices and when able, starts exchanging data. The data is then shown to the user. On the left the user can select an active user profile and a label for the current movement. On the right, 
-from top to bottom, the \gls{ML} models' predictions are shown (\autoref{sec:ml_code}). Beneath the models' projections, there are 3 switches - one to start/stop the \gls{ML} server connection and two others to start/stop sending the collected data
-or the \gls{ML} predictions to the InfluxDB database. At last there is a button that takes the application to the Calibration Menu (\autoref{sssec:calib_menu}).
-
-%falar do VariabResult
-
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.8\linewidth]{dataScreenWithCon.jpg}
-  \caption{Data Menu when both prototypes are connected}
-  \label{fig:dataScreenWithCon}
-\end{figure}
-
-%\begin{figure}[ht]
-%    \centering
-%    \begin{subfigure}[b]{0.45\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{dataScreenNoCon.jpg}
-%        \caption{Without devices' connections}
-%        \label{fig:dataScreenNoC}
-%    \end{subfigure}
-%    \hfill 
-%    \begin{subfigure}[b]{0.45\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{dataScreenWithCon.jpg}
-%        \caption{When both devices are connected}
-%        \label{fig:dataScreenWithCon}
-%    \end{subfigure}
-    
-%    \caption{Data Menu}
-%    \label{fig:dataScreen}
-%\end{figure}
-
-
-\subsubsection{Calibration Menu}
-\label{sssec:calib_menu}
-
-This window provides a dedicated interface for managing the sensor calibration routines which are critical for ensuring the accuracy of the \gls{IMU}. As mentioned in the Arduino section (\autoref{ssec:calibration}), due to the inherent hardware 
-drift and environmental magnetic interference, the gyroscope and magnetometer have to be recalibrated periodically for better and more accurate results.
-In this page the user can trigger the calibration methods that send specific commands to the devices with the instructions needed. For the gyroscope, the firmware executes a static calibration by averaging 1000 samples to compute and nullify 
-the offset. For the magnetometer, the system performs a dynamic hard-iron calibration, recording the maximum and minimum magnetic field intensities during a multi-axis rotation to calculate precise spatial offsets and scaling factors.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{calibScreen.jpg}
-  \caption{Calibration Menu}
-  \label{fig:calibMenu}
-\end{figure}
-
-The gyroscope calibration for both devices is done at the same time while the magnetometers' are executed one at a time. For each operation the app has a respective button and while ongoing calibration, the app displays some real-time progress 
-to the user that are sent via a dedicated \gls{BLE} characteristic.
+The~\gls{RF} approach utilizes decision trees so it inherently provides a quantifiable measure of how much each sensor contributes to the final classification, known as Gini Feature Importance.
 
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.8\linewidth]{calibScreenIMUsmall.jpg}
-  \caption{Left Gyroscope Calibration in Progress}
-  \label{fig:calibMenuIMU}
+  \includegraphics[width=1\linewidth]{featureImportance.jpg}
+  \caption{Aggregated Feature Importance Graph}
+  \label{fig:featureImportance}
+\end{figure}
+
+As illustrated in ~\autoref{fig:featureImportance}, the~\gls{EMG} features~\gls{VAR} and~\gls{RMS} had the biggest impact. This shows that the~\gls{EMG} is a valuable contributor for movement recognition systems 
+alongside the~\gls{IMU}. The graph also shows a preference for the left side suggesting that the model picked up on a dominant players' foot.
+
+\subsection{\gls{ML} Training - Confusion Matrices and Error Analysis}
+\label{ssec:confusion_matrices_ML}
+
+To conduct an analysis of the models' predictive flaws, confusion matrices were generated for both the Edge and Cloud classifiers based on the offline test dataset.
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\linewidth]{tinyMLConfusionMatrix.jpg}
+  \caption{TinyML Confusion Matrix}
+  \label{fig:tinyMLConfusionMatrix}
 \end{figure}
 
 
-%\begin{figure}[ht]
-%    \centering
-%    \begin{subfigure}[b]{0.45\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{calibScreenIMU.jpg}
-%        \caption{Gyroscope Calibration in Progress}
-%        \label{fig:calibMenuIMU}
-%    \end{subfigure}
-%    \hfill 
-%    \begin{subfigure}[b]{0.45\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{calibScreenFinished.jpg}
-%        \caption{Calibration Finished}
-%        \label{fig:calibMenuFinished}
-%    \end{subfigure}
-%    
-%    \caption{Calibration Menu}
-%    \label{fig:calibMenu2}
-%\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\linewidth]{RFConfusionMatrix.jpg}
+  \caption{Random Forest Confusion Matrix}
+  \label{fig:RFConfusionMatrix}
+\end{figure}
 
-When all the calibration operations are finished, the save button turns green and the values are saved to be uploaded when the devices reconnect.
 
+~\autoref{fig:tinyMLConfusionMatrix} and ~\autoref{fig:RFConfusionMatrix} reveal strong diagonal density confirming high accuracy overall. However, looking at the errors reveal that most of the misclassification occurs between 
+movements that share similar profiles (for example the models sometimes confuse the movement Defensive Sliding with Running and vice-versa or Rebound with Idle). 
 
-\subsection{Arduino \gls{BLE} Communication}
-\label{ssec:android_com_arduino}
 
-In Android \gls{BLE}  data is handle asynchronously which means that the app receives callbacks which have to be handled. For the \gls{BLE} communication Android provides a package with a layered architecture:
+\section{System Performance} %rever
+\label{sec:system_performance}
 
-\begin{itemize}
-  \item BluetoothAdapter - Where every bluetooth connection starts. It allows scanning for nearby available devices and initiating connections.
-  \item BluetoothDevice - Represents another \gls{BLE}  device with one or more services.
-  \item Bluetooth\gls{GATT} - It's the protocol for \gls{BLE}  services and characteristics. It manages the connection lifecycle and provides callbacks for asynchronous communication.
-  \item Bluetooth\gls{GATT} Service - Each service has a group of associated characteristics and a specific function (e.g., location service)
-  \item Bluetooth\gls{GATT} Characteristic - It's the smallest unit of data in \gls{BLE} BLE and it can be read, written or subscribed to (to ge notified whenever it changes) depending on its attributes.
-\end{itemize}
+A live test was performed in similar fashion to the data collection phase with the simple difference of running the server and taking note of the predictions and the movement made by the athlete (using the "Send Predictions" switch). The 
+player also worked intensively until the fatigue warning triggered.
 
-Since the are two devices, each with its own uuid (see \autoref{ssec:arduino_ble}), each device has its own manager that handle its callbacks (VariabBLEReceiveManager.kt) and these two managers are handled by the DualBLEReceiveManager 
-that coordinates them. 
 
+\subsection{Overall System Accuracy}
+\label{ssec:overall_accuracy}
 
-\subsubsection{Receive Managers}
-\label{sssec:manager}
+The primary objective of this test was to compare the classification accuracy of the ultra-lightweight Edge model against the deeper Cloud model and the variation of smoothed predictions vs raw. In terms of latency, 
+the tinyML model responded instantly while the~\gls{RF} model had a slight delay.
 
-Each receive manager is responsible for managing the lifecycle of the corresponding \gls{BLE} connection and handling every callback. Depending on the uuid of the connected device, the manager knows with which device it is working with 
-(if left or right). 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{testOverallAccuracyComparison.jpg}
+  \caption{Overall Classification Accuracy: Local TinyML vs Cloud Random Forest (Raw and Smoothed)}
+  \label{fig:overall_accuracy}
+\end{figure}
 
-First, using the BluetoothAdapter (see \autoref{ssec:android_com_arduino}), the manager searches for the respective device using its name and uuid and once discovered a \gls{GATT} connection is tried. After establishing the connection, 
-the manager finds the device's services. If a device disconnects the application cleans up its resources and starts trying to reconnect.
+As illustrated in ~\autoref{fig:overall_accuracy}, the localized TinyML model successfully outperformed the cloud-based Random Forest model, achieving an overall accuracy of 79.5\% compared to the server's 
+71.2\%. Even tho the local model achieved better results, with a greater dataset the server model should outperform it, especially with more confusing movements. The smoothed version of the local model has a 6.4\% 
+higher accuracy than its counterpart while the server's is worse by 0.3\%. This shows that smoothing the predictions is a viable and worthwhile algorithm if the base model is consistent enough.
 
-In the first approach the system was designed with separate \gls{GATT} characteristics for different sensor axes and \gls{EMG} data. However, relying on multiple simultaneous asynchronous notifications caused the Android \gls{BLE} stack to 
-frequently drop packets and ignore callbacks. To resolve this without resorting to an inefficient sequential polling queue, the system was optimized by bundling all sensor data into a single 150 byte payload transmitted via a single 
-characteristic.
+\subsection{Real Test - Confusion Matrices and Error Analysis}
+\label{ssec:confusion_matrices_test}
 
-The managers subscribe to the data characteristic of the respective device and rely on the onCharacteristicChanged callback. This allows the microcontrollers to asynchronously push data bundles at 10 Hz. Upon receiving the payload, the 
-managers decode the byte arrays into their respective float and integer values. If the data upload switch is active, this payload is appended with the active userId, the selected movement label, and a timestamp, and is immediately sent 
-to the database. And if the predictions switch is active, the payload is switched for the four \gls{ML} predictions and the data is sent to another database for further inquiring.
+In ~\autoref{fig:movement_accuracy}, we can see that overall, besides Defensive Sliding, the~\gls{RF} model either outperformed the TinyML model or was nearly as accurate. The~\gls{RF} model struggled to correctly 
+identify the movements Rebounding and Defensive Sliding but excelled at the Idle, Walking and Running movements. The improvement from the smoothing algorithm is also prevalent here in the majority of the movements.
 
-\subsection{Communication with InfluxDB}
-\label{ssec:android_com_data_base}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{testMovementAccuracy.jpg}
+  \caption{Classification Accuracy by Movement}
+  \label{fig:movement_accuracy}
+\end{figure}
 
-As mentioned before the application uses InfluxDB as its database. The interface between the application and the database is implemented in two files, one containing the function that sends data and the other one has the sensitive 
-client/database info (token, database url and organization and bucket name). This is a coroutine-based execution meaning that it will never stop or delay the main user interface thread and that it can be run multiple times in parallel 
-without affecting the application performance.
+Continuing the system's assessment, the confusion matrices for both models were generated:
+ 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.7\linewidth]{testConfusionMatrixRFRaw.jpg}
+  \caption{Confusion Matrix for the Random Forest Model before Smoothing}
+  \label{fig:confusion_matrix_RF_Raw}
+\end{figure}
 
-Since InfluxDB organizes data using measurements, tags, fields, and timestamps, the application must first parse the incoming \gls{BLE} payloads into the InfluxDB Line Protocol. This is a text-based format that optimizes ingestion 
-speed by representing the data points in a single string structure:
+The~\gls{RF}'s matrices (~\autoref{fig:confusion_matrix_RF_Raw},~\autoref{fig:confusion_matrix_RF_Smooth}) are very similar showing that when the athlete was Defensive Sliding, the model predicted the movement Running or Walking 
+while only predicting about 12\% of the time right. However, the model has a very high accuracy on the movements Walking, Idle and Running while Rebounding was mistaken with Walking or Running half the time.
 
-\begin{itemize}
-    \item Measurement - movement\_data
-    \item Tags - sensor(left or right) and userId
-    \item Fields (data values) - accelerometer, gyroscope, magnetometer and \gls{EMG} data
-    \item Timestamp - Instant.now() (registers that precise moment)
-\end{itemize}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.7\linewidth]{testConfusionMatrixRFSmoothed.jpg}
+  \caption{Confusion Matrix for the Random Forest Model after Smoothing}
+  \label{fig:confusion_matrix_RF_Smooth}
+\end{figure}
 
-Once formatted, the data is transmitted to the cloud via an asynchronous HTTP POST request to the InfluxDB API, ensuring any network timeouts or errors are caught and handled without freezing the application's user interface.
 
-\subsection{User Database}
-\label{ssec:android_users}
+On the other hand, the TinyML model had a slight accuracy boost by the smoothing algorithm. Analysing ~\autoref{fig:confusion_matrix_TinyML_Raw} and in~\autoref{fig:confusion_matrix_TinyML_Smooth}, the edge model 
+also mistaken Running with Defensive Sliding and vice-versa as the~\gls{RF} model did. Even so, the matrix's diagonal is pretty strong and the movements Walking and Idle and phenomenal having a near perfect accuracy.
 
-To track the origin of the physiological signals, the Android application has a robust local profiling system. Before data collection begins, the user should identify the active subject (otherwise the app send a null for the id to the database). 
-This is managed locally on the Android device using the Android Room Persistence Library, which provides an abstraction layer over an SQLite database to allow fluent database access while harnessing the full power of native \gls{SQL}.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.7\linewidth]{testConfusionMatrixTinyMLRaw.jpg}
+  \caption{Confusion Matrix for the Raw TinyML Model}
+  \label{fig:confusion_matrix_TinyML_Raw}
+\end{figure}
 
-\subsubsection{User Data Model and Data Access Object}
-\label{sssec:android_users_model}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\linewidth]{testConfusionMatrixTinyMLSmoothed.jpg}
+  \caption{Confusion Matrix for the Smoothed TinyML Model}
+  \label{fig:confusion_matrix_TinyML_Smooth}
+\end{figure}
 
-The database system is defined by a data entity (user.kt) that represents a subject. Each subject is assigned an auto-generated primary key (id), a name, and height in centimetres. 
-Interactions with the database are strictly mediated through a Data Access Object (DAO). The UserDao defines the \gls{SQL} operations required to insert, delete, and retrieve subject profiles. To maintain a fluid user interface and prevent 
-blocking the application's main thread during disk I/O operations, all database queries are executed asynchronously using Kotlin Coroutines (suspend functions).
 
-\subsubsection{Repository Pattern and Reactive State}
-\label{sssec:android_users_repository}
+\section{Discussion of Results}
+\label{sec:discussion} 
 
-To separate the data persistence logic from the User Interface, the architecture employs the Repository Pattern (UserRepository.kt). The repository acts as the single source for user data across the entire application.
-It abstracts the DAO layer, providing clean functions for the application's ViewModels to fetch lists of available users or create new ones while maintaining recollection of the active user.
+Even tho the ultimate goal of using the system in a real game scenario wasn't conducted in this project, the results validate the core hypothesis of the study that combining~\gls{IMU} with~\gls{EMG} data enhances 
+movement recognition while also highlighting the major obstacles for that objective. 
 
-The active user's ID is exposed to the rest of the application as a reactive StateFlow and is sent along side the sensors' data to the database. This modern reactive programming paradigm ensures that whenever the active user changes in the 
-User Menu, any observing component in the application (such as the \gls{BLE} transmission service) is instantly and automatically updated with the new context.
+Another objective of this research was to determine if the inclusion of~\gls{EMG} sensors provided a tangible advantage over traditional~\gls{IMU}-only commercial wearables. The Feature 
+Importance analysis (\autoref{ssec:feature_importance}) definitively answered this question, as the Random Forest classifier relied heavily on the~\gls{EMG}~\gls{VAR} and~\gls{RMS} features to 
+differentiate complex basketball movements.
 
-\subsection{Machine Learning Predictions}
-\label{ssec:ml_pred}
 
-The system was implemented with a double \gls{ML} architecture. This approach utilizes both local computing (executed directly on the Android device) and cloud computing (executed on a remote server). By running two models simultaneously on the exact same data 
-streams, the system is able to guarantee a low latency feedback for the user via the mobile application, while continuously logging a potentially more robust cloud prediction for comparative analysis.
+The implementation of the 500 ms Majority Voting sliding window raises the challenge of balancing output stability and sensitivity of the models. As observed in the confusion matrices (\autoref{ssec:confusion_matrices_test}), 
+temporal smoothing acted as an effective low-pass filter, diminishing flickering and hardware noise for the predictions increasing its accuracy at the cost of responsiveness. This trade-off is acceptable for a system 
+focused on general fatigue and activity tracking, but in future iterations with different goals it should be avoided.
 
 
-\subsubsection{Data Processing}
-\label{sssec:ml_data}
+\subsection{Known Problems and System Limitations}
+\label{ssec:problems}
 
-To accurately identify every movement the user makes, the models require temporal context, making evaluating single 20ms data points insufficient. To resolve this, a time-series sliding window algorithm was implemented. The Android application 
-synchronizes the \gls{BLE} packets from the left and right insoles, combining their respective 15 features into a singular 30-feature vector per timestamp. These vectors are accumulated in a First-In-First-Out (FIFO) buffer to create a 
-continuous observation window of 300ms that is then fed into the \gls{ML} models.
+The transition from a controlled laboratory environment to live, dynamic basketball testing introduced several unforeseen hardware and methodological challenges. Documenting these limitations is critical for 
+contextualizing the dataset's quality and guiding future iterations of the prototype.
 
+\subsubsection{Hardware Fragility and Ergonomics}
+\label{ssec:problems_hardware}
+The explosive nature of basketball movements places immense mechanical stress on external wearable components. During early testing, the~\gls{USB} connections, specifically the left Arduino port and the right 
+\gls{EMG} port, could not withstand the forces generated by the wires during the movements and were physically ripped from their boards. These accidents required re-soldering to restore functionality. 
+Furthermore, the mechanical coupling of the devices to the athlete was imperfect. The prototypes were not entirely secured under maximum tension, occasionally allowing the modules to shift out of their initial 
+alignment upon heavy foot strikes, which introduced mechanical noise into the~\gls{IMU} readings. This led to some internal hardware damage to the left Arduino's Bluetooth module restricting the antennas' effective 
+range. Since the system pushed heavy data payloads at a high frequency (50 Hz), the degraded~\gls{BLE} module dropped packets whenever the Android device wans't in close-range proximity to the foot. This heavily 
+reduced the overall quality of the collected data for the left foot.
+Ergonomically, the custom keep-awake circuit required to bypass the power banks' auto-shutoff feature caused slight scratching against the athletes' legs, indicating that future prototypes require softer, fully 
+integrated enclosures.
 
-The 300ms window size was specifically selected to capture the concentrated kinematic signature of transient, explosive basketball movements, effectively preventing the "label dilution" that could occur in larger windows. Furthermore, a step 
-size of 100ms was applied, resulting in a 66\% window overlap. This configuration compresses the classification rate to a highly efficient 10Hz, maintaining the illusion of instantaneous real-time feedback while preserving smartphone battery 
-life and avoiding network congestion.
 
-Once the 15-frame buffer is filled, the local Edge inference is managed by the MovementClassifier class within the Android application. Since the TensorFlow Lite model resides directly in the application's assets directory, it 
-requires no internet connection to function. The model processes the flattened feature array and yields a probability distribution across the target classification labels. An argmax function is applied to the output tensor to extract the 
-highest confidence prediction. This prediction is immediately pushed to a Kotlin StateFlow, triggering a quick update to the Jetpack Compose User Interface, ensuring the athlete receives uninterrupted feedback even in environments with 
-degraded network connectivity.
+\subsubsection{Dataset and Labeling Constraints}
+\label{ssec:problems_data}
 
+From a machine learning and data science perspective, the collected dataset faces generalizability constraints. First, the data collection was limited to a sample size of only two individuals (the primary researcher 
+and one additional subject). Consequently, the trained models may be highly tuned to the specific biomechanical signatures of these two users, requiring a much larger demographic pool to achieve universal accuracy.
+Secondly, the manual labeling process introduced boundary noise. Because recording was triggered manually via the Android application, the initial and final seconds of many data windows inadvertently captured 
+transitional movements. This minor overlap injected small instances of mislabelled data into the training pipeline.
+Finally, the collection of physiological fatigue data presented a significant challenge. Safely and reliably inducing and capturing a pre-cramp state in a testing environment is inherently difficult. 
+As a result, gathering stable, sustained~\gls{RMS} baseline values for the peak fatigue threshold was challenging, making the deterministic cramping algorithm highly sensitive and difficult to calibrate 
+with the current limited dataset.
 
-
-\subsubsection{Communication with the Cloud server}
-\label{sssec:com_ml_server}
-
-To facilitate the dual-tier prediction, the Android application securely transmits the buffered sensor data to the Flask server using the Retrofit network library. When the 15-frame buffer is filled, the data is serialized into a JSON payload and transmitted via 
-an asynchronous HTTP POST request to the /predict endpoint.
-
-To guarantee that network latency does not block the main thread or interrupt the continuous \gls{BLE} data ingestion, the API call is offloaded to a background thread utilizing Kotlin Coroutines (Dispatchers.IO). Upon receiving a successful HTTP 200 OK 
-response from the server, the application deserializes the cloud-computed prediction.
-
-Finally, to enable rigorous post-session analysis, the application utilizes the InfluxDB-Client-Kotlin library to asynchronously log both the TinyML local prediction and the Random Forest cloud prediction to an InfluxDB database. These predictions are uploaded
-tagged with a timestamp and User ID. %As this measurement shares the exact time-series axis as the raw \texttt{imu\_data} measurement, the system allows for the seamless, synchronized overlay 
-%of machine learning classifications directly on top of the raw biomechanical waveforms in data visualization platforms like Grafana.
-
-\subsubsection{Temporal Smoothing and Output Stabilization}
-\label{sssec:temporal_smoothing}
-
-During the first live test, a susceptibility to "prediction flickering" was noticed. Since the classifiers evaluate discrete 300ms data windows, anomalies such as an irregular movement or sensor noise could cause 
-isolated 100ms frames to be misclassified. To mitigate this instability, a post-processing Temporal Smoothing algorithm was developed within the Android application. This algorithm functions as a 
-digital low-pass filter utilizing a majority voting logic. A continuous sliding window, implemented via a Kotlin ArrayDeque, was configured to store the last five consecutive predictions, effectively granting 
-the system 500ms of temporal short-term memory. 
-To compare the original prediction values with the filtered ones, the system sends both values from both models to a database for future analysis.
-
-
-\subsection{Cramping Prevention and Fatigue Monitoring} 
-\label{ssec:cramping_prevention}
-
-Besides movement classification, the Android app also has a real-time fatigue monitoring system to prevent cramping. This is achieved through an algorithm that fuses the predictions from the TinyML model with the \gls{RMS} \gls{EMG} feature.
-This script is located within the processLocalPrediction function of the VariabViewModel and it analyses the 300ms observation window raising a flag if the \gls{RMS} value breaches a pre-defined threshold for either leg while idling or walking 
-(not enough data was collected to monitor all movements). Since the \gls{EMG} signal varies significantly based on an athlete's muscle density, skin impedance, electrode placement, and baseline fitness, this threshold isn't universal. A calibration 
-should be conducted for every athlete. 
-Since a simple flag could keep firing every processed window, a counter tied to the flag is utilized to send a message to the application when a threshold is hit. This tracker resets whenever the \gls{RMS} signal drops bellow the defined threshold 
-or the movement changes (from Idle or Walking). When 10 consecutive flags are raised (corresponding to one second), the application sends a notification to the screen notifying the user of the athletes' fatigue and that he should rest. This 
-also helps to prevent false positives and filters out sudden stops that might spike the \gls{RMS} values.
-
-
-\section{Machine Learning Code}
-\label{sec:ml_code}
-
-The development, training, and exportation of the machine learning models were conducted using Python within a Google Colab environment. This section details the data preprocessing pipeline, the time-series windowing algorithm, and the specific architectures used 
-for both the Cloud and Local classification models.
-
-\subsection{Models' Training}
-\label{ssec:ml_training}
-
-To train models capable of recognizing dynamic biomechanical movements, the raw sensor data previously logged to InfluxDB was exported as CSV files and ingested into a pandas DataFrame. The initial dataset consisted of discrete kinematic and electromyography 
-measurements mapped to specific target labels (see~\autoref{ssec:baskebtall_movements}).
-
-The first phase of preprocessing involved synchronizing the independent left and right insole data streams. Timestamps were parsed and rounded to the nearest 20ms. The dataset was then pivoted from a long format to a wide format, aligning the 15 features from the 
-left insole and the 15 features from the right insole into a singular 30 feature vector for every discrete timestamp.
-
-Since transient basketball movements cannot be accurately classified from a single 20ms static frame, the synchronized data was subjected to a sliding window transformation. The algorithm grouped the continuous data into windows of 300ms. To ensure the models were 
-trained on contiguous sequences without mixing different movement classes, the grouping was strictly partitioned by userId and movement label. 
-
-Using a step size of 100ms, overlapping windows were generated. Each $15 \times 30$ matrix was then flattened into a 1-dimensional array of 450 features. This flattened array served as the input vector ($X$) for both models, with the corresponding movement acting 
-as the target label. To ensure a robust evaluation, the generated windows were divided using an 80/20 train-test split, employing stratification to maintain proportional class distributions across both sets.
-
-\subsection{Random Forest}
-\label{ssec:ml_rf}
-
-For the Cloud-Tier classification, a \gls{RF} algorithm was implemented using the scikit-learn library. \gls{RF} was selected due to its ensemble learning architecture, which constructs a multitude of decision trees during training and outputs the mode 
-of the classes for classification. This approach is highly resistant to overfitting and performs exceptionally well on high-dimensional tabular data, such as the 450-feature vectors generated by the sliding window.
-
-The model was instantiated with n\_estimators = 100 (utilizing 100 individual decision trees) and a max\_depth = 15 to prevent the trees from memorizing localized noise in the training data. The model was fitted on the 80\% training split and evaluated against 
-the 20\% testing split. Following successful validation, the trained model pipeline was serialized and exported as a .pkl file using the joblib library. This serialized file was subsequently deployed to the Python Flask backend on Render.com, allowing the server 
-to reconstruct the exact model state for real-time identification.
-
-\subsection{Tiny\gls{ML}}
-\label{ssec:ml_tml}
-
-To facilitate ultra-low latency inference directly on the Android edge device, a Tiny\gls{ML} approach was employed - developing a lightweight \gls{NN} using the TensorFlow and Keras libraries.
-
-Given the strict computational constraints of mobile devices, the network architecture was aggressively optimized. The input layer was designed to dynamically accept the 450-feature flattened array. This was followed by two dense hidden layers consisting of 32 
-and 16 neurons, respectively, both utilizing the Rectified Linear Unit activation function to introduce non-linearity. The final output layer consisted of neurons corresponding to the total number of target classes, utilizing a softmax activation 
-function to output a normalized probability distribution.
-
-The model was compiled using the Adam optimizer and sparse categorical cross-entropy as the loss function, circumventing the need to manually one-hot encode the target labels. The network was trained over 40 epochs with a batch size of 32. Once validated against 
-the testing split, the Keras model was passed through the TFLiteConverter. Default optimizations were applied to quantize the model weights and reduce the overall memory footprint. The resulting binary file (tinyml\_model.tflite) was exported and embedded directly 
-into the Android application's asset directory, granting the mobile device autonomous classification capabilities without relying on external APIs.
-
-
-
-\subsection{Model Evaluation}
-\label{ssec:ml_evaluation}
-
-To rigorously validate the performance and relevance of the trained models, a comprehensive evaluation protocol was established. Going beyond standard accuracy scores, these chosen metrics were designed to provide insight into the models' 
-decision-making processes, sensor reliance, and generalized robustness across the different target classes.
-
-For the Cloud-Tier \gls{RF} model, a feature importance analysis was configured to quantify the contribution of each sensor. Since the sliding window technique flattened the data into a high-dimensional 450-feature array, the 
-protocol dictated that Gini importance scores extracted from the decision trees be aggregated across the 15 time-frames back to their 30 base sensor components. This aggregation is designed to produce a definitive ranking of the sensors, 
-allowing for a biomechanical assessment of whether the \gls{EMG} data provided a significant classification interest or if it is insignificant.
-
-Furthermore, to evaluate the multi-class discriminative power of the \gls{RF} algorithm, the generation of Receiver Operating Characteristic curves was integrated into the testing pipeline. By binarizing the target labels in a 
-One-vs-Rest configuration, the trade-off between the True Positive Rate and False Positive Rate can be plotted for each discrete movement class (Idle, Walking, Running, Defensive Slide, Rebound).
-
-For the Edge-Tier TinyML model, the evaluation strategy required continuously logging the training history over the 50 epochs to monitor the network's mathematical convergence. Tracking these temporal learning curves (categorical cross-entropy 
-loss and classification accuracy) is critical for neural network architectures to ensure the lightweight model did not overfit the training data or memorize localized noise. 
-
-Finally, the pipeline was programmed to compute confusion matrices for both the Cloud-Tier and Edge-Tier models mapping the predicted classifications against the actual target labels on the isolated 20\% testing split.

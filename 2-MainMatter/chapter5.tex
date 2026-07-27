@@ -12,13 +12,13 @@
 \chapter{Verification and Testing}
 \label{cha:verificaton_testing}
 
-In this chapter we'll go over the verification and testing procedures conducted to evaluate the proposed wearable monitoring system and the \gls{ML} models. This evaluation is divided into three sections addressing the full \gls{IoT} system.
-Starting with the hardware, we examine the position of the prototypes, and how they are attached, and the anatomical placement of the \gls{EMG} electrodes on the Gastrocnemius Lateralis. Secondly, an in-depth statistical analysis of the trained 
-\gls{ML} models is conducted. In this section, by leveraging classification metrics, confusion matrices, and feature importance distributions, both developed \gls{ML} models' performances are compared against each other and evaluated. Here, 
-we also determine the efficacy of fusing \gls{IMU} kinematics with \gls{EMG} neuromuscular data for basketball movements classification. In the final section, the system's performance is reviewed by assessing both models' latency and the resilience 
-to asynchronous \gls{BLE} transmissions.
+In this chapter we'll go over the verification and testing procedures conducted to evaluate the proposed wearable monitoring system and the~\gls{ML} models. This evaluation is divided into three sections addressing the full~\gls{IoT} system.
+Starting with the hardware, we examine the position of the prototypes, and how they are attached, and the anatomical placement of the~\gls{EMG} electrodes on the Gastrocnemius Lateralis. Secondly, an in-depth statistical analysis of the trained 
+\gls{ML} models is conducted. In this section, by leveraging classification metrics, confusion matrices, and feature importance distributions, both developed~\gls{ML} models' performances are compared against each other and evaluated. Here, 
+we also determine the efficacy of fusing~\gls{IMU} kinematics with~\gls{EMG} neuromuscular data for basketball movements classification. In the final section, the system's performance is reviewed by assessing both models' latency and the resilience 
+to asynchronous~\gls{BLE} transmissions.
 
-\newpage
+
 
 \section{Data Collection}
 \label{sec:data_collection}
@@ -31,8 +31,8 @@ each. The cramping prevention system was only tested on one player that pushed h
 \label{ssec:prototype_placement}
 
 The prototypes were mounted directly in the athletes' footwear to approximate the ideal positioning (on the bottom of the feet as an insole or a sock). The devices were secured using the shoe laces and the powerbank was secured in the users 
-socks, utilizing the existing infrastructure. With this configuration, the \gls{IMU} accurately captures the kinematics of the foot, such as accelerations and rotational velocities during the athletes' movements. Furthermore, this setup 
-minimizes the mechanical strain exerted by the power cables on the USB ports, while keeping the \gls{EMG} leads in close proximity to the chosen muscle group.
+socks, utilizing the existing infrastructure. With this configuration, the~\gls{IMU} accurately captures the kinematics of the foot, such as accelerations and rotational velocities during the athletes' movements. Furthermore, this setup 
+minimizes the mechanical strain exerted by the power cables on the USB ports, while keeping the~\gls{EMG} leads in close proximity to the chosen muscle group.
 
 
 \begin{figure}[htbp]
@@ -44,7 +44,7 @@ minimizes the mechanical strain exerted by the power cables on the USB ports, wh
 
 
 The muscle chosen to be measured was the Gastrocnemius Lateralis as it is one of the most important muscles for explosive jumping motion.
-The position for the \gls{EMG} sensors was chosen as recommended by the \gls{EU}'s SENIAM (Surface ElectroMyoGraphy for the Non-Invasive Assessment of Muscles) project (~\cite{emgPosition}) ensuring standardization and maximization of the 
+The position for the~\gls{EMG} sensors was chosen as recommended by the~\gls{EU}'s SENIAM (Surface ElectroMyoGraphy for the Non-Invasive Assessment of Muscles) project (~\cite{emgPosition}) ensuring standardization and maximization of the 
 signal-to-noise ratio.
 
 \begin{figure}[htbp]
@@ -60,7 +60,7 @@ signal-to-noise ratio.
 \section{Machine Learning Model Evaluation}
 \label{sec:ml_evaluation}
 
-This section goes over an evaluation of the two \gls{ML} models trained for this study. To effectively assess their performance, stability, and learning behaviour, we will examine the graphics generated throughout 
+This section goes over an evaluation of the two~\gls{ML} models trained for this study. To effectively assess their performance, stability, and learning behaviour, we will examine the graphics generated throughout 
 the training phase giving us clear insights into how each model converges, identifying potential issues like under or overfitting, and ultimately compare their suitability for the objectives of this project.
 
 
@@ -95,7 +95,7 @@ While the Neural Network was evaluated via epoch progression, the Cloud-based Ra
 Precision-Recall curves.
 
 The Receiver Operating Characteristic curve (~\autoref{fig:RFROC}) evaluates the true positive rate against the false positive rate for each individual movement class. The Area Under the Curve scores approach 
-1.0 across all movements, demonstrating that the \gls{RF} algorithm is highly capable of distinguishing the mathematical boundaries between distinct biomechanical states.
+1.0 across all movements, demonstrating that the~\gls{RF} algorithm is highly capable of distinguishing the mathematical boundaries between distinct biomechanical states.
 
 \begin{figure}[htbp]
   \centering
@@ -105,7 +105,7 @@ The Receiver Operating Characteristic curve (~\autoref{fig:RFROC}) evaluates the
 \end{figure}
 
 The Precision-Recall curve (\autoref{fig:RFPrecision}) shows the trade-off between precision and recall for different thresholds. This type of chart is specially crucial in in highly imbalanced sports datasets 
-where the vast majority of movements recorded are Walking, Running or Defensive Sliding while movements like Rebounds, Shooting and Crossover happen in a split second. The resulting curve demonstrates that the \gls{RF} 
+where the vast majority of movements recorded are Walking, Running or Defensive Sliding while movements like Rebounds, Shooting and Crossover happen in a split second. The resulting curve demonstrates that the~\gls{RF} 
 model is able to detect all movements with high precision and low false positives.
 
 
@@ -120,7 +120,7 @@ model is able to detect all movements with high precision and low false positive
 \subsection{Feature Importance and Sensor Fusion}
 \label{ssec:feature_importance}
 
-The \gls{RF} approach utilizes decision trees so it inherently provides a quantifiable measure of how much each sensor contributes to the final classification, known as Gini Feature Importance.
+The~\gls{RF} approach utilizes decision trees so it inherently provides a quantifiable measure of how much each sensor contributes to the final classification, known as Gini Feature Importance.
 
 
 \begin{figure}[h]
@@ -130,8 +130,8 @@ The \gls{RF} approach utilizes decision trees so it inherently provides a quanti
   \label{fig:featureImportance}
 \end{figure}
 
-As illustrated in ~\autoref{fig:featureImportance}, the \gls{EMG} features \gls{VAR} and \gls{RMS} had the biggest impact. This shows that the \gls{EMG} is a valuable contributor for movement recognition systems 
-alongside the \gls{IMU}. The graph also shows a preference for the left side suggesting that the model picked up on a dominant players' foot.
+As illustrated in ~\autoref{fig:featureImportance}, the~\gls{EMG} features~\gls{VAR} and~\gls{RMS} had the biggest impact. This shows that the~\gls{EMG} is a valuable contributor for movement recognition systems 
+alongside the~\gls{IMU}. The graph also shows a preference for the left side suggesting that the model picked up on a dominant players' foot.
 
 \subsection{\gls{ML} Training - Confusion Matrices and Error Analysis}
 \label{ssec:confusion_matrices_ML}
@@ -170,7 +170,7 @@ player also worked intensively until the fatigue warning triggered.
 \label{ssec:overall_accuracy}
 
 The primary objective of this test was to compare the classification accuracy of the ultra-lightweight Edge model against the deeper Cloud model and the variation of smoothed predictions vs raw. In terms of latency, 
-the tinyML model responded instantly while the \gls{RF} model had a slight delay.
+the tinyML model responded instantly while the~\gls{RF} model had a slight delay.
 
 \begin{figure}[htbp]
   \centering
@@ -186,7 +186,7 @@ higher accuracy than its counterpart while the server's is worse by 0.3\%. This 
 \subsection{Real Test - Confusion Matrices and Error Analysis}
 \label{ssec:confusion_matrices_test}
 
-In ~\autoref{fig:movement_accuracy}, we can see that overall, besides Defensive Sliding, the \gls{RF} model either outperformed the TinyML model or was nearly as accurate. The \gls{RF} model struggled to correctly 
+In ~\autoref{fig:movement_accuracy}, we can see that overall, besides Defensive Sliding, the~\gls{RF} model either outperformed the TinyML model or was nearly as accurate. The~\gls{RF} model struggled to correctly 
 identify the movements Rebounding and Defensive Sliding but excelled at the Idle, Walking and Running movements. The improvement from the smoothing algorithm is also prevalent here in the majority of the movements.
 
 \begin{figure}[htbp]
@@ -205,7 +205,7 @@ Continuing the system's assessment, the confusion matrices for both models were 
   \label{fig:confusion_matrix_RF_Raw}
 \end{figure}
 
-The \gls{RF}'s matrices (~\autoref{fig:confusion_matrix_RF_Raw},~\autoref{fig:confusion_matrix_RF_Smooth}) are very similar showing that when the athlete was Defensive Sliding, the model predicted the movement Running or Walking 
+The~\gls{RF}'s matrices (~\autoref{fig:confusion_matrix_RF_Raw},~\autoref{fig:confusion_matrix_RF_Smooth}) are very similar showing that when the athlete was Defensive Sliding, the model predicted the movement Running or Walking 
 while only predicting about 12\% of the time right. However, the model has a very high accuracy on the movements Walking, Idle and Running while Rebounding was mistaken with Walking or Running half the time.
 
 \begin{figure}[htbp]
@@ -217,7 +217,7 @@ while only predicting about 12\% of the time right. However, the model has a ver
 
 
 On the other hand, the TinyML model had a slight accuracy boost by the smoothing algorithm. Analysing ~\autoref{fig:confusion_matrix_TinyML_Raw} and in~\autoref{fig:confusion_matrix_TinyML_Smooth}, the edge model 
-also mistaken Running with Defensive Sliding and vice-versa as the \gls{RF} model did. Even so, the matrix's diagonal is pretty strong and the movements Walking and Idle and phenomenal having a near perfect accuracy.
+also mistaken Running with Defensive Sliding and vice-versa as the~\gls{RF} model did. Even so, the matrix's diagonal is pretty strong and the movements Walking and Idle and phenomenal having a near perfect accuracy.
 
 \begin{figure}[htbp]
   \centering
@@ -237,15 +237,15 @@ also mistaken Running with Defensive Sliding and vice-versa as the \gls{RF} mode
 \section{Discussion of Results}
 \label{sec:discussion} 
 
-Even tho the ultimate goal of using the system in a real game scenario wasn't conducted in this project, the results validate the core hypothesis of the study that combining \gls{IMU} with \gls{EMG} data enhances 
+Even tho the ultimate goal of using the system in a real game scenario wasn't conducted in this project, the results validate the core hypothesis of the study that combining~\gls{IMU} with~\gls{EMG} data enhances 
 movement recognition while also highlighting the major obstacles for that objective. 
 
-Another objective of this research was to determine if the inclusion of \gls{EMG} sensors provided a tangible advantage over traditional \gls{IMU}-only commercial wearables. The Feature 
-Importance analysis (\autoref{ssec:feature_importance}) definitively answered this question, as the Random Forest classifier relied heavily on the \gls{EMG} \gls{VAR} and \gls{RMS} features to 
+Another objective of this research was to determine if the inclusion of~\gls{EMG} sensors provided a tangible advantage over traditional~\gls{IMU}-only commercial wearables. The Feature 
+Importance analysis (\autoref{ssec:feature_importance}) definitively answered this question, as the Random Forest classifier relied heavily on the~\gls{EMG}~\gls{VAR} and~\gls{RMS} features to 
 differentiate complex basketball movements.
 
 
-The implementation of the 500ms Majority Voting sliding window raises the challenge of balancing output stability and sensitivity of the models. As observed in the confusion matrices (\autoref{ssec:confusion_matrices_test}), 
+The implementation of the 500 ms Majority Voting sliding window raises the challenge of balancing output stability and sensitivity of the models. As observed in the confusion matrices (\autoref{ssec:confusion_matrices_test}), 
 temporal smoothing acted as an effective low-pass filter, diminishing flickering and hardware noise for the predictions increasing its accuracy at the cost of responsiveness. This trade-off is acceptable for a system 
 focused on general fatigue and activity tracking, but in future iterations with different goals it should be avoided.
 
@@ -258,11 +258,11 @@ contextualizing the dataset's quality and guiding future iterations of the proto
 
 \subsubsection{Hardware Fragility and Ergonomics}
 \label{ssec:problems_hardware}
-The explosive nature of basketball movements places immense mechanical stress on external wearable components. During early testing, the \gls{USB} connections, specifically the left Arduino port and the right 
+The explosive nature of basketball movements places immense mechanical stress on external wearable components. During early testing, the~\gls{USB} connections, specifically the left Arduino port and the right 
 \gls{EMG} port, could not withstand the forces generated by the wires during the movements and were physically ripped from their boards. These accidents required re-soldering to restore functionality. 
 Furthermore, the mechanical coupling of the devices to the athlete was imperfect. The prototypes were not entirely secured under maximum tension, occasionally allowing the modules to shift out of their initial 
-alignment upon heavy foot strikes, which introduced mechanical noise into the \gls{IMU} readings. This led to some internal hardware damage to the left Arduino's Bluetooth module restricting the antennas' effective 
-range. Since the system pushed heavy data payloads at a high frequency (50Hz), the degraded \gls{BLE} module dropped packets whenever the Android device wans't in close-range proximity to the foot. This heavily 
+alignment upon heavy foot strikes, which introduced mechanical noise into the~\gls{IMU} readings. This led to some internal hardware damage to the left Arduino's Bluetooth module restricting the antennas' effective 
+range. Since the system pushed heavy data payloads at a high frequency (50 Hz), the degraded~\gls{BLE} module dropped packets whenever the Android device wans't in close-range proximity to the foot. This heavily 
 reduced the overall quality of the collected data for the left foot.
 Ergonomically, the custom keep-awake circuit required to bypass the power banks' auto-shutoff feature caused slight scratching against the athletes' legs, indicating that future prototypes require softer, fully 
 integrated enclosures.
@@ -276,6 +276,6 @@ and one additional subject). Consequently, the trained models may be highly tune
 Secondly, the manual labeling process introduced boundary noise. Because recording was triggered manually via the Android application, the initial and final seconds of many data windows inadvertently captured 
 transitional movements. This minor overlap injected small instances of mislabelled data into the training pipeline.
 Finally, the collection of physiological fatigue data presented a significant challenge. Safely and reliably inducing and capturing a pre-cramp state in a testing environment is inherently difficult. 
-As a result, gathering stable, sustained \gls{RMS} baseline values for the peak fatigue threshold was challenging, making the deterministic cramping algorithm highly sensitive and difficult to calibrate 
+As a result, gathering stable, sustained~\gls{RMS} baseline values for the peak fatigue threshold was challenging, making the deterministic cramping algorithm highly sensitive and difficult to calibrate 
 with the current limited dataset.
 
